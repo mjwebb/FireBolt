@@ -1,0 +1,2 @@
+<cfloop array="#getTemplateMetaData()#" index="local.meta">	<cfoutput><meta name="#xmlFormat(local.meta.name)#"<cfif len(local.meta.scheme)> scheme="#xmlFormat(local.meta.scheme)#"</cfif> content="#xmlFormat(local.meta.value)#" /></cfoutput>
+</cfloop>
