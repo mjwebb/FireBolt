@@ -5,7 +5,7 @@ component output="false" extends="FireBolt.controller" {
 	* @verbs GET
 	* **/
 	public function get(string name){
-		response().setBody({
+		setResponseBody({
 			"api": "sub-response",
 			"name": arguments.name
 		});
@@ -15,7 +15,7 @@ component output="false" extends="FireBolt.controller" {
 	* @verbs GET
 	* **/
 	public function test(){
-		response().setBody({
+		setResponseBody({
 			"api": "response",
 			"method": "test"
 		});

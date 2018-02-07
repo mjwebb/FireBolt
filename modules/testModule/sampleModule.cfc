@@ -26,11 +26,12 @@ component accessors="true"{
 	* **/
 	public void function setFB(framework FB required:true){
 		variables.FB = arguments.FB;
-		variables.t = variables.FB.getObject("FireBolt.template", {viewRootDir: "/testModule/views/"});
 	}
 
-	public string function hello(){
-		return "world " & variables.startTime & variables.t.view("test");
+	public string function hello(requestHandler req){
+		return "world " & variables.startTime & arguments.req.output().view(
+			viewFile: "test",
+			root: "/testModule/views/");
 	}
 
 	public any function getDep(){

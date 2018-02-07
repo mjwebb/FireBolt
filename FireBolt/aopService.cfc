@@ -11,6 +11,7 @@ component{
 			after: []
 		}
 	}
+	*/
 
 	/**
 	* @hint constructor

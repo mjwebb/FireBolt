@@ -4,7 +4,7 @@
 component{ // transient request handler
 
 	variables.FireBolt;
-	variables.req = {
+	variables.context = {
 		startTime: getTickCount(),
 		path: "",
 		form: form,
@@ -12,6 +12,7 @@ component{ // transient request handler
 		verb: requestMethod()
 	};
 	variables.route;
+	variables.outputService;
 
 	/**
 	* @hint constructor
@@ -21,11 +22,12 @@ component{ // transient request handler
 		struct formScope=form,
 		struct urlScope=url,
 		framework FireBolt=application.FireBolt){
-		variables.req.path = arguments.path;
-		variables.req.form = arguments.formScope;
-		variables.req.url = arguments.urlScope;
+		variables.context.path = arguments.path;
+		variables.context.form = arguments.formScope;
+		variables.context.url = arguments.urlScope;
 		variables.FireBolt = arguments.FireBolt;
 		variables.response = new response(variables.FireBolt);
+		variables.outputService = newOutput();
 		return this;
 	}
 
@@ -37,10 +39,10 @@ component{ // transient request handler
 	}
 
 	/**
-	* @hint returns our request data struct
+	* @hint returns our request context data struct
 	* **/
-	public struct function getRequest(){
-		return variables.req;
+	public struct function getContext(){
+		return variables.context;
 	}
 
 	/**
@@ -127,7 +129,7 @@ component{ // transient request handler
 	* @hint returns the current duration of the request
 	* **/
 	public numeric function duration(){
-		return getTickCount() - variables.req.startTime;
+		return getTickCount() - variables.context.startTime;
 	}
 
 	
@@ -136,6 +138,20 @@ component{ // transient request handler
 	* **/
 	public framework function FB(){
 		return variables.FireBolt;
+	}
+
+	/**
+	* @hint create a requestOutputService for this request
+	* **/
+	public requestOutputService function newOutput(){
+		return new requestOutputService(this);
+	}
+
+	/**
+	* @hint returns our request output service
+	* **/
+	public requestOutputService function output(){
+		return variables.outputService;
 	}
 
 }

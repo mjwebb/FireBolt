@@ -26,7 +26,7 @@ component{
 		variables.routeService = new routeService(this);
 		variables.eventService = new eventService(this);
 		variables.factoryService = new factoryService(this);
-		getEventService().trigger("application.started");
+		getEventService().trigger("FireBolt.loaded");
 	}
 
 	

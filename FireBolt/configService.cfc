@@ -9,7 +9,7 @@ component{
 	public configService function init(string type, framework FireBolt){
 		variables.FireBolt = arguments.FireBolt;
 		if(! isNull(variables.FireBolt)){
-			variables.FireBolt.registerMethods("getConfig,getSetting", this);
+			variables.FireBolt.registerMethods("getConfig,getSetting,setSetting,mergeSetting", this);
 		}
 		if(len(arguments.type)){
 			readConfig(arguments.type);
@@ -50,6 +50,21 @@ component{
 		return local.v;
 	}
 
-	
+	/**
+	* @hint sets a config key value
+	* **/
+	public void function setSetting(string key, any value){
+		evaluate("variables.config.#arguments.key# = arguments.value");
+	}
 
+	/**
+	* @hint merges a setting key struct with a given struct
+	* **/
+	public void function mergeSetting(string key, struct value){
+		if(evaluate("structKeyExists(variables.config, '#arguments.key#') AND isStruct(variables.config.#arguments.key#)")){
+			structAppend(evaluate("variables.config.#arguments.key#"), arguments.value);
+		}else{
+			setSetting(arguments.key, arguments.value);
+		}
+	}
 }

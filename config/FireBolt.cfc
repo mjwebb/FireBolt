@@ -8,6 +8,7 @@ component{
 			modules: "/modules/"
 		},
 		siteName: "FireBolt",
+		modules: {},
 
 		test = "this is a test setting",
 		struct = {

@@ -24,8 +24,8 @@ component{
 		}
 		
 		if(local.c.isValid){
-			//return local.c.cfc[local.c.method](argumentCollection:local.c.args);
 			arguments.req.setRoute(local.c);
+			//return local.c.cfc[local.c.method](argumentCollection:local.c.args);
 			return local.c.cfc.callFunction(local.c.method, local.c.args);
 		}else{
 			//return local.c;
@@ -38,7 +38,7 @@ component{
 	* @hint attempt to find and run a route for a given request
 	* **/
 	public struct function getRoute(requestHandler req){
-		local.path = listToArray(arguments.req.getRequest().path, "/");
+		local.path = listToArray(arguments.req.getContext().path, "/");
 		return walkPath(path: local.path, requestHandler: arguments.req);
 	}
 

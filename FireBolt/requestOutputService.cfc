@@ -1,7 +1,7 @@
 /**
 * @FB:transient true
 * **/
-component{ // transient request handler
+component{ // transient request output service
 
 	variables.req;
 	
@@ -15,7 +15,7 @@ component{ // transient request handler
 	/**
 	* @hint constructor
 	* **/
-	public template function init(requestHandler req, string templateRootDir="", string viewRootDir=""){
+	public requestOutputService function init(requestHandler req, string templateRootDir="", string viewRootDir=""){
 		variables.req = arguments.req;
 		variables.templateRootDir = arguments.templateRootDir;
 		variables.viewRootDir = arguments.viewRootDir;

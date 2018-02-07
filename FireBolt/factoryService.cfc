@@ -23,19 +23,43 @@ component{
 	* @hint scan our modules directory for configuration files
 	* **/
 	public void function registerModules(){
-		addModuleMappings();
+		// get our module paths
+		local.modulePahts = getModulePaths();
+		// add our mappings
+		addModuleMappings(local.modulePahts);
+		// read any config files
+		for(local.modulePath in local.modulePahts){
+			readModuleConfig(local.modulePath);
+		}
 	}
 
 	/**
 	* @hint adds a mapping for each module directory
 	* **/
-	public void function addModuleMappings(){
-		local.modules = directoryList(variables.FireBolt.getSetting('paths.modules'));
-		for(local.modulePath in local.modules){
+	public void function addModuleMappings(array modulePaths=getModulePaths()){
+		for(local.modulePath in arguments.modulePaths){
 			variables.FireBolt.addMapping(listLast(local.modulePath, "\"), local.modulePath);
 		}
 	}
 
+	/**
+	* @hint looks for a module config within a given module path
+	* **/
+	public void function readModuleConfig(string modulePath){
+		if(fileExists(arguments.modulePath & "\config.cfc")){
+			local.mapping = listLast(arguments.modulePath, "\");
+			local.moduleConfig = createObject("component", local.mapping & ".config");
+			variables.FireBolt.mergeSetting("modules.#local.mapping#", local.moduleConfig.config);
+
+		}
+	}
+	
+	/**
+	* @hint returns an array of directories within our modules path
+	* **/
+	public array function getModulePaths(){
+		return directoryList(variables.FireBolt.getSetting('paths.modules'));
+	}
 
 	/*
 	get object helpers

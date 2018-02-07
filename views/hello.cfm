@@ -11,6 +11,6 @@ Hello World - <a href="/test/">Test</a>
 
 <!--- <cfset FB().after("testModule.sampleModule", "hello", "testModule.sampleModule.testAfterConcern")> --->
 
-<cfoutput>#d.hello()#</cfoutput>
+<cfoutput>#d.hello(requestHandler())#</cfoutput>
 
 <!--- <cfdump var="#requestHandler().getRoute()#"> --->
