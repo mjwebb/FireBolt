@@ -4,15 +4,17 @@ component{
 	variables.aop;
 	variables.cache = {};
 	variables.aspectConcerns = {};
+	variables.moduleAliases = {};
 
 	/**
 	* @hint constructor
 	* **/
 	public factoryService function init(framework FireBolt=application.FireBolt){
 		variables.FireBolt = arguments.FireBolt;
-		variables.FireBolt.registerMethods("getObject,getModule,getService,getGateway,getBean,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
+		variables.FireBolt.registerMethods("getObject,registerAlias,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
 		registerModules();
 		variables.aop = new aopService(this);
+		registerAOPConfig();
 		return this;
 	}
 
@@ -24,12 +26,25 @@ component{
 	* **/
 	public void function registerModules(){
 		// get our module paths
-		local.modulePahts = getModulePaths();
+		local.modulePaths = getModulePaths();
 		// add our mappings
-		addModuleMappings(local.modulePahts);
+		addModuleMappings(local.modulePaths);
 		// read any config files
-		for(local.modulePath in local.modulePahts){
+		for(local.modulePath in local.modulePaths){
 			readModuleConfig(local.modulePath);
+			createModuleAliases(local.modulePath);
+		}
+	}
+
+	/**
+	* @hint scan our modules directory for configuration files
+	* **/
+	public void function registerAOPConfig(){
+		// get our module paths
+		local.modulePaths = getModulePaths();
+		// read any config files
+		for(local.modulePath in local.modulePaths){
+			readModuleAOPConfig(local.modulePath);
 		}
 	}
 
@@ -49,60 +64,117 @@ component{
 		if(fileExists(arguments.modulePath & "\config.cfc")){
 			local.mapping = listLast(arguments.modulePath, "\");
 			local.moduleConfig = createObject("component", local.mapping & ".config");
-			variables.FireBolt.mergeSetting("modules.#local.mapping#", local.moduleConfig.config);
-
+			if(structKeyExists(local.moduleConfig, "config")){
+				variables.FireBolt.mergeSetting("modules.#local.mapping#", local.moduleConfig.config);
+			}
+			if(structKeyExists(local.moduleConfig, "listeners")){
+				variables.FireBolt.addListeners(local.moduleConfig.listeners);
+			}
 		}
+	}
+
+	/**
+	* @hint looks for a module config within a given module path
+	* **/
+	public void function readModuleAOPConfig(string modulePath){
+		if(fileExists(arguments.modulePath & "\config.cfc")){
+			local.mapping = listLast(arguments.modulePath, "\");
+			local.moduleConfig = createObject("component", local.mapping & ".config");
+			if(structKeyExists(local.moduleConfig, "aspectConcerns")){
+				local.before = [];
+				if(structKeyExists(local.moduleConfig.aspectConcerns, "before")) local.before = local.moduleConfig.aspectConcerns.before;
+				local.after = [];
+				if(structKeyExists(local.moduleConfig.aspectConcerns, "after")) local.after = local.moduleConfig.aspectConcerns.after;
+				variables.aop.addConcerns(local.before, local.after);
+			}
+		}
+	}
+
+	/**
+	* @hint scanes a given directrory for cfc's and generates alaises for each one
+	* **/
+	public void function createModuleAliases(string modulePath){
+		local.moduleRoot = listLast(arguments.modulePath, "\");
+
+		local.cfcs = directoryList(
+			path: arguments.modulePath,
+			recurse: true,
+			filter: "*.cfc");
+
+		for(local.cfc in local.cfcs){
+			// strip .cfc from file path
+			if(right(local.cfc, 4) IS ".cfc"){
+				local.cfc = mid(local.cfc, 1, len(local.cfc)-4);
+			}
+			// convert to dot notation
+			local.cfcDotPath = replace(replaceNoCase(local.cfc, arguments.modulePath, ""), "\", ".", "ALL");
+			if(left(local.cfcDotPath, 1) IS "."){
+				local.cfcDotPath = mid(local.cfcDotPath, 2, len(local.cfcDotPath));
+			}
+			if(right(local.cfcDotPath, 1) IS "."){
+				local.cfcDotPath = mid(local.cfcDotPath, 1, len(local.cfcDotPath)-1);
+			}
+			// add our module root back into the path
+			local.cfcDotPath = local.moduleRoot & "." & local.cfcDotPath;
+			// form an alias based on the cfc name and the module root
+			local.alias = listLast(local.cfcDotPath, ".") & "@" & local.moduleRoot;
+			registerAlias(local.cfcDotPath, local.alias);
+		}
+
+	}
+
+	/**
+	* @hint adds an alias for a module path
+	* **/
+	public void function registerAlias(string modulePath, string alias){
+		variables.moduleAliases[arguments.alias] = arguments.modulePath;
+	}
+
+	/**
+	* @hint searches our aliases for a given key
+	* **/
+	public string function getAlias(string alias){
+		if(structKeyExists(variables.moduleAliases, arguments.alias)){
+			return variables.moduleAliases[arguments.alias];
+		}
+		return "";
+	}
+
+	/**
+	* @hint returns all registered aliases
+	* **/
+	public struct function getAliases(){
+		return variables.moduleAliases;
 	}
 	
 	/**
 	* @hint returns an array of directories within our modules path
 	* **/
 	public array function getModulePaths(){
-		return directoryList(variables.FireBolt.getSetting('paths.modules'));
+		return directoryList(getModulePath());
 	}
 
 	/*
 	get object helpers
 	================================ */
-
+	
 	/**
-	* @hint get a module
+	* @hint return our module path as dotnotation or directly as it is defined in the config
 	* **/
-	public any function getModule(
-		required string name, 
-		struct args={}, 
-		boolean singleton=true){
-		return getObject("#replaceNoCase(variables.FireBolt.getSetting('paths.modules'), "/", "", "ALL")#.#arguments.name#", arguments.args, arguments.singleton);
+	public any function getModulePath(boolean dotNotation=false){
+		local.path = variables.FireBolt.getSetting('paths.modules');
+		if(arguments.dotNotation){
+			local.path = replace(local.path, "/", ".", "ALL");
+			if(left(local.path, 1) IS "."){
+				local.path = mid(local.path, 2, len(local.path));
+			}
+			if(right(local.path, 1) IS "."){
+				local.path = mid(local.path, 1, len(local.path)-1);
+			}
+		}
+		return local.path;
 	}
 
-	/**
-	* @hint get a model service
-	* **/
-	public any function getService(
-		required string name, 
-		struct args={}, 
-		boolean singleton=true){
-		return getObject("#replaceNoCase(variables.FireBolt.getSetting('paths.models'), "/", "", "ALL")#.#arguments.name#.#arguments.name#Service", arguments.args, arguments.singleton);
-	}
-
-	/**
-	* @hint get a model gateway
-	* **/
-	public any function getGateway(
-		required string name, 
-		struct args={}, 
-		boolean singleton=true){
-		return getObject("#replaceNoCase(variables.FireBolt.getSetting('paths.models'), "/", "", "ALL")#.#arguments.name#.#arguments.name#Gateway", arguments.args, arguments.singleton);
-	}
-
-	/**
-	* @hint get a model bean - these are always transient
-	* **/
-	public any function getBean(
-		required string name, 
-		any id=0){
-		return getObject("#replaceNoCase(variables.FireBolt.getSetting('paths.models'), "/", "", "ALL")#.#arguments.name#.#arguments.name#Bean", arguments.id, false);
-	}
 
 	/*
 	our main invoker
@@ -115,6 +187,12 @@ component{
 		required string name, 
 		struct args={}, 
 		boolean singleton=true){
+
+		local.aliasResult = getAlias(arguments.name);
+		if(len(local.aliasResult)){
+			arguments.name = local.aliasResult;
+		}
+
 
 		// if this is a singleton, it might already be cached
 		if(arguments.singleton){
@@ -287,10 +365,17 @@ component{
 	* @hint returns true if a given object name is cached
 	* **/
 	public boolean function isCached(required string name){
-		local.key = getCacheKey(arguments.name);
 		local.cacheResult = checkCache(arguments.name);
 		if(!isBoolean(local.cacheResult)){
 			return true;
+		}
+		// also check an alias value
+		local.aliasResult = getAlias(arguments.name);
+		if(len(local.aliasResult)){
+			local.cacheResult = checkCache(local.aliasResult);
+			if(!isBoolean(local.cacheResult)){
+				return true;
+			}
 		}
 		return false
 	}

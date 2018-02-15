@@ -10,13 +10,36 @@ component{
 		setting: "setting value"
 	};
 
+	this.listeners = [
+		{
+			"event": "req.beforeProcess",
+			"listener": "sampleModule@testModule.intercept"
+		}
+	];
+
+	this.aspectConcerns = {
+		"before": [
+			{
+				"target": "testModule.sampleModule",
+				"method": "AOPTestTarget",
+				"concern": "testModule.sampleModule.testBeforeConcern",
+				"async": false
+			}
+		],
+		"after": [
+			{
+				"target": "testModule.sampleModule",
+				"method": "AOPTestTarget",
+				"concern": "testModule.sampleModule.testAfterConcern",
+				"async": false
+			}
+		]
+	};
+
 
 	function init(){
-
+		
 	}
 
-	function onLoad(){
-
-	}
-
+	
 }

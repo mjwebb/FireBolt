@@ -5,11 +5,13 @@ component{ // transient request handler
 
 	variables.FireBolt;
 	variables.context = {
+		requestData: getHttpRequestData(false),
 		startTime: getTickCount(),
 		path: "",
-		form: form,
-		url: url,
-		verb: requestMethod()
+		form: {},
+		url: {},
+		contentType: cgi.content_type,
+		verb: ""
 	};
 	variables.route;
 	variables.outputService;
@@ -25,6 +27,7 @@ component{ // transient request handler
 		variables.context.path = arguments.path;
 		variables.context.form = arguments.formScope;
 		variables.context.url = arguments.urlScope;
+		variables.context.verb = determinRequestMethod();
 		variables.FireBolt = arguments.FireBolt;
 		variables.response = new response(variables.FireBolt);
 		variables.outputService = newOutput();
@@ -32,10 +35,34 @@ component{ // transient request handler
 	}
 
 	/**
+	* @hint determines our HTTP verb by scanning headers for an override before using our request method
+	* **/
+	public string function determinRequestMethod(){
+		// before we return this, we scan our request headers for an override
+		if(structKeyExists(variables.context.requestData.headers, "X-HTTP-METHOD-OVERRIDE")){
+			local.override = variables.context.requestData.headers["X-HTTP-METHOD-OVERRIDE"];
+			if(listFindNoCase("POST,GET,PUT,PATCH,DELETE", local.override)){
+				return uCase(local.override);
+			}
+		}
+		return variables.context.requestData.method;
+	}
+
+	/**
 	* @hint returns our request method: GET, POST, PUT, DELETE, etc
 	* **/
 	public string function requestMethod(){
-		return getHTTPRequestData().method;
+		return variables.context.verb;
+	}
+
+	/**
+	* @hint returns the body content of the request
+	* **/
+	public any function requestBody(){
+		if(structKeyExists(variables.context.requestData, "content")){
+			return variables.context.requestData.content;	
+		}
+		return "";
 	}
 
 	/**
@@ -76,33 +103,25 @@ component{ // transient request handler
 				response:getResponse()
 			});
 
-		// ==========================
-		// testing...
-		//FB().removeListener("test.event");
-		//local.r = FB().getListeners();
-		//return FB().trigger("Test.Event.Proxy");
-		//local.t = FB().getModule("testModule.transientWithArg", {req:this});
-		//local.t = FB().getModule("testModule.sampleModule");
-		//local.c = FB().getFactoryService().getCache();
-
-		local.r = FB().getRouteService().runRoute(this);
-
-		//local.c = FB().stringDump(getMetaDAta(FB().getEventService()));
-		//getResponse().setBody(FB().stringDump(local.r));
-		// ==========================
-
 		
-		// trigger event after we have processed our request
-		FB().trigger(
-			"req.afterProcess", 
-			{
-				requestHandler:this, 
-				response:getResponse()
-			});
-		
+		//if(getResponse().getStatus() EQ getResponse().codes.OK){
+			// ==========================
+			
+			local.r = FB().getRouteService().runRoute(this);
+
+			// ==========================
+			
+			// trigger event after we have processed our request
+			FB().trigger(
+				"req.afterProcess", 
+				{
+					requestHandler:this, 
+					response:getResponse()
+				});
+		//}
+
 		// return our output
 		return respond();
-		//return FB().stringDump(local.t.getDep().hello());
 	}
 
 	

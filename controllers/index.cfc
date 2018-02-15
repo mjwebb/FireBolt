@@ -25,6 +25,7 @@ component output="false" extends="FireBolt.controller" {
 		layout();
 	}
 
+	
 	public function post(){
 		addContent(rc().form.name);
 		layout();
@@ -43,8 +44,17 @@ component output="false" extends="FireBolt.controller" {
 			addBreadCrumb(arguments.surname, "/test/#arguments.name#/#arguments.surname#/");
 		}
 		setTitleFromBreadCrumbs();
-		addContent("HELLO FROM TEST: #arguments.name# - [#arguments.surname#]"  & ' <a href="/">Home</a>  <a href="/test/dave/">Dave</a>')
+		addContent("HELLO FROM TEST: #arguments.name# - [#arguments.surname#]"  & ' <a href="/">Home</a>  <a href="/test/dave/">Dave</a>');
 		//output().addContent(stringDump(requestHandler().getRoute()));
+		layout();
+	}
+
+	/**
+	* @verbs GET
+	* @permissions adminUser
+	* **/
+	public function secure(){
+		addContent("SECURE PAGE");
 		layout();
 	}
 

@@ -9,7 +9,7 @@ component{
 	* **/
 	public eventService function init(framework FireBolt=application.FireBolt){
 		variables.FireBolt = arguments.FireBolt;
-		variables.FireBolt.registerMethods("trigger,addListener,removeListener,listenerExists,getListeners", this);
+		variables.FireBolt.registerMethods("trigger,addListeners,addListener,removeListener,listenerExists,getListeners", this);
 		variables.configService = new configService("eventListeners");
 		addConfigListeners();
 		return this;
@@ -20,12 +20,20 @@ component{
 	* **/
 	public void function addConfigListeners(){
 		local.config = variables.configService.getConfig();
-		for(local.item in local.config){
+		addListeners(local.config);
+	}
+
+	/**
+	* @hint adds listener from an array of configuration structs
+	* **/
+	public void function addListeners(array listeners){
+		for(local.item in arguments.listeners){
 			structAppend(local.item, {
-				async = false
+				async: false,
+				isFireAndForget: false
 			}, false);
 			for(local.eventName in listToArray(local.item.event)){
-				addListener(trim(local.eventName), local.item.listener, local.item.async);
+				addListener(trim(local.eventName), local.item.listener, local.item.async, local.item.isFireAndForget);
 			}
 		}
 	}
@@ -36,15 +44,17 @@ component{
 	public boolean function addListener(
 		required string eventName, 
 		required string listener, 
-		boolean async=false){
+		boolean async=false,
+		boolean isFireAndForget=false){
 
 		if(!listenerExists(arguments.eventName, arguments.listener)){
 			if(!structKeyExists(variables.eventListeners, arguments.eventName)){
 				variables.eventListeners[arguments.eventName] = [];
 			}
 			arrayAppend(variables.eventListeners[arguments.eventName], {
-				target = arguments.listener,
-				async = arguments.async
+				target: arguments.listener,
+				async: arguments.async,
+				isFireAndForget: arguments.isFireAndForget
 			});
 		}
 		return false;
@@ -126,13 +136,49 @@ component{
 	* **/
 	public any function trigger(
 		required string eventName, 
-		struct args={}){
+		struct args={},
+		numeric timout=1){
 		
 		local.listeners = getListeners(arguments.eventName);
+
+		local.currentThreadName = createObject("java", "java.lang.Thread").currentThread().getName();
+		local.syncThreads = "";
+		local.i = 0;
+		local.threadUUID = createUUID();
+
+
 		for(local.listener in local.listeners){
 			// fire our event for our listener
-			despatch(arguments.eventName, local.listener.target, arguments.args, local.listener.async)
+
+			if(local.listener.async){
+
+				local.threadName = "e_" & local.currentThreadName & "_" & local.threadUUID & "_" & local.i;
+				if(!local.listener.isFireAndForget){
+					local.syncThreads = listAppend(local.syncThreads, local.threadName);
+				}
+				
+				thread action="run" 
+					name=local.threadName
+					eventName=arguments.eventName
+					listener=local.listener 
+					args=arguments.args{
+					despatch(attributes.eventName, attributes.listener.target, attributes.args);
+				}
+
+			}else{
+				despatch(arguments.eventName, local.listener.target, arguments.args);
+			}
+
 		}
+
+		if(len(local.syncThreads)){
+			thread action="join" 
+				name="#local.syncThreads#" 
+				timeout="#arguments.timeout*1000#";
+		}
+		
+
+
 	}
 
 	/**
@@ -141,8 +187,15 @@ component{
 	public any function despatch(
 		required string eventName, 
 		required string target, 
-		struct args={}, 
-		boolean async=false){
+		struct args={}){
+
+
+		local.method = listLast(arguments.target, ".");
+		local.objectName = left(arguments.target, len(arguments.target)-len(local.method)-1);
+
+		local.object = variables.FireBolt.getObject(local.objectName);
+
+		local.object[local.method](argumentCollection:arguments.args);
 
 	}
 

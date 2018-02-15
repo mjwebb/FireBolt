@@ -29,13 +29,20 @@ component{
 	public void function addConfigConcerns(){
 		local.beforeConcerns = variables.aopConfig.getSetting("before");
 		local.afterConcerns = variables.aopConfig.getSetting("after");
-		for(local.concern in local.beforeConcerns){
+		addConcerns(local.beforeConcerns, local.afterConcerns);
+	}
+
+	/**
+	* @hint add concerns from given arrays of concerns
+	* **/
+	public void function addConcerns(array beforeConcerns=[], array afterConcerns=[]){
+		for(local.concern in arguments.beforeConcerns){
 			if(! structKeyExists(local.concern, "async")){
 				local.concern.async = false;
 			}
 			before(local.concern.target, local.concern.method, local.concern.concern, local.concern.async);
 		}
-		for(local.concern in local.afterConcerns){
+		for(local.concern in arguments.afterConcerns){
 			if(! structKeyExists(local.concern, "async")){
 				local.concern.async = false;
 			}
@@ -177,10 +184,10 @@ component{
 	* **/
 	public void function registerObject(required any object){
 		local.name = getObjectName(arguments.object);
-		writeLog(
+		/*writeLog(
 			text:local.name & " - " & hasConcerns(local.name),
 			type: "information",
-			file: "AOP");
+			file: "AOP");*/
 		if(hasConcerns(local.name)){
 			local.concerns = getConcerns(local.name);
 			local.methods = structKeyArray(local.concerns);

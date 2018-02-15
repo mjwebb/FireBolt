@@ -19,7 +19,14 @@ component{
 
 	this.codes = {
 		OK:				200,
-		NOTFOUND:		404,
+		CREATED:		201,
+		ACCEPTED:		202,
+		NOCONTENT:		204,
+		RESETCONTENT:	205,
+		PATIRALCONTENT:	206,
+		MOVEDPERM:		301,
+		FOUND:			302,
+		BADREQUEST:		400,
 		UNAUTHORISED:	401,
 		FORBIDDEN:		403,
 		NOTFOUND:		404,
@@ -46,7 +53,8 @@ component{
 		s405: "Method not allowed",
 		s408: "Request timeout",
 		s500: "Internal server error",
-		s501: "Not implemented"
+		s501: "Not implemented",
+		s503: "Service unavailable"
 	}
 
 	variables.response = {

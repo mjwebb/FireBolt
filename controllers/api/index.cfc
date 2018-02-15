@@ -26,4 +26,15 @@ component output="false" extends="FireBolt.controller" {
 		});
 	}
 	
+
+	/**
+	* @verbs GET
+	* @permissions adminUser
+	* **/
+	public function secure(){
+		setResponseBody({
+			"api": "response",
+			"method": "secure"
+		});
+	}
 }

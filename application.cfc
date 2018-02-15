@@ -52,4 +52,16 @@
 		return application.FireBolt.onMissingTemplate(argumentCollection:arguments);
 	}
 
+	// error
+	/**
+	* @output true
+	* **/
+	public void function onError(any exception, string eventName=""){
+		writeOutput(application.FireBolt.onError(argumentCollection:arguments));
+		return;
+	}
+
+	
+ 
+
 }

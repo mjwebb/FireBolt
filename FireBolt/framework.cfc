@@ -195,4 +195,21 @@ component{
 		
 	}
 
+	/**
+	* @hint erorr handler
+	* **/
+	public string function onError(any exception, string eventName=""){
+		savecontent variable="local.err"{
+			writeOutput('<div style="background: ##fff; color: ##000; padding: 10px;">');
+			writeDump(var:arguments, label:"Error", format:"text");
+			writeDump(var:url, label:"URL", format:"text");
+			if(isDefined("form")){
+				writeDump(var:form, label:"Form", format:"text");
+			}
+			writeDump(var:cgi, label:"CGI", format:"text");	
+			writeOutput('</div>');
+		}
+		return local.err;
+	}
+
 }
