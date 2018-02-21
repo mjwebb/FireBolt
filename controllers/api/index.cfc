@@ -10,7 +10,7 @@ component output="false" extends="FireBolt.controller" {
 
 	/**
 	* **/
-	public function get404(){
+	public function do404(){
 		setResponseBody({
 			"error": "method not found"
 		});

@@ -15,6 +15,7 @@ component{ // transient request handler
 	};
 	variables.route;
 	variables.outputService;
+	variables.reqData = {};
 
 	/**
 	* @hint constructor
@@ -28,6 +29,7 @@ component{ // transient request handler
 		variables.context.form = arguments.formScope;
 		variables.context.url = arguments.urlScope;
 		variables.context.verb = determinRequestMethod();
+		variables.context.args = arguments;
 		variables.FireBolt = arguments.FireBolt;
 		variables.response = new response(variables.FireBolt);
 		variables.outputService = newOutput();
@@ -46,6 +48,20 @@ component{ // transient request handler
 			}
 		}
 		return variables.context.requestData.method;
+	}
+
+	/**
+	* @hint sets our request data variable
+	* **/
+	public void function setRequestData(any data){
+		variables.reqData = arguments.data;
+	}
+
+	/**
+	* @hint sets our request data variable
+	* **/
+	public any function getRequestData(){
+		return variables.reqData;
 	}
 
 	/**
@@ -87,13 +103,27 @@ component{ // transient request handler
 	}
 
 	/**
+	* @hint sets our route data
+	* **/
+	public any function defineRoute(string path, string method, struct args={}){
+		local.r = FB().getRouteService().defineRoute(
+			this, 
+			arguments.path, 
+			arguments.method,
+			arguments.args);
+		setRoute(local.r);
+
+	}
+
+	/**
 	* @hint process our request
 	* **/
-	public string function process(){
+	public string function process(boolean setHeaders=true){
 
 		// start by determining a valid route
-		setRoute(FB().getRouteService().getRoute(this));
-
+		if(!isStruct(variables.route)){
+			setRoute(FB().getRouteService().getRoute(this));
+		}
 
 		// trigger event before we process our request
 		FB().trigger(
@@ -121,7 +151,7 @@ component{ // transient request handler
 		//}
 
 		// return our output
-		return respond();
+		return respond(arguments.setHeaders);
 	}
 
 	
@@ -136,11 +166,13 @@ component{ // transient request handler
 	/**
 	* @hint return a response
 	* **/
-	public any function respond(){
+	public any function respond(boolean setHeaders=true){
 		if(!len(variables.response.getStatusText())) variables.response.autoStatusText();
-		header statusCode=variables.response.getStatus() statusText=variables.response.getStatusText();
-		header name="Content-Length" value=variables.response.getLength();
-		content type="#variables.response.getType()#; charset=#variables.response.getEncoding()#";
+		if(arguments.setHeaders){
+			header statusCode=variables.response.getStatus() statusText=variables.response.getStatusText();
+			header name="Content-Length" value=variables.response.getLength();
+			content type="#variables.response.getType()#; charset=#variables.response.getEncoding()#";
+		}
 		return variables.response.getBody();
 	}
 	

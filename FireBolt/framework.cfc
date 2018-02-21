@@ -8,6 +8,7 @@ component{
 	variables.factoryService;
 	variables.startup = now();
 	variables.registeredMethods = {};
+	variables.isLoaded = false;
 
 	/**
 	* @hint constructor
@@ -27,6 +28,7 @@ component{
 		variables.eventService = new eventService(this);
 		variables.factoryService = new factoryService(this);
 		getEventService().trigger("FireBolt.loaded");
+		variables.isLoaded = true;
 	}
 
 	
@@ -62,7 +64,7 @@ component{
 		local.appMD.mappings[arguments.name] = arguments.path;
 		try{
 			application action="update" mappings="#local.appMD.mappings#";
-		}catch(e){
+		}catch(local.e){
 			// no matching application update method
 		}
 	}
@@ -75,8 +77,7 @@ component{
 	* @hint create a new request
 	* **/
 	public requestHandler function FireBoltRequest(
-		string pathInfo=cgi.path_info,
-		string scriptName=cgi.script_name,
+		string path=cgi.path_info,
 		struct formScope=form,
 		struct urlScope=url){
 		structAppend(arguments, {
@@ -168,8 +169,7 @@ component{
 	public function onRequestStart(string targetPage) output="true"{
 		getFactoryService().addModuleMappings(); // mappings need to be added on every request
 		getEventService().trigger("req.start", arguments);
-		local.targetPage = arguments.targetPage;
-		local.req = FireBoltRequest(arguments.targetPage);
+		local.req = FireBoltRequest();
 		writeOutput(local.req.process());
 		return true;
 	}
@@ -199,6 +199,38 @@ component{
 	* @hint erorr handler
 	* **/
 	public string function onError(any exception, string eventName=""){
+		local.err = {
+			exception: arguments.exception,
+			eventName: arguments.eventName
+		};
+
+		if(variables.isLoaded){
+
+			// trigger an error event
+			try{
+				getEventService().trigger("FireBolt.error", local.err);
+			}catch(local.e){
+				// error within our event - skip this and continue to output our original error
+			}
+
+
+			// attempt to process an error controller
+			try{
+				getFactoryService().addModuleMappings(); // mappings need to be added on every request
+				local.errReq = FireBoltRequest("onError");
+				local.errReq.setRequestData(local.err);
+				local.errREq.defineRoute("index", "onError");
+				local.errReq.process(false);
+				if(local.errReq.getResponse().getStatus() EQ local.errReq.getResponse().codes.OK){
+					return local.errReq.getResponse().getBody();
+				}
+			}catch(local.e){
+				// problem in our error render
+			}
+
+		}
+
+		// if we get here, we output our defaut error
 		savecontent variable="local.err"{
 			writeOutput('<div style="background: ##fff; color: ##000; padding: 10px;">');
 			writeDump(var:arguments, label:"Error", format:"text");
@@ -208,7 +240,8 @@ component{
 			}
 			writeDump(var:cgi, label:"CGI", format:"text");	
 			writeOutput('</div>');
-		}
+		}	
+			
 		return local.err;
 	}
 

@@ -7,6 +7,12 @@ component{
 			controllers: "/controllers/",
 			modules: "/modules/"
 		},
+
+		env:{
+			test: "env:DB_TEST",
+			invalid: "env:DOESNOTEXIST"
+		},
+
 		siteName: "FireBolt",
 		modules: {},
 

@@ -10,6 +10,7 @@ component{
 	public routeService function init(framework FireBolt=application.FireBolt){
 		variables.FireBolt = arguments.FireBolt;
 		//variables.FireBolt.registerMethods("getObject,getModule,getService,getGateway,getBean", this);
+		variables.controllerPath = variables.FireBolt.getSetting('paths.controllers');
 		return this;
 	}
 
@@ -40,6 +41,20 @@ component{
 	public struct function getRoute(requestHandler req){
 		local.path = listToArray(arguments.req.getContext().path, "/");
 		return walkPath(path: local.path, req: arguments.req);
+	}
+
+	/**
+	* @hint defines a route manually
+	* **/
+	public struct function defineRoute(requestHandler req, string cfcPath, string method, struct args={}){
+		local.cfcDotPath = replace(variables.controllerPath, "/", "") & "." & arguments.cfcPath;
+		local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, variables.FireBolt);
+		return {
+			cfc: local.cfc,
+			isValid: true,
+			method: arguments.method,
+			args: arguments.args
+		};
 	}
 
 	/**
@@ -103,10 +118,10 @@ component{
 				return walkPath(arguments.path, "index", arguments.args, arguments.history, arguments.req);
 			}else{
 				// check for a 404 method - if found, this stops our walk...
-				if(containsFunction(local.cfc, "get404", 0, arguments.req.requestMethod())){
+				if(containsFunction(local.cfc, "do404")){
 					local.ret.cfc = local.cfc;
 					local.ret.isValid = true;
-					local.ret.method = "get404";
+					local.ret.method = "do404";
 					arguments.req.getResponse().setStatus(arguments.req.getResponse().codes.NOTFOUND);
 					return local.ret;
 				}
@@ -126,10 +141,10 @@ component{
 		if(fileExists(expandPath(local.cfcPath) & "/404.cfc")){
 			local.cfcDotPath = replaceNoCase(local.cfcPath, "/", ".") & ".404";
 			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, variables.FireBolt);
-			if(containsFunction(local.cfc, "get", 0, arguments.req.requestMethod())){
+			if(containsFunction(local.cfc, "do404")){
 				local.ret.cfc = local.cfc;
 				local.ret.isValid = true;
-				local.ret.method = "get";
+				local.ret.method = "do404";
 				arguments.req.getResponse().setStatus(arguments.req.getResponse().codes.NOTFOUND);
 			}
 		}

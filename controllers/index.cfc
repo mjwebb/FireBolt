@@ -31,6 +31,12 @@ component output="false" extends="FireBolt.controller" {
 		layout();
 	}
 
+	
+	public function onError(){
+		addView("error");
+		layout();
+	}
+
 	/**
 	* @verbs GET
 	* **/
@@ -45,7 +51,7 @@ component output="false" extends="FireBolt.controller" {
 		}
 		setTitleFromBreadCrumbs();
 		addContent("HELLO FROM TEST: #arguments.name# - [#arguments.surname#]"  & ' <a href="/">Home</a>  <a href="/test/dave/">Dave</a>');
-		//output().addContent(stringDump(requestHandler().getRoute()));
+		//addContent(stringDump(requestHandler().getContext()));
 		layout();
 	}
 

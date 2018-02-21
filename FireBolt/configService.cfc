@@ -2,6 +2,7 @@ component{
 
 	variables.FireBolt;
 	variables.config = {};
+	variables.environmentPrefix = "env:";
 
 	/**
 	* @hint constructor
@@ -17,13 +18,35 @@ component{
 		return this;
 	}
 
-	
+
 	/**
 	* @hint reads config settings
 	* **/
 	public any function readConfig(string type="FireBolt"){
 		local.configPath = "config.#arguments.type#";
 		variables.config = new "#local.configPath#"().config;
+		parseConfig(variables.config);
+	}
+
+	/**
+	* @hint walks our config struct to search for dynamic variables
+	* **/
+	public any function parseConfig(any node){
+		if(isSimpleValue(arguments.node)){
+			if(left(arguments.node, 4) IS variables.environmentPrefix){
+				local.key = replaceNoCase(arguments.node, variables.environmentPrefix, "");
+				return getSystemProperty(local.key, arguments.node);
+			}
+		}elseif(isArray(arguments.node)){
+			for(local.item in arguments.node){
+				local.item = parseConfig(local.item);
+			}
+		}elseif(isStruct(arguments.node)){
+			for(local.key in arguments.node){
+				arguments.node[local.key] = parseConfig(arguments.node[local.key]);
+			}
+		}
+		return arguments.node;
 	}
 
 	/**
@@ -66,5 +89,13 @@ component{
 		}else{
 			setSetting(arguments.key, arguments.value);
 		}
+	}
+
+	/**
+	* @hint reads a JVM environment variable / system property
+	* **/
+	public string function getSystemProperty(string key, string default){
+		local.system = CreateObject("java", "java.lang.System");
+		return system.getProperty(arguments.key, arguments.default);
 	}
 }

@@ -16,10 +16,16 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 
 <!--- <cfdump var="#FB().getFactoryService().getAliases()#"> --->
 
+
+
 <cfset x = FB().getObject("transientWithArg@testModule", {
 		req: requestHandler()
 	})>
 <!--- <cfdump var="#x#"> --->
-
+<!--- <cfdump var="#FB().getSetting("env")#">
+<cfset system = CreateObject("java", "java.lang.System")>
+<cfdump var="#system.getProperties()#"> --->
 <!--- <cfdump var="#requestHandler().getRoute()#"> --->
 <!--- <cfdump var="#FB().getAllConcerns()#"> --->
+
+<!--- <cfdump var="#requestHandler().getContext()#"> --->
