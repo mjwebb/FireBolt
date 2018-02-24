@@ -98,27 +98,39 @@ component{ // transient request handler
 	/**
 	* @hint sets our route data
 	* **/
-	public any function setRoute(struct routeData){
+	public void function setRoute(struct routeData){
 		variables.route = arguments.routeData;
 	}
 
 	/**
 	* @hint sets our route data
 	* **/
-	public any function defineRoute(string path, string method, struct args={}){
+	public void function defineRoute(string path, string method, struct args={}){
 		local.r = FB().getRouteService().defineRoute(
 			this, 
 			arguments.path, 
 			arguments.method,
 			arguments.args);
 		setRoute(local.r);
-
 	}
+
+	/**
+	* @hint sets a route and precosess it
+	* **/
+	public any function processRoute(string path, string method, struct args={}, boolean setHeaders=true, boolean triggerEvents=true){
+		defineRoute(
+			arguments.path, 
+			arguments.method,
+			arguments.args);
+		return process(arguments.setHeaders, arguments.triggerEvents);
+	}
+
+
 
 	/**
 	* @hint process our request
 	* **/
-	public string function process(boolean setHeaders=true){
+	public any function process(boolean setHeaders=true, boolean triggerEvents=true){
 
 		// start by determining a valid route
 		if(!isStruct(variables.route)){
@@ -126,13 +138,15 @@ component{ // transient request handler
 		}
 
 		// trigger event before we process our request
-		FB().trigger(
-			"req.beforeProcess", 
-			{
-				requestHandler:this, 
-				response:getResponse()
-			});
-
+		if(arguments.triggerEvents){
+			FB().trigger(
+				"req.beforeProcess", 
+				{
+					requestHandler:this, 
+					response:getResponse()
+				}
+			);
+		}
 		
 		//if(getResponse().getStatus() EQ getResponse().codes.OK){
 			// ==========================
@@ -142,12 +156,15 @@ component{ // transient request handler
 			// ==========================
 			
 			// trigger event after we have processed our request
-			FB().trigger(
-				"req.afterProcess", 
-				{
-					requestHandler:this, 
-					response:getResponse()
-				});
+			if(arguments.triggerEvents){
+				FB().trigger(
+					"req.afterProcess", 
+					{
+						requestHandler:this, 
+						response:getResponse()
+					}
+				);
+			}
 		//}
 
 		// return our output

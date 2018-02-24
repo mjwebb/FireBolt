@@ -95,12 +95,6 @@ component accessors="true"{
 					arrayToList(local.interceptPath, "."), 
 					"get");
 
-				/*local.r = arguments.requestHandler.FB().getRouteService().walkPath(
-					path: local.interceptPath,
-					req: arguments.requestHandler);
-				
-				arguments.requestHandler.setRoute(local.r);
-				*/
 			}
 		}
 

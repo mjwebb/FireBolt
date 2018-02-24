@@ -38,7 +38,7 @@ component{
 	public void function registerMethods(string methods, any object){
 		// we make sure that the object in question is part of our FireBolt namespace
 		if(listFirst(getMetaData(arguments.object).name, ".") IS "FireBolt"){
-			// now we can register our events
+			// now we can register our methods
 			local.methodArray = listToArray(arguments.methods);
 			for(local.method in local.methodArray){
 				variables.registeredMethods[local.method] = arguments.object;	
@@ -219,11 +219,13 @@ component{
 				getFactoryService().addModuleMappings(); // mappings need to be added on every request
 				local.errReq = FireBoltRequest("onError");
 				local.errReq.setRequestData(local.err);
-				local.errREq.defineRoute("index", "onError");
-				local.errReq.process(false);
-				if(local.errReq.getResponse().getStatus() EQ local.errReq.getResponse().codes.OK){
+				// set an error status code
+				local.errReq.getResponse().setStatus(local.errReq.getResponse().codes.ERROR);
+				// call our error route
+				local.errReq.processRoute("index", "onError", local.err, true, false);
+				//if(local.errReq.getResponse().getStatus() EQ local.errReq.getResponse().codes.OK){
 					return local.errReq.getResponse().getBody();
-				}
+				//}
 			}catch(local.e){
 				// problem in our error render
 			}
@@ -232,7 +234,7 @@ component{
 
 		// if we get here, we output our defaut error
 		savecontent variable="local.err"{
-			writeOutput('<div style="background: ##fff; color: ##000; padding: 10px;">');
+			writeOutput('<div style="background: ##fff !important; color: ##000 !important; padding: 10px;">');
 			writeDump(var:arguments, label:"Error", format:"text");
 			writeDump(var:url, label:"URL", format:"text");
 			if(isDefined("form")){

@@ -32,8 +32,8 @@ component output="false" extends="FireBolt.controller" {
 	}
 
 	
-	public function onError(){
-		addView("error");
+	public function onError(any exception, string eventName=""){
+		addView("error", arguments);
 		layout();
 	}
 
