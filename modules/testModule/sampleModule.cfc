@@ -30,7 +30,7 @@ component accessors="true"{
 	//	variables.FB = arguments.FB;
 	//}
 
-	public string function hello(requestHandler req){
+	public string function hello(req){
 		return "world " & variables.startTime & arguments.req.output().view(
 			viewFile: "test",
 			root: "/testModule/views/");
