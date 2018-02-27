@@ -1,13 +1,16 @@
 Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 
-<cfoutput>#view("nested.view", data)#</cfoutput>
+<!--- <cfoutput>#view("nested.view", data)#</cfoutput> --->
 <!--- <cfdump var="#data#"> --->
 <!--- <cfdump var="#FB().getAllConcerns()#"> --->
-<cfoutput>#expandPath("/testModule/")#</cfoutput>
-<cfset d = FB().getObject("sampleModule@testModule")>
-<!--- <cfdump var="#getMetaData(d)#">
-<cfdump var="#d.getFB()#"> --->
 
+<!--- <cfdump var="#data#">
+<cfdump var="#FB().getFactoryService().getModulePaths()#"> --->
+<br />	
+<cfset d = FB().getObject("sampleModule@testModule")>
+
+<!--- <cfdump var="#f.getMetaData()#">
+<cfdump var="#d.getFB()#"> --->
 
 <!--- <cfset FB().after("testModule.sampleModule", "hello", "testModule.sampleModule.testAfterConcern")> --->
 
@@ -29,3 +32,4 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 <!--- <cfdump var="#FB().getAllConcerns()#"> --->
 
 <!--- <cfdump var="#requestHandler().getContext()#"> --->
+

@@ -27,9 +27,9 @@ this.timeout = 30; // seconds
 //this.mappings["/"] = getDirectoryFromPath(getCurrentTemplatePath()) & "bolt\com\";
 
 // Java Integration
-this.javaSettings = { 
+/*this.javaSettings = { 
 	loadPaths = [ ".\lib" ], 
 	loadColdFusionClassPath = true, 
 	reloadOnChange= false 
-};
+};*/
 </cfscript>

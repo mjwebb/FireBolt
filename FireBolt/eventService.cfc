@@ -1,12 +1,12 @@
 component{
 
-	variables.FireBolt;
+	variables.FireBolt = "";
 	variables.eventListeners = {};
-	variables.configService;
+	variables.configService = "";
 
 	/**
 	* @hint constructor
-	* **/
+	*/
 	public eventService function init(framework FireBolt=application.FireBolt){
 		variables.FireBolt = arguments.FireBolt;
 		variables.FireBolt.registerMethods("trigger,addListeners,addListener,removeListener,listenerExists,getListeners", this);
@@ -17,7 +17,7 @@ component{
 
 	/**
 	* @hint add listeners defined in our config file
-	* **/
+	*/
 	public void function addConfigListeners(){
 		local.config = variables.configService.getConfig();
 		addListeners(local.config);
@@ -25,7 +25,7 @@ component{
 
 	/**
 	* @hint adds listener from an array of configuration structs
-	* **/
+	*/
 	public void function addListeners(array listeners){
 		for(local.item in arguments.listeners){
 			structAppend(local.item, {
@@ -40,7 +40,7 @@ component{
 
 	/**
 	* @hint adds a listener
-	* **/
+	*/
 	public boolean function addListener(
 		required string eventName, 
 		required string listener, 
@@ -62,7 +62,7 @@ component{
 
 	/**
 	* @hint removes a listener or an entire event
-	* **/
+	*/
 	public void function removeListener(
 		string eventName="", 
 		string listener=""){
@@ -101,7 +101,7 @@ component{
 
 	/**
 	* @hint checks for the existence of a listener
-	* **/
+	*/
 	public boolean function listenerExists(
 		required string eventName, 
 		required string listener){
@@ -118,7 +118,7 @@ component{
 
 	/**
 	* @hint returns our current listeners
-	* **/
+	*/
 	public any function getListeners(string eventName=""){
 		if(!len(arguments.eventName)){
 			return variables.eventListeners;
@@ -133,7 +133,7 @@ component{
 
 	/**
 	* @hint trigger an event
-	* **/
+	*/
 	public any function trigger(
 		required string eventName, 
 		struct args={},
@@ -183,7 +183,7 @@ component{
 
 	/**
 	* @hint despatch an event
-	* **/
+	*/
 	public any function despatch(
 		required string eventName, 
 		required string target, 
@@ -195,7 +195,8 @@ component{
 
 		local.object = variables.FireBolt.getObject(local.objectName);
 
-		local.object[local.method](argumentCollection:arguments.args);
+		//local.object[local.method](argumentCollection:arguments.args);
+		invoke(local.object, local.method, arguments.args);
 
 	}
 

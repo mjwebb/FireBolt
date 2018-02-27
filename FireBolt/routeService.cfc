@@ -1,12 +1,12 @@
 component{
 
-	variables.FireBolt;
+	variables.FireBolt = "";
 	variables.routes = {};	
 	variables.controllerPath = "/controllers/";
 
 	/**
 	* @hint constructor
-	* **/
+	*/
 	public routeService function init(framework FireBolt=application.FireBolt){
 		variables.FireBolt = arguments.FireBolt;
 		//variables.FireBolt.registerMethods("getObject,getModule,getService,getGateway,getBean", this);
@@ -16,7 +16,7 @@ component{
 
 	/**
 	* @hint attempt to find and run a route for a given request
-	* **/
+	*/
 	public any function runRoute(requestHandler req){
 		local.c = arguments.req.getRoute();
 
@@ -27,7 +27,8 @@ component{
 		if(local.c.isValid){
 			arguments.req.setRoute(local.c);
 			//return local.c.cfc[local.c.method](argumentCollection:local.c.args);
-			return local.c.cfc.callFunction(local.c.method, local.c.args);
+			return invoke(local.c.cfc, local.c.method, local.c.args);
+			//return local.c.cfc.callFunction(local.c.method, local.c.args);
 		}else{
 			//return local.c;
 			arguments.req.getResponse().setStatus(arguments.req.getResponse().codes.NOTFOUND);
@@ -37,7 +38,7 @@ component{
 
 	/**
 	* @hint attempt to find and run a route for a given request
-	* **/
+	*/
 	public struct function getRoute(requestHandler req){
 		local.path = listToArray(arguments.req.getContext().path, "/");
 		return walkPath(path: local.path, req: arguments.req);
@@ -45,9 +46,9 @@ component{
 
 	/**
 	* @hint defines a route manually
-	* **/
+	*/
 	public struct function defineRoute(requestHandler req, string cfcPath, string method, struct args={}){
-		local.cfcDotPath = replace(variables.controllerPath, "/", "") & "." & arguments.cfcPath;
+		local.cfcDotPath = replace(variables.controllerPath, "/", "", "ALL") & "." & arguments.cfcPath;
 		local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, variables.FireBolt);
 		return {
 			cfc: local.cfc,
@@ -59,7 +60,7 @@ component{
 
 	/**
 	* @hint attempt to find a route for a given path
-	* **/
+	*/
 	public struct function walkPath(
 		array path, 
 		string method="index", 
@@ -86,7 +87,7 @@ component{
 		
 		// check for cfc named as part of our path
 		if(fileExists(expandPath(local.cfcPath) & ".cfc")){
-			local.cfcDotPath = replaceNoCase(local.cfcPath, "/", ".");
+			local.cfcDotPath = cleanDotPath(local.cfcPath);
 			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, variables.FireBolt);
 			if(containsFunction(local.cfc, arguments.method, arrayLen(arguments.args), arguments.req.requestMethod())){
 				local.ret.cfc = local.cfc;
@@ -96,7 +97,7 @@ component{
 
 		// check for our index cfc
 		if(!local.ret.isValid AND fileExists(expandPath(local.cfcPath) & "/index.cfc")){
-			local.cfcDotPath = replaceNoCase(local.cfcPath, "/", ".") & ".index";
+			local.cfcDotPath = cleanDotPath(local.cfcPath & ".index");
 			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, variables.FireBolt);
 			if(containsFunction(local.cfc, arguments.method, arrayLen(arguments.args), arguments.req.requestMethod())){
 				local.ret.cfc = local.cfc;
@@ -139,7 +140,7 @@ component{
 
 		// if we get here and have not found a valid route, look for a 404 controller
 		if(fileExists(expandPath(local.cfcPath) & "/404.cfc")){
-			local.cfcDotPath = replaceNoCase(local.cfcPath, "/", ".") & ".404";
+			local.cfcDotPath = cleanDotPath(local.cfcPath & ".404");
 			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, variables.FireBolt);
 			if(containsFunction(local.cfc, "do404")){
 				local.ret.cfc = local.cfc;
@@ -154,8 +155,20 @@ component{
 
 
 	/**
+	* @hint cleans a path 
+	*/
+	public string function cleanDotPath(string path){
+		local.cfcDotPath = replaceNoCase(arguments.path, "/", ".", "ALL");
+		local.cfcDotPath = replaceNoCase(local.cfcDotPath, "..", ".", "ALL");
+		if(left(local.cfcDotPath, 1) IS "."){
+			local.cfcDotPath = mid(local.cfcDotPath, 2, len(local.cfcDotPath));
+		}
+		return local.cfcDotPath;
+	}
+
+	/**
 	* @hint returns true if a given cfc contains a function with a given name, matching verb and a given number of arguments
-	* **/
+	*/
 	public boolean function containsFunction(required any cfc, required string func, numeric maxArgs=0, string verb=""){
 		var meta = getMetaData(arguments.cfc);
 		var i = 1;
@@ -173,7 +186,7 @@ component{
 
 	/**
 	* @hint returns true if a given function is set to accept a given verb
-	* **/
+	*/
 	public boolean function isVerbValid(struct functionMetaData, string verb){
 		if(arguments.functionMetaData.name IS arguments.verb
 			OR (structKeyExists(arguments.functionMetaData, "verbs")

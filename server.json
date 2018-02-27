@@ -6,5 +6,6 @@
     },
     "app":{
         "cfengine":"lucee@5"
-    }
+    },
+    "engine":"lucee"
 }

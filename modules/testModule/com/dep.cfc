@@ -1,18 +1,18 @@
 component{
 
 	
-	variables.sapleDep;
+	variables.sapleDep = "";
 
 	/**
 	* @hint constructor
-	* **/
+	*/
 	public dep function init(){
 		return this;
 	}
 
 	/**
 	* @FB:inject true
-	* **/
+	*/
 	public void function circularDep(required testModule.sampleModule dep){
 		variables.sapleDep = arguments.dep;
 	}

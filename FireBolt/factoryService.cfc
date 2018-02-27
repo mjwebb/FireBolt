@@ -1,15 +1,15 @@
 component{
 
-	variables.FireBolt;
-	variables.aop;
+	variables.FireBolt = "";
+	variables.aop = "";
 	variables.cache = {};
 	variables.aspectConcerns = {};
 	variables.moduleAliases = {};
 
 	/**
 	* @hint constructor
-	* **/
-	public factoryService function init(framework FireBolt=application.FireBolt){
+	*/
+	public factoryService function init(framework FireBolt){
 		variables.FireBolt = arguments.FireBolt;
 		variables.FireBolt.registerMethods("getObject,registerAlias,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
 		registerModules();
@@ -23,7 +23,7 @@ component{
 	================================ */
 	/**
 	* @hint scan our modules directory for configuration files
-	* **/
+	*/
 	public void function registerModules(){
 		// get our module paths
 		local.modulePaths = getModulePaths();
@@ -38,7 +38,7 @@ component{
 
 	/**
 	* @hint scan our modules directory for configuration files
-	* **/
+	*/
 	public void function registerAOPConfig(){
 		// get our module paths
 		local.modulePaths = getModulePaths();
@@ -50,16 +50,16 @@ component{
 
 	/**
 	* @hint adds a mapping for each module directory
-	* **/
+	*/
 	public void function addModuleMappings(array modulePaths=getModulePaths()){
 		for(local.modulePath in arguments.modulePaths){
-			variables.FireBolt.addMapping(listLast(local.modulePath, "\"), local.modulePath);
+			variables.FireBolt.addMapping("/" & listLast(local.modulePath, "\"), local.modulePath);
 		}
 	}
 
 	/**
 	* @hint looks for a module config within a given module path
-	* **/
+	*/
 	public void function readModuleConfig(string modulePath){
 		if(fileExists(arguments.modulePath & "\config.cfc")){
 			local.mapping = listLast(arguments.modulePath, "\");
@@ -75,7 +75,7 @@ component{
 
 	/**
 	* @hint looks for a module config within a given module path
-	* **/
+	*/
 	public void function readModuleAOPConfig(string modulePath){
 		if(fileExists(arguments.modulePath & "\config.cfc")){
 			local.mapping = listLast(arguments.modulePath, "\");
@@ -91,15 +91,13 @@ component{
 	}
 
 	/**
-	* @hint scanes a given directrory for cfc's and generates alaises for each one
-	* **/
+	* @hint scans a given directrory for cfc's and generates aliases for each one
+	*/
 	public void function createModuleAliases(string modulePath){
 		local.moduleRoot = listLast(arguments.modulePath, "\");
 
-		local.cfcs = directoryList(
-			path: arguments.modulePath,
-			recurse: true,
-			filter: "*.cfc");
+		// NOTE ACF does not accept named arguments for directoryList
+		local.cfcs = directoryList(arguments.modulePath, true, "path", "*.cfc");
 
 		for(local.cfc in local.cfcs){
 			// strip .cfc from file path
@@ -120,19 +118,18 @@ component{
 			local.alias = listLast(local.cfcDotPath, ".") & "@" & local.moduleRoot;
 			registerAlias(local.cfcDotPath, local.alias);
 		}
-
 	}
 
 	/**
 	* @hint adds an alias for a module path
-	* **/
+	*/
 	public void function registerAlias(string modulePath, string alias){
 		variables.moduleAliases[arguments.alias] = arguments.modulePath;
 	}
 
 	/**
 	* @hint searches our aliases for a given key
-	* **/
+	*/
 	public string function getAlias(string alias){
 		if(structKeyExists(variables.moduleAliases, arguments.alias)){
 			return variables.moduleAliases[arguments.alias];
@@ -142,16 +139,16 @@ component{
 
 	/**
 	* @hint returns all registered aliases
-	* **/
+	*/
 	public struct function getAliases(){
 		return variables.moduleAliases;
 	}
 	
 	/**
 	* @hint returns an array of directories within our modules path
-	* **/
+	*/
 	public array function getModulePaths(){
-		return directoryList(getModulePath());
+		return directoryList(expandPath(getModulePath()));
 	}
 
 	/*
@@ -160,7 +157,7 @@ component{
 	
 	/**
 	* @hint return our module path as dotnotation or directly as it is defined in the config
-	* **/
+	*/
 	public any function getModulePath(boolean dotNotation=false){
 		local.path = variables.FireBolt.getSetting('paths.modules');
 		if(arguments.dotNotation){
@@ -182,7 +179,7 @@ component{
 
 	/**
 	* @hint get an object
-	* **/
+	*/
 	public any function getObject(
 		required string name, 
 		struct args={}, 
@@ -233,7 +230,7 @@ component{
 
 	/**
 	* @hint searches a given object for methods requesting a dependency injection
-	* **/
+	*/
 	public void function injectDependencies(required any object){
 		// get our object meta data
 		local.md = getMetadata(arguments.object);
@@ -253,17 +250,19 @@ component{
 				doInject(arguments.object, local.f.name, local.injectType, local.singleton);
 			}
 		}
-		for(local.p in local.md.properties){
-			if(structKeyExists(local.p, "FB:inject")){
-				// our parameter type needs to be a FireBolt factory object
-				local.injectType = local.p["FB:inject"];
-				// by default, we assume this is a singleton
-				local.singleton = true;
-				// adding a transient meta data flag to the function lets us use transient objects
-				if(structKeyExists(local.p, "FB:transient")){
-					local.singleton = false;
+		if(structKeyExists(local.md, "properties")){
+			for(local.p in local.md.properties){
+				if(structKeyExists(local.p, "FB:inject")){
+					// our parameter type needs to be a FireBolt factory object
+					local.injectType = local.p["FB:inject"];
+					// by default, we assume this is a singleton
+					local.singleton = true;
+					// adding a transient meta data flag to the function lets us use transient objects
+					if(structKeyExists(local.p, "FB:transient")){
+						local.singleton = false;
+					}
+					doInject(arguments.object, "set" & local.p.name, local.injectType, local.singleton);
 				}
-				doInject(arguments.object, "set" & local.p.name, local.injectType, local.singleton);
 			}
 		}
 	}
@@ -279,7 +278,8 @@ component{
 				local.dependency = getObject(name:arguments.dependancyName, singleton:arguments.singleton);
 			}
 			// call our setter method
-			arguments.object[arguments.functionName](local.dependency);
+			//arguments.object[arguments.functionName](local.dependency);
+			invoke(arguments.object, arguments.functionName, [local.dependency]);
 		}
 	}
 
@@ -289,35 +289,35 @@ component{
 
 	/**
 	* @hint returns our AOP service
-	* **/
+	*/
 	public aopService function getAOPService(){
 		return variables.aop;
 	}
 	
 	/**
 	* @hint registers a'before' aspect concern
-	* **/
+	*/
 	public void function before(required string target, required string targetMethod, required string concern, boolean async=false){
 		getAOPService().before(argumentCollection: arguments);
 	}
 
 	/**
 	* @hint registers 'after' aspect concern
-	* **/
+	*/
 	public void function after(required string target, required string targetMethod, required string concern, boolean async=false){
 		getAOPService().after(argumentCollection: arguments);
 	}
 
 	/**
 	* @hint returns any registered concerns for a given object name and optional method
-	* **/
+	*/
 	public struct function getConcerns(required string name, string method=""){
 		return getAOPService().getConcerns(argumentCollection: arguments);
 	}
 
 	/**
 	* @hint returns all our registered concerns
-	* **/
+	*/
 	public struct function getAllConcerns(){
 		return getAOPService().getAllConcerns();
 	}
@@ -328,21 +328,21 @@ component{
 
 	/**
 	* @hint converts a dot notation to underscore for use as a cache key
-	* **/
+	*/
 	public struct function getCache(){
 		return variables.cache;
 	}
 
 	/**
 	* @hint converts a dot notation to underscore for use as a cache key
-	* **/
+	*/
 	public string function getCacheKey(required string name){
 		return replaceNoCase(arguments.name, ".", "_", "ALL");
 	}
 
 	/**
 	* @hint check cache for an object
-	* **/
+	*/
 	public any function checkCache(required string name){
 		local.key = getCacheKey(arguments.name);
 		if(structKeyExists(variables.cache, local.key)){
@@ -353,7 +353,7 @@ component{
 
 	/**
 	* @hint adds an object to our cache
-	* **/
+	*/
 	public void function addToCache(
 		required string name, 
 		required any object){
@@ -363,7 +363,7 @@ component{
 
 	/**
 	* @hint returns true if a given object name is cached
-	* **/
+	*/
 	public boolean function isCached(required string name){
 		local.cacheResult = checkCache(arguments.name);
 		if(!isBoolean(local.cacheResult)){
@@ -377,7 +377,7 @@ component{
 				return true;
 			}
 		}
-		return false
+		return false;
 	}
 
 }

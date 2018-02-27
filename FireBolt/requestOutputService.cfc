@@ -1,9 +1,9 @@
 /**
 * @FB:transient true
-* **/
+*/
 component{ // transient request output service
 
-	variables.req;
+	variables.req = "";
 	
 	variables.content = {};
 	variables.breadcrumbs = [];
@@ -14,7 +14,7 @@ component{ // transient request output service
 
 	/**
 	* @hint constructor
-	* **/
+	*/
 	public requestOutputService function init(requestHandler req, string templateRootDir="", string viewRootDir=""){
 		variables.req = arguments.req;
 		variables.templateRootDir = arguments.templateRootDir;
@@ -25,14 +25,14 @@ component{ // transient request output service
 	
 	/**
 	* @hint returns our request data struct
-	* **/
+	*/
 	public struct function requestHandler(){
 		return variables.req;
 	}
 
 	/**
 	* @hint framework shortcut
-	* **/
+	*/
 	public framework function FB(){
 		return requestHandler().FB();
 	}
@@ -41,7 +41,7 @@ component{ // transient request output service
 	// CONTENT 
 	/**
 	* @hint get our content
-	* **/
+	*/
 	public any function getContent(string contentRegion="", boolean returnArray=false){
 		if(len(arguments.contentRegion)){
 			if(structKeyExists(variables.content, arguments.contentRegion)){
@@ -64,7 +64,7 @@ component{ // transient request output service
 
 	/**
 	* @hint add content to a content region
-	* **/
+	*/
 	public void function addContent(required string content, string contentRegion="default", struct info={}, numeric position=-1){
 		var item = {};
 		item.content = arguments.content;
@@ -83,7 +83,7 @@ component{ // transient request output service
 
 	/**
 	* @hint clears content for a given content region
-	* **/
+	*/
 	public any function purgeContent(string contentRegion=""){
 		if(len(arguments.contentRegion)){
 			variables.content[arguments.contentRegion] = [];
@@ -96,9 +96,9 @@ component{ // transient request output service
 	// TEMPLATES
 	/**
 	* @hint returns a template path
-	* **/
-	public string function templateRoot(string templateRootDir){
-		if(isSimpleValue(arguments.templateRootDir)){
+	*/
+	public string function templateRoot(string templateRootDir=""){
+		if(len(arguments.templateRootDir)){
 			variables.templateRootDir = arguments.templateRootDir;
 		}
 		if(len(variables.templateRootDir)){
@@ -110,7 +110,7 @@ component{ // transient request output service
 
 	/**
 	* @hint returns a template path
-	* **/
+	*/
 	public string function templatePath(string template="default", string root=templateRoot()){
 		return "#arguments.root##replaceNoCase(arguments.template, '.', '/', 'ALL')#.cfm";
 	}
@@ -119,7 +119,7 @@ component{ // transient request output service
 
 	/**
 	* @hint render a given template
-	* **/
+	*/
 	public any function layout(string templateName="default"){
 		local.pathToTemplate = templatePath(arguments.templateName);
 		savecontent variable="local.output" {include local.pathToTemplate;};
@@ -128,7 +128,7 @@ component{ // transient request output service
 
 	/**
 	* @hint clears content for a given content region
-	* **/
+	*/
 	public string function templateInclude(required string templateName){
 		savecontent variable="local.output" {include templatePath("includes." & arguments.templateName);};
 		return local.output;
@@ -137,8 +137,8 @@ component{ // transient request output service
 
 	// ===================================
 	// VIEWS
-	public string function viewRoot(string viewRootDir){
-		if(isSimpleValue(arguments.viewRootDir)){
+	public string function viewRoot(string viewRootDir=""){
+		if(len(arguments.viewRootDir)){
 			variables.viewRootDir = arguments.viewRootDir;
 		}
 		if(len(variables.viewRootDir)){
@@ -150,16 +150,16 @@ component{ // transient request output service
 
 	/**
 	* @hint returns a view path
-	* **/
+	*/
 	public string function viewPath(string viewFile="default", string root=viewRoot()){
 		return "#arguments.root##replaceNoCase(arguments.viewFile, '.', '/', 'ALL')#.cfm";
 	}
 
 	/**
 	* @hint render a view
-	* **/
-	public any function view(string viewFile, any data={}, string contentRegion="", string root=viewRoot()){
-		var data = arguments.data;
+	*/
+	public any function view(string viewFile, any viewData={}, string contentRegion="", string root=viewRoot()){
+		var data = arguments.viewData;
 		savecontent variable="local.ret"{include "#viewPath(arguments.viewFile, arguments.root)#";}
 		if(len(arguments.contentRegion)){
 			addContent(local.ret, arguments.contentRegion);
@@ -169,7 +169,7 @@ component{ // transient request output service
 
 	/**
 	* @hint render a view and add it by default to the default content region
-	* **/
+	*/
 	public any function addView(string viewFile, any data={}, string contentRegion="default", string root=viewRoot()){
 		return view(argumentCollection:arguments);
 	}
@@ -178,23 +178,23 @@ component{ // transient request output service
 	// TITLE
 	/**
 	* @hint set our title
-	* **/
+	*/
 	public void function setTitle(string title){
 		variables.title = arguments.title;
 	}
 
 	/**
 	* @hint get our title
-	* **/
+	*/
 	public string function getTitle(){
-		return variables.title
+		return variables.title;
 	}
 
 	// ===================================
 	// META DATA
 	/**
 	* @hint adds meta data 
-	* **/
+	*/
 	public void function addMetaData(string name, string value, string scheme="", boolean append=true){
 		local.doAdd = true;
 		for(local.meta in variables.metaData){
@@ -219,7 +219,7 @@ component{ // transient request output service
 	
 	/**
 	* @hint returns our meta data
-	* **/
+	*/
 	public array function getTemplateMetaData(){
 		return variables.metaData;
 	}
@@ -228,12 +228,12 @@ component{ // transient request output service
 	// BREAD CRUMBS
 	/**
 	* @hint adds a breead crumb
-	* **/
+	*/
 	public void function addBreadCrumb(string crumbTitle, string crumbURL, numeric position=0, boolean overwrite=false){
 		local.crumb = {
 			"title": arguments.crumbTitle,
 			"url": arguments.crumbURL
-		}
+		};
 
 		if(arguments.position LTE 0
 			OR arguments.position GT arraylen(variables.breadcrumbs)){
@@ -248,21 +248,21 @@ component{ // transient request output service
 
 	/**
 	* @hint clears current breadcrumb array
-	* **/
+	*/
 	public void function purgeBreadCrumbs(){
 		variables.breadcrumbs = [];
 	}
 	
 	/**
 	* @hint returns our breadcrumb array
-	* **/
+	*/
 	public array function getBreadCrumbs(){
 		return variables.breadcrumbs;
 	}
 	
 	/**
 	* @hint sets the page title using reverse breadcrumbs
-	* **/
+	*/
 	public void function setTitleFromBreadCrumbs(numeric crumbEnd=2, string delimiter=" - ", string base=FB().getSetting('siteName')){
 		//local.t = duplicate(getBreadCrumbs());
 		//createObject("java", "java.util.Collections").reverse(local.t);

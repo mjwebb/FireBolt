@@ -1,6 +1,6 @@
 component{
 
-	variables.factory;
+	variables.factory = "";
 	variables.concerns = {};
 
 	/*
@@ -15,7 +15,7 @@ component{
 
 	/**
 	* @hint constructor
-	* **/
+	*/
 	public aopService function init(required factory){
 		variables.factory = arguments.factory;
 		variables.aopConfig = new configService("aspectConcerns");
@@ -25,7 +25,7 @@ component{
 
 	/**
 	* @hint add concerns from our configuration
-	* **/
+	*/
 	public void function addConfigConcerns(){
 		local.beforeConcerns = variables.aopConfig.getSetting("before");
 		local.afterConcerns = variables.aopConfig.getSetting("after");
@@ -34,7 +34,7 @@ component{
 
 	/**
 	* @hint add concerns from given arrays of concerns
-	* **/
+	*/
 	public void function addConcerns(array beforeConcerns=[], array afterConcerns=[]){
 		for(local.concern in arguments.beforeConcerns){
 			if(! structKeyExists(local.concern, "async")){
@@ -52,7 +52,7 @@ component{
 
 	/**
 	* @hint registers a'before' aspect concern
-	* **/
+	*/
 	public void function before(required string target, required string targetMethod, required string concern, boolean async=false){
 		local.methods = listToArray(arguments.targetMethod);
 		for(local.mthd in local.methods){
@@ -69,7 +69,7 @@ component{
 
 	/**
 	* @hint registers 'after' aspect concern
-	* **/
+	*/
 	public void function after(required string target, required string targetMethod, required string concern, boolean async=false){
 		local.methods = listToArray(arguments.targetMethod);
 		for(local.mthd in local.methods){
@@ -87,7 +87,7 @@ component{
 	
 	/**
 	* @hint define a given object name in our concern struct
-	* **/
+	*/
 	public struct function defineObject(required string target){
 		if(NOT structKeyExists(variables.concerns, arguments.target)){
 			variables.concerns[arguments.target] = {};
@@ -97,14 +97,14 @@ component{
 
 	/**
 	* @hint define a given object and method in our concern struct
-	* **/
+	*/
 	public struct function defineMethodConcern(required string target, required string targetMethod){
 		local.objConcern = defineObject(arguments.target);
 		if(NOT structKeyExists(local.objConcern, arguments.targetMethod)){
 			local.objConcern[arguments.targetMethod] = {
 				"before": [],
 				"after": []
-			}
+			};
 		}
 		return local.objConcern[arguments.targetMethod];
 	}
@@ -112,14 +112,14 @@ component{
 
 	/**
 	* @hint returns a given objects name from its meta data
-	* **/
+	*/
 	public string function getObjectName(required any object){
 		return getMetaData(arguments.object).name;
 	}
 
 	/**
 	* @hint returns any registered concerns for a given object name and optional method
-	* **/
+	*/
 	public struct function getConcerns(required string name, string method=""){
 		if(structKeyExists(variables.concerns, arguments.name)){
 			local.ret = variables.concerns[arguments.name];
@@ -137,7 +137,7 @@ component{
 
 	/**
 	* @hint returns true if concerns are defined for a given object name and method
-	* **/
+	*/
 	public boolean function hasConcerns(required string name,  string method=""){
 		local.concerns = getConcerns(arguments.name, arguments.method);
 		if(len(structKeyList(local.concerns))){
@@ -148,7 +148,7 @@ component{
 
 	/**
 	* @hint returns true if a specific concern is already defined for a given object name and method
-	* **/
+	*/
 	public boolean function hasConcern(required string name,  required string method, required string concern, string aspect="after"){
 		local.concerns = getConcerns(arguments.name, arguments.method);
 		if(structKeyExists(local.concerns, arguments.aspect)){
@@ -163,7 +163,7 @@ component{
 
 	/**
 	* @hint returns all our registered concerns
-	* **/
+	*/
 	public struct function getAllConcerns(){
 		return variables.concerns;
 	}
@@ -171,7 +171,7 @@ component{
 
 	/**
 	* @hint registers an object name for AOP wireup if 
-	* **/
+	*/
 	public void function registerIfFactoryCached(required string name, required string methodName){
 		if(variables.factory.isCached(arguments.name)){
 			local.obj = variables.factory.getObject(arguments.name);
@@ -181,7 +181,7 @@ component{
 
 	/**
 	* @hint registers a given object for AOP wireup
-	* **/
+	*/
 	public void function registerObject(required any object){
 		local.name = getObjectName(arguments.object);
 		/*writeLog(
@@ -200,7 +200,7 @@ component{
 
 	/**
 	* @hint attaches our AOP intercept method to a given object
-	* **/
+	*/
 	public any function attachIntercept(required any object, required string methodName){
 		// copy our original method
 		if(structKeyExists(arguments.object, arguments.methodName)){
@@ -232,13 +232,14 @@ component{
 
 	/**
 	* @hint this gets injected into target objects to replace any existing onMissingMethod functions. This is used to intercept any methods with listeners attached.
-	* **/
+	*/
 	public any function onMissingMethodIntercept(required string MissingMethodName, required struct MissingMethodArguments){
 		local.meta = getMetaData();
 		if(application.FireBolt.getAOPService().hasConcerns(local.meta.name, arguments.MissingMethodName)){
 			if(application.FireBolt.getAOPService().beforeAdvice(local.meta.name, arguments.MissingMethodName, arguments.MissingMethodArguments)){
 				local.methodTimer = getTickCount();
-				local.methodResult = this["aop_#arguments.MissingMethodName#"](argumentCollection: arguments.MissingMethodArguments);
+				//local.methodResult = this["aop_#arguments.MissingMethodName#"](argumentCollection: arguments.MissingMethodArguments);
+				local.methodResult = invoke(this, "aop_#arguments.MissingMethodName#", arguments.MissingMethodArguments);
 				if(!isDefined("local.methodResult")){
 					local.methodResult = "";
 				}
@@ -261,7 +262,7 @@ component{
 
 	/**
 	* @hint this is the proxy method that gets called before a method gets called
-	* **/
+	*/
 	public boolean function beforeAdvice(
 		required string objectName, 
 		required string methodName, 
@@ -288,7 +289,7 @@ component{
 
 	/**
 	* @hint this is the proxy method that gets called after a method gets called
-	* **/
+	*/
 	public any function afterAdvice(
 		required string objectName, 
 		required string methodName, 
@@ -317,7 +318,7 @@ component{
 
 	/**
 	* @hint call a concern method
-	* **/
+	*/
 	public any function callConcern(
 		required struct concern,
 		required string objectName, 
@@ -340,8 +341,9 @@ component{
 			methodArgs: arguments.methodArgs,
 			methodResult: arguments.methodResult,
 			methodTimer: arguments.methodTimer
-		};
-		return local.concernObject[local.concernMethod](argumentCollection:local.concernArgs);
+		};		
+		//return local.concernObject[local.concernMethod](argumentCollection:local.concernArgs);
+		return invoke(local.concernObject, local.concernMethod, local.concernArgs);
 	}
 	
 }

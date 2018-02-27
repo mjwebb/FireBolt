@@ -16,10 +16,10 @@ component{
 		siteName: "FireBolt",
 		modules: {},
 
-		test = "this is a test setting",
-		struct = {
-			nested = "value"
+		test: "this is a test setting",
+		struct: {
+			nested: "value"
 		}
-	}
+	};
 
 }

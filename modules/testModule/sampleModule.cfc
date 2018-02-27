@@ -1,32 +1,34 @@
 component accessors="true"{
 
-	variables.sapleDep;
+	property name="FB" FB:inject="framework";
+
+	variables.sapleDep = "";
 	//variables.FB;
 	variables.startTime = now();
-	variables.t;
+	variables.t = "";
 
-	property name="FB" FB:inject="FireBolt.framework";
+	
 
 	/**
 	* @hint constructor
-	* **/
+	*/
 	public sampleModule function init(){
 		return this;
 	}
 
 	/**
-	* @FB:inject true
-	* **/
+	* @FB:inject=true
+	*/
 	public void function setSampleDep(required testModule.com.dep dep){
 		variables.sapleDep = arguments.dep;
 	}
 
 	/**
 	* 
-	* **/
-	public void function setFB(framework FB required:true){
-		variables.FB = arguments.FB;
-	}
+	*/
+	//public void function setFB(framework FB){
+	//	variables.FB = arguments.FB;
+	//}
 
 	public string function hello(requestHandler req){
 		return "world " & variables.startTime & arguments.req.output().view(
@@ -61,9 +63,9 @@ component accessors="true"{
 	}
 
 
-	public void function intercept(requestHandler, response){
+	public void function intercept(req, res){
 
-		local.route = arguments.requestHandler.getRoute();
+		local.route = arguments.req.getRoute();
 
 		if(local.route.isValid){
 
@@ -91,7 +93,7 @@ component accessors="true"{
 					arrayPrepend(local.interceptPath, "api");
 				}
 
-				arguments.requestHandler.defineRoute(
+				arguments.req.defineRoute(
 					arrayToList(local.interceptPath, "."), 
 					"get");
 

@@ -1,13 +1,13 @@
 /**
 * @FB:transient true
-* **/
+*/
 component{
 
-	variables.req;
+	variables.req = "";
 	
 	/**
 	* @hint constructor
-	* **/
+	*/
 	public function init(req){
 		variables.req = arguments.req;
 		return this;

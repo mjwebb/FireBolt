@@ -1,9 +1,9 @@
 /**
 * @FB:transient true
-* **/
+*/
 component{
 	
-	variables.FireBolt;
+	variables.FireBolt = "";
 	
 	this.types = {
 		HTML:	"text/html",
@@ -55,7 +55,7 @@ component{
 		s500: "Internal server error",
 		s501: "Not implemented",
 		s503: "Service unavailable"
-	}
+	};
 
 	variables.response = {
 		body: "",
@@ -71,7 +71,7 @@ component{
 
 	/**
 	* @hint constructor
-	* **/
+	*/
 	public response function init(framework FireBolt=application.FireBolt){
 		variables.FireBolt = arguments.FireBolt;
 		return this;
@@ -81,7 +81,7 @@ component{
 
 	/**
 	* @hint attempt to detect a response content type
-	* **/
+	*/
 	public response function autoType(){
 		// check for common 'types'
 		if(isJSON(variables.response.body) 
@@ -106,7 +106,7 @@ component{
 
 	/**
 	* @hint attempt to detect the status text from the status code
-	* **/
+	*/
 	public response function autoStatusText(){
 		local.key = "s" & getStatus();
 		if(structKeyExists(variables.statusText, local.key)){
@@ -117,7 +117,7 @@ component{
 
 	/**
 	* @hint set a response content type
-	* **/
+	*/
 	public response function setType(string responseType){
 		variables.response.type = arguments.responseType;
 		return this; // return this for chaining
@@ -125,7 +125,7 @@ component{
 
 	/**
 	* @hint set a response encoding
-	* **/
+	*/
 	public response function setEncoding(string responseEncoding){
 		variables.response.encoding = arguments.responseEncoding;
 		return this; // return this for chaining
@@ -133,7 +133,7 @@ component{
 
 	/**
 	* @hint set a response status code
-	* **/
+	*/
 	public response function setStatus(numeric responseStatusCode){
 		variables.response.status = arguments.responseStatusCode;
 		return this; // return this for chaining
@@ -141,7 +141,7 @@ component{
 
 	/**
 	* @hint set a response status text
-	* **/
+	*/
 	public response function setStatusText(string responseStatusText){
 		variables.response.statusText = arguments.responseStatusText;
 		return this; // return this for chaining
@@ -149,7 +149,7 @@ component{
 
 	/**
 	* @hint set our response body
-	* **/
+	*/
 	public response function setBody(any bodyContent, boolean detectType=true){
 		// check for converting to json of from XML objects
 		if(isStruct(arguments.bodyContent) 
@@ -188,7 +188,7 @@ component{
 
 	/**
 	* @hint set our response length
-	* **/
+	*/
 	public response function setLength(numeric responseLength){
 		variables.response.length = arguments.responseLength;
 		return this; // return this for chaining
@@ -196,49 +196,49 @@ component{
 
 	/**
 	* @hint return our response struct
-	* **/
+	*/
 	public struct function get(){
 		return variables.response;
 	}
 
 	/**
 	* @hint return our response status code
-	* **/
+	*/
 	public numeric function getStatus(){
 		return variables.response.status;
 	}
 
 	/**
 	* @hint return our response status code
-	* **/
+	*/
 	public string function getStatusText(){
 		return variables.response.statusText;
 	}
 
 	/**
 	* @hint return our response type
-	* **/
+	*/
 	public string function getType(){
 		return variables.response.type;
 	}
 
 	/**
 	* @hint return our response body
-	* **/
+	*/
 	public any function getBody(){
 		return variables.response.body;
 	}
 
 	/**
 	* @hint return our response encoding
-	* **/
+	*/
 	public string function getEncoding(){
 		return variables.response.encoding;
 	}
 
 	/**
 	* @hint return our response length
-	* **/
+	*/
 	public numeric function getLength(){
 		return variables.response.length;
 	}
@@ -246,7 +246,7 @@ component{
 
 	/**
 	* @hint return our request data
-	* **/
+	*/
 	public any function getRequestData(string key=""){
 		if(!len(arguments.key)){
 			return variables.requestData;
@@ -260,7 +260,7 @@ component{
 
 	/**
 	* @hint sets our request data
-	* **/
+	*/
 	public void function setRequestData(string key="", any value){
 		variables.requestData[arguments.key] = arguments.value;
 	}

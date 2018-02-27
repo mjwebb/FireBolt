@@ -1,7 +1,7 @@
 component output="false" extends="FireBolt.controller" {
 
 	/**	
-	* **/
+	*/
 	public function get(){
 		setResponseBody("HELLO FROM CONTROLLER");
 
@@ -39,8 +39,8 @@ component output="false" extends="FireBolt.controller" {
 
 	/**
 	* @verbs GET
-	* **/
-	public function test(string name, string surname){
+	*/
+	public function test(string name="", string surname=""){
 		addBreadCrumb("home", "/");
 		addBreadCrumb("test", "/test/");
 		if(len(arguments.name)){
@@ -58,14 +58,14 @@ component output="false" extends="FireBolt.controller" {
 	/**
 	* @verbs GET
 	* @permissions adminUser
-	* **/
+	*/
 	public function secure(){
 		addContent("SECURE PAGE");
 		layout();
 	}
 
 	/**
-	* **/
+	*/
 	public function wagga(){
 		return "wagga";
 	}

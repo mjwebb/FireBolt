@@ -1,9 +1,9 @@
 /**
 * @FB:transient true
-* **/
+*/
 component{ // transient request handler
 
-	variables.FireBolt;
+	variables.FireBolt = "";
 	variables.context = {
 		requestData: getHttpRequestData(false),
 		startTime: getTickCount(),
@@ -13,13 +13,13 @@ component{ // transient request handler
 		contentType: cgi.content_type,
 		verb: ""
 	};
-	variables.route;
-	variables.outputService;
+	variables.route = "";
+	variables.outputService = "";
 	variables.reqData = {};
 
 	/**
 	* @hint constructor
-	* **/
+	*/
 	public requestHandler function init(
 		string path=cgi.path_info,
 		struct formScope=form,
@@ -38,7 +38,7 @@ component{ // transient request handler
 
 	/**
 	* @hint determines our HTTP verb by scanning headers for an override before using our request method
-	* **/
+	*/
 	public string function determinRequestMethod(){
 		// before we return this, we scan our request headers for an override
 		if(structKeyExists(variables.context.requestData.headers, "X-HTTP-METHOD-OVERRIDE")){
@@ -52,28 +52,28 @@ component{ // transient request handler
 
 	/**
 	* @hint sets our request data variable
-	* **/
+	*/
 	public void function setRequestData(any data){
 		variables.reqData = arguments.data;
 	}
 
 	/**
 	* @hint sets our request data variable
-	* **/
+	*/
 	public any function getRequestData(){
 		return variables.reqData;
 	}
 
 	/**
 	* @hint returns our request method: GET, POST, PUT, DELETE, etc
-	* **/
+	*/
 	public string function requestMethod(){
 		return variables.context.verb;
 	}
 
 	/**
 	* @hint returns the body content of the request
-	* **/
+	*/
 	public any function requestBody(){
 		if(structKeyExists(variables.context.requestData, "content")){
 			return variables.context.requestData.content;	
@@ -83,28 +83,28 @@ component{ // transient request handler
 
 	/**
 	* @hint returns our request context data struct
-	* **/
+	*/
 	public struct function getContext(){
 		return variables.context;
 	}
 
 	/**
 	* @hint returns our route data
-	* **/
+	*/
 	public any function getRoute(){
 		return variables.route;
 	}
 
 	/**
 	* @hint sets our route data
-	* **/
+	*/
 	public void function setRoute(struct routeData){
 		variables.route = arguments.routeData;
 	}
 
 	/**
 	* @hint sets our route data
-	* **/
+	*/
 	public void function defineRoute(string path, string method, struct args={}){
 		local.r = FB().getRouteService().defineRoute(
 			this, 
@@ -116,7 +116,7 @@ component{ // transient request handler
 
 	/**
 	* @hint sets a route and precosess it
-	* **/
+	*/
 	public any function processRoute(string path, string method, struct args={}, boolean setHeaders=true, boolean triggerEvents=true){
 		defineRoute(
 			arguments.path, 
@@ -129,7 +129,7 @@ component{ // transient request handler
 
 	/**
 	* @hint process our request
-	* **/
+	*/
 	public any function process(boolean setHeaders=true, boolean triggerEvents=true){
 
 		// start by determining a valid route
@@ -142,8 +142,8 @@ component{ // transient request handler
 			FB().trigger(
 				"req.beforeProcess", 
 				{
-					requestHandler:this, 
-					response:getResponse()
+					req:this, 
+					res:getResponse()
 				}
 			);
 		}
@@ -160,8 +160,8 @@ component{ // transient request handler
 				FB().trigger(
 					"req.afterProcess", 
 					{
-						requestHandler:this, 
-						response:getResponse()
+						req:this, 
+						res:getResponse()
 					}
 				);
 			}
@@ -174,7 +174,7 @@ component{ // transient request handler
 	
 	/**
 	* @hint get our response object
-	* **/
+	*/
 	public response function getResponse(){
 		return variables.response;
 	}
@@ -182,20 +182,25 @@ component{ // transient request handler
 
 	/**
 	* @hint return a response
-	* **/
+	*/
 	public any function respond(boolean setHeaders=true){
 		if(!len(variables.response.getStatusText())) variables.response.autoStatusText();
 		if(arguments.setHeaders){
-			header statusCode=variables.response.getStatus() statusText=variables.response.getStatusText();
-			header name="Content-Length" value=variables.response.getLength();
-			content type="#variables.response.getType()#; charset=#variables.response.getEncoding()#";
+			cfheader(
+				statusCode=variables.response.getStatus(),
+				statusText=variables.response.getStatusText());
+			cfheader(
+				name="Content-Length", 
+				value=variables.response.getLength());
+			cfcontent(
+				type="#variables.response.getType()#; charset=#variables.response.getEncoding()#");
 		}
 		return variables.response.getBody();
 	}
 	
 	/**
 	* @hint returns the current duration of the request
-	* **/
+	*/
 	public numeric function duration(){
 		return getTickCount() - variables.context.startTime;
 	}
@@ -203,21 +208,21 @@ component{ // transient request handler
 	
 	/**
 	* @hint framework shortcut
-	* **/
+	*/
 	public framework function FB(){
 		return variables.FireBolt;
 	}
 
 	/**
 	* @hint create a requestOutputService for this request
-	* **/
+	*/
 	public requestOutputService function newOutput(){
 		return new requestOutputService(this);
 	}
 
 	/**
 	* @hint returns our request output service
-	* **/
+	*/
 	public requestOutputService function output(){
 		return variables.outputService;
 	}

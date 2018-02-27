@@ -17,7 +17,7 @@ component{
 				"async": false
 			}*/
 		]
-	}
+	};
 
 
 }

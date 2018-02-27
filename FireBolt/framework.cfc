@@ -2,17 +2,18 @@ component{
 
 	variables.startTime = getTickCount();
 	variables.rootPath = "";
-	variables.configService;
-	variables.routeService;
-	variables.eventService;
-	variables.factoryService;
+	variables.flavour = "";
+	variables.configService = "";
+	variables.routeService = "";
+	variables.eventService = "";
+	variables.factoryService = "";
 	variables.startup = now();
 	variables.registeredMethods = {};
 	variables.isLoaded = false;
 
 	/**
 	* @hint constructor
-	* **/
+	*/
 	public framework function init(string rootPath){
 		variables.rootPath = rootPath;
 		loadFramework();
@@ -21,8 +22,9 @@ component{
 
 	/**
 	* @hint loads our FireBolt framework
-	* **/
+	*/
 	public void function loadFramework(){
+		variables.flavour = new flavour.engine();
 		variables.configService = new configService("FireBolt", this);
 		variables.routeService = new routeService(this);
 		variables.eventService = new eventService(this);
@@ -34,7 +36,7 @@ component{
 	
 	/**
 	* @hint registers a FireBolt method from within another object
-	* **/
+	*/
 	public void function registerMethods(string methods, any object){
 		// we make sure that the object in question is part of our FireBolt namespace
 		if(listFirst(getMetaData(arguments.object).name, ".") IS "FireBolt"){
@@ -48,7 +50,7 @@ component{
 
 	/**
 	* @hint write a var dump out as a string
-	* **/
+	*/
 	public string function stringDump(any var){
 		savecontent variable="local.content"{
 			writeDump(arguments.var);
@@ -58,15 +60,9 @@ component{
 
 	/**
 	* @hint adds a mapping to our application
-	* **/
+	*/
 	public string function addMapping(required string name, required string path){
-		local.appMD = getApplicationMetadata();
-		local.appMD.mappings[arguments.name] = arguments.path;
-		try{
-			application action="update" mappings="#local.appMD.mappings#";
-		}catch(local.e){
-			// no matching application update method
-		}
+		variables.flavour.addMapping(arguments.name, arguments.path);
 	}
 
 	/*
@@ -75,7 +71,7 @@ component{
 
 	/**
 	* @hint create a new request
-	* **/
+	*/
 	public requestHandler function FireBoltRequest(
 		string path=cgi.path_info,
 		struct formScope=form,
@@ -93,28 +89,28 @@ component{
 
 	/**
 	* @hint returns our event service
-	* **/
+	*/
 	public routeService function getRouteService(){
 		return variables.routeService;
 	}
 
 	/**
 	* @hint returns our event service
-	* **/
+	*/
 	public eventService function getEventService(){
 		return variables.eventService;
 	}
 
 	/**
 	* @hint returns our factory service
-	* **/
+	*/
 	public factoryService function getFactoryService(){
 		return variables.factoryService;
 	}
 
 	/**
 	* @hint returns our factory service
-	* **/
+	*/
 	public aopService function getAOPService(){
 		return getFactoryService().getAOPService();
 	}
@@ -127,7 +123,7 @@ component{
 
 	/**
 	* @hint used to proxy service methods within the framework
-	* **/
+	*/
 	public any function onMissingMethod(string missingMethodName, struct missingMethodArguments){
 		local.proxy = "";
 		// find method names that we can proxy within our framework services
@@ -143,9 +139,11 @@ component{
 		}
 		// perform our proxy
 		if(isObject(local.proxy)){
-			return local.proxy[arguments.missingMethodName](argumentCollection:arguments.missingMethodArguments);
+			//return local.proxy[arguments.missingMethodName](argumentCollection:arguments.missingMethodArguments);
+			return invoke(local.proxy, arguments.missingMethodName, arguments.missingMethodArguments);
 		}else if(len(local.proxy)){
-			return variables[local.proxy][arguments.missingMethodName](argumentCollection:arguments.missingMethodArguments);
+			//return variables[local.proxy][arguments.missingMethodName](argumentCollection:arguments.missingMethodArguments);
+			return invoke(variables[local.proxy], arguments.missingMethodName, arguments.missingMethodArguments);
 		}
 		// not found..
 		throw("Method '#encodeForHTML(arguments.missingMethodName)#' is not part of FireBolt");
@@ -158,14 +156,14 @@ component{
 
 	/**
 	* @hint called when our application ends
-	* **/
+	*/
 	public void function onApplicationEnd(struct appScope){
 		
 	}
 
 	/**
 	* @hint called when a request starts
-	* **/
+	*/
 	public function onRequestStart(string targetPage) output="true"{
 		getFactoryService().addModuleMappings(); // mappings need to be added on every request
 		getEventService().trigger("req.start", arguments);
@@ -176,28 +174,28 @@ component{
 
 	/**
 	* @hint called when a sesison starts
-	* **/
+	*/
 	public void function onSessionStart(){
 		getEventService().trigger("session.start");
 	}
 
 	/**
 	* @hint called when a session ends
-	* **/
+	*/
 	public void function onSessionEnd(struct sessionScope, struct appScope){
 		getEventService().trigger("session.end", arguments);
 	}
 
 	/**
 	* @hint called when a template can not be found
-	* **/
+	*/
 	public boolean function onMissingTemplate(template){
 		
 	}
 
 	/**
 	* @hint erorr handler
-	* **/
+	*/
 	public string function onError(any exception, string eventName=""){
 		local.err = {
 			exception: arguments.exception,
@@ -209,7 +207,7 @@ component{
 			// trigger an error event
 			try{
 				getEventService().trigger("FireBolt.error", local.err);
-			}catch(local.e){
+			}catch(any e){
 				// error within our event - skip this and continue to output our original error
 			}
 
@@ -226,7 +224,7 @@ component{
 				//if(local.errReq.getResponse().getStatus() EQ local.errReq.getResponse().codes.OK){
 					return local.errReq.getResponse().getBody();
 				//}
-			}catch(local.e){
+			}catch(any e){
 				// problem in our error render
 			}
 

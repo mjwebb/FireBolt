@@ -1,7 +1,7 @@
 component output="false" extends="FireBolt.controller" {
 
 	/**
-	* **/
+	*/
 	public function get(){
 		setResponseBody({
 			"api": "response"
@@ -9,7 +9,7 @@ component output="false" extends="FireBolt.controller" {
 	}
 
 	/**
-	* **/
+	*/
 	public function do404(){
 		setResponseBody({
 			"error": "method not found"
@@ -18,7 +18,7 @@ component output="false" extends="FireBolt.controller" {
 
 	/**
 	* @verbs GET
-	* **/
+	*/
 	public function test(){
 		setResponseBody({
 			"api": "response",
@@ -30,7 +30,7 @@ component output="false" extends="FireBolt.controller" {
 	/**
 	* @verbs GET
 	* @permissions adminUser
-	* **/
+	*/
 	public function secure(){
 		setResponseBody({
 			"api": "response",

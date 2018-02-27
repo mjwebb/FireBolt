@@ -54,10 +54,16 @@
 
 	// error
 	/**
-	* @output true
-	* **/
+	* @output=true
+	*/
 	public void function onError(any exception, string eventName=""){
-		writeOutput(application.FireBolt.onError(argumentCollection:arguments));
+		try{
+			writeOutput(application.FireBolt.onError(argumentCollection:arguments));
+		}catch(any e){
+			writeDump(var:arguments, label:"Error", format:"text");
+			//rethrow;
+		}
+		
 		return;
 	}
 
