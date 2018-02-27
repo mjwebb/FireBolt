@@ -1,5 +1,7 @@
-component{
+component accessors="true"{
 	
+	//property name="FB" FB:inject="framework";
+
 	variables.FireBolt = "";
 	variables.req = "";
 
@@ -8,7 +10,7 @@ component{
 	/**
 	* @hint constructor
 	*/
-	public controller function init(requestHandler req, framework FireBolt=application.FireBolt){
+	public controller function init(requestHandler req, framework FireBolt inject){
 		variables.req = arguments.req;
 		variables.FireBolt = arguments.FireBolt;
 		setOutputProxyMethods();
@@ -74,9 +76,9 @@ component{
 	/**
 	* @hint helper for our view
 	*/
-	public any function view(string viewFile, any data={}, string contentRegion="", string root=FB().getSetting('paths.views')){
-		if(isStruct(arguments.data)){
-			structAppend(arguments.data, {controller:this});
+	public any function view(string viewFile, any viewData={}, string contentRegion="", string root=FB().getSetting('paths.views')){
+		if(isStruct(arguments.viewData)){
+			structAppend(arguments.viewData, {controller:this});
 		}
 		return output().view(argumentCollection:arguments);
 	}
@@ -84,7 +86,7 @@ component{
 	/**
 	* @hint render a view and add it by default to the default content region
 	*/
-	public any function addView(string viewFile, any data={}, string contentRegion="default", string root=FB().getSetting('paths.views')){
+	public any function addView(string viewFile, any viewData={}, string contentRegion="default", string root=FB().getSetting('paths.views')){
 		return view(argumentCollection:arguments);
 	}
 

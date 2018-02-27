@@ -189,9 +189,11 @@ component{ // transient request handler
 			cfheader(
 				statusCode=variables.response.getStatus(),
 				statusText=variables.response.getStatusText());
-			cfheader(
-				name="Content-Length", 
-				value=variables.response.getLength());
+			if(isBinary(variables.response.getBody())){
+				cfheader(
+					name="Content-Length", 
+					value=variables.response.getLength());
+			}
 			cfcontent(
 				type="#variables.response.getType()#; charset=#variables.response.getEncoding()#");
 		}

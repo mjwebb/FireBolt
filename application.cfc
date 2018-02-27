@@ -56,7 +56,7 @@
 	/**
 	* @output=true
 	*/
-	public void function onError(any exception, string eventName=""){
+	public void function __onError(any exception, string eventName=""){
 		try{
 			writeOutput(application.FireBolt.onError(argumentCollection:arguments));
 		}catch(any e){

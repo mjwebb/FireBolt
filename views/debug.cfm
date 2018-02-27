@@ -1,3 +1,5 @@
+<cfdump var="#FB().getRouteService().getControllerCache()#">
+<!---
 <cfdump var="#requestHandler().getContext()#">
 
 <cfset r = duplicate(requestHandler().getRoute())>
@@ -9,3 +11,4 @@
 <cfdump var="#getMetaData(c)#">
 
 <cfdump var="#listToArray(requestHandler().getContext().path, "/")#">
+--->

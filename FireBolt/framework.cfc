@@ -163,13 +163,13 @@ component{
 
 	/**
 	* @hint called when a request starts
+	* @output true
 	*/
-	public function onRequestStart(string targetPage) output="true"{
+	public function onRequestStart(string targetPage){
 		getFactoryService().addModuleMappings(); // mappings need to be added on every request
 		getEventService().trigger("req.start", arguments);
 		local.req = FireBoltRequest();
 		writeOutput(local.req.process());
-		return true;
 	}
 
 	/**

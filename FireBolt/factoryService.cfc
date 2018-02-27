@@ -249,6 +249,16 @@ component{
 				}
 				doInject(arguments.object, local.f.name, local.injectType, local.singleton);
 			}
+			for(local.p in local.f.parameters){
+				if(structKeyExists(local.p, "inject") AND structKeyExiss(local.p, "type")){
+					local.injectType = local.p.type;
+					local.singleton = true;
+					if(structKeyExists(local.p, "transient")){
+						local.singleton = false;
+					}
+					doInject(arguments.object, local.f.name, local.injectType, local.singleton);
+				}
+			}
 		}
 		if(structKeyExists(local.md, "properties")){
 			for(local.p in local.md.properties){

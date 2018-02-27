@@ -1,6 +1,6 @@
 Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 
-<!--- <cfoutput>#view("nested.view", data)#</cfoutput> --->
+<cfoutput>#view("nested.view", data)#</cfoutput>
 <!--- <cfdump var="#data#"> --->
 <!--- <cfdump var="#FB().getAllConcerns()#"> --->
 
@@ -9,8 +9,8 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 <br />	
 <cfset d = FB().getObject("sampleModule@testModule")>
 
-<!--- <cfdump var="#f.getMetaData()#">
-<cfdump var="#d.getFB()#"> --->
+<!--- <cfdump var="#getMetaData(data.controller)#"> --->
+<!--- <cfdump var="#d.getFB()#"> --->
 
 <!--- <cfset FB().after("testModule.sampleModule", "hello", "testModule.sampleModule.testAfterConcern")> --->
 
@@ -22,9 +22,11 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 
 
 <cfset x = FB().getObject("transientWithArg@testModule", {
-		req: requestHandler()
-	})>
+	req: requestHandler()
+})>
+
 <!--- <cfdump var="#x#"> --->
+<cfoutput>[#FB().getSetting("env.test")#]</cfoutput>
 <!--- <cfdump var="#FB().getSetting("env")#">
 <cfset system = CreateObject("java", "java.lang.System")>
 <cfdump var="#system.getProperties()#"> --->
@@ -33,3 +35,4 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 
 <!--- <cfdump var="#requestHandler().getContext()#"> --->
 
+<!--- <cfdump var="#FB().getRouteService().getControllerCache()#"> --->
