@@ -33,7 +33,9 @@
 			){
 			OnApplicationStart();
 		}
-		application.FireBolt.onRequestStart(arguments.targetPage);
+		if(arguments.targetPage IS "/index.cfm"){
+			application.FireBolt.onRequestStart(arguments.targetPage);
+		}
 		return true;
 	}
 
@@ -56,7 +58,7 @@
 	/**
 	* @output=true
 	*/
-	public void function __onError(any exception, string eventName=""){
+	public void function onError(any exception, string eventName=""){
 		try{
 			writeOutput(application.FireBolt.onError(argumentCollection:arguments));
 		}catch(any e){

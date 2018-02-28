@@ -24,7 +24,7 @@ component{ // transient request handler
 		string path=cgi.path_info,
 		struct formScope=form,
 		struct urlScope=url,
-		framework FireBolt=application.FireBolt){
+		framework FireBolt){
 		variables.context.path = arguments.path;
 		variables.context.form = arguments.formScope;
 		variables.context.url = arguments.urlScope;
@@ -189,6 +189,11 @@ component{ // transient request handler
 			cfheader(
 				statusCode=variables.response.getStatus(),
 				statusText=variables.response.getStatusText());
+			if(structKeyExists(variables.context.url, "timerHeader")){
+				cfheader(
+					name="ServerTimer", 
+					value=duration());
+			}
 			if(isBinary(variables.response.getBody())){
 				cfheader(
 					name="Content-Length", 

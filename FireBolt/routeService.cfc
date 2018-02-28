@@ -7,7 +7,7 @@ component{
 	/**
 	* @hint constructor
 	*/
-	public routeService function init(framework FireBolt=application.FireBolt){
+	public routeService function init(framework FireBolt){
 		variables.FireBolt = arguments.FireBolt;
 		//variables.FireBolt.registerMethods("getObject,getModule,getService,getGateway,getBean", this);
 		variables.controllerPath = variables.FireBolt.getSetting('paths.controllers');

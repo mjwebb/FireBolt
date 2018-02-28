@@ -7,7 +7,7 @@ component{
 	/**
 	* @hint constructor
 	*/
-	public eventService function init(framework FireBolt=application.FireBolt){
+	public eventService function init(framework FireBolt){
 		variables.FireBolt = arguments.FireBolt;
 		variables.FireBolt.registerMethods("trigger,addListeners,addListener,removeListener,listenerExists,getListeners", this);
 		variables.configService = new configService("eventListeners");

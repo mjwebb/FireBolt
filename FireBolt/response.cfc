@@ -72,7 +72,7 @@ component{
 	/**
 	* @hint constructor
 	*/
-	public response function init(framework FireBolt=application.FireBolt){
+	public response function init(framework FireBolt){
 		variables.FireBolt = arguments.FireBolt;
 		return this;
 	}
