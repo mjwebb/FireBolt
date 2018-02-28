@@ -4,7 +4,7 @@ component output="false" extends="FireBolt.controller" {
 	/**
 	* @verbs GET
 	*/
-	public function get(string name){
+	public function get(string name="NOT SET"){
 		setResponseBody({
 			"api": "sub-response",
 			"name": arguments.name

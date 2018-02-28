@@ -34,4 +34,4 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 
 <!--- <cfdump var="#requestHandler().getContext()#"> --->
 
-<!--- <cfdump var="#FB().getRouteService().getControllerCache()#"> --->
+<!--- <cfdump var="#FB().getRouteService().getControllerRoutes()#"> --->

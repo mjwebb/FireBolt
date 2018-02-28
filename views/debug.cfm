@@ -1,4 +1,4 @@
-<cfdump var="#FB().getRouteService().getControllerCache()#">
+<cfdump var="#FB().getRouteService().getControllerRoutes()#">
 <!---
 <cfdump var="#requestHandler().getContext()#">
 

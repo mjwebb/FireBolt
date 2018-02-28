@@ -3,15 +3,69 @@ component{
 	variables.FireBolt = "";
 	variables.routes = {};	
 	variables.controllerPath = "/controllers/";
+	variables.routes = {};
+	variables.verbs = "POST,GET,PUT,PATCH,DELETE";
 
 	/**
 	* @hint constructor
 	*/
 	public routeService function init(framework FireBolt){
 		variables.FireBolt = arguments.FireBolt;
-		//variables.FireBolt.registerMethods("getObject,getModule,getService,getGateway,getBean", this);
 		variables.controllerPath = variables.FireBolt.getSetting('paths.controllers');
+		scanControllers(variables.controllerPath);
 		return this;
+	}
+
+	/**
+	* @hint scans our controller directory to cache the paths and methods that can form routes
+	*/
+	public void function scanControllers(string rootPath){
+		local.fullPath = expandPath(arguments.rootPath);
+		local.dotRoot = cleanDotPath(arguments.rootPath);
+
+
+		// NOTE ACF does not accept named arguments for directoryList
+		local.cfcs = directoryList(local.fullPath, true, "path", "*.cfc");
+
+		//variables.routes["x"] = local.cfcs;
+		//variables.routes["path"] = arguments.rootPath;
+
+		for(local.cfc in local.cfcs){
+			// convert to dot notation
+			local.cfcPath = replaceNoCase(local.cfc, local.fullPath, "");
+			local.cfcDotPath = cleanDotPath(local.cfcPath);
+			local.cfcRootDotPath = cleanDotPath(local.dotRoot & "." & local.cfcPath);
+
+			local.ctrl = createObject("component", local.cfcRootDotPath);
+			local.meta = getMetaData(local.ctrl);
+
+			local.methods = {};
+
+			variables.routes[local.cfcDotPath] = local.meta;
+
+			for(local.fnc in local.meta.functions){
+				if(listFindNoCase(variables.verbs, local.fnc.name) OR structKeyExists(local.fnc, "verbs")){
+					local.verbs = "";
+					if(structKeyExists(local.fnc, "verbs")){
+						local.verbs = local.fnc.verbs;
+					}
+					if(listFindNoCase(variables.verbs, local.fnc.name)){
+						local.verbs = local.fnc.name;
+					}
+					variables.routes[local.cfcDotPath & "." & local.fnc.name] = {
+						cfcPath: local.cfcRootDotPath,
+						functionName: local.fnc.name,
+						argLength: arrayLen(local.fnc.parameters),
+						verbs: local.verbs
+					};
+				}
+			}
+
+		}
+	}
+
+	public struct function getControllerRoutes(){
+		return variables.routes;
 	}
 
 	/**
@@ -26,11 +80,12 @@ component{
 		
 		if(local.c.isValid){
 			arguments.req.setRoute(local.c);
-			//return local.c.cfc[local.c.method](argumentCollection:local.c.args);
 			return invoke(local.c.cfc, local.c.method, local.c.args);
-			//return local.c.cfc.callFunction(local.c.method, local.c.args);
 		}else{
-			//return local.c;
+			/*savecontent variable="local.err"{
+				writeDump(local.c);
+			}
+			arguments.req.getResponse().setBody(local.err);*/
 			arguments.req.getResponse().setStatus(arguments.req.getResponse().codes.NOTFOUND);
 			return "";
 		}
@@ -41,7 +96,8 @@ component{
 	*/
 	public struct function getRoute(requestHandler req){
 		local.path = listToArray(arguments.req.getContext().path, "/");
-		return walkPath(path: local.path, req: arguments.req);
+		//return walkPath(path: local.path, req: arguments.req);
+		return walkRoute(path: local.path, req: arguments.req);
 	}
 
 	/**
@@ -56,6 +112,105 @@ component{
 			method: arguments.method,
 			args: arguments.args
 		};
+	}
+
+	/**
+	* @hint attempt to find a route for a given path by using our cached routes
+	*/
+	public struct function walkRoute(
+		array path, 
+		string method="index", 
+		array args=[], 
+		array history=[],
+		requestHandler req){
+
+		if(arguments.method IS "index") arguments.method = arguments.req.requestMethod();
+
+		arrayAppend(arguments.history, arguments);
+
+		local.cfcPath = variables.controllerPath & arrayTolist(arguments.path, "/");
+		local.cfcDotPath = cleanDotPath(arrayTolist(arguments.path, "."));
+
+		local.ret = {
+			cfc: "",
+			isValid: false,
+			method: arguments.method,
+			args: arguments.args,
+			path: arguments.path,
+			history: arguments.history
+		};
+
+		local.cfc = "";
+		
+
+		// check for cfc named as part of our path
+		if(structKeyExists(variables.routes, local.cfcDotPath & "." & arguments.method)){
+			local.fnc = variables.routes[local.cfcDotPath & "." & arguments.method];
+			if(listFindNoCase(local.fnc.verbs, arguments.req.requestMethod())
+				AND local.fnc.argLength GTE arrayLen(arguments.args)){
+				local.ret.cfc = createObject("component", local.fnc.cfcPath).init(arguments.req, variables.FireBolt);
+				local.ret.isValid = true;
+			}
+		}
+
+		// check for our index cfc
+		local.indexDotPath = cleanDotPath(local.cfcDotPath & ".index." & arguments.method);
+		if(!local.ret.isValid 
+			AND structKeyExists(variables.routes, local.indexDotPath)){
+			local.fnc = variables.routes[local.indexDotPath];
+			if(listFindNoCase(local.fnc.verbs, arguments.req.requestMethod())
+				AND local.fnc.argLength GTE arrayLen(arguments.args)){
+				local.ret.cfc = createObject("component", local.fnc.cfcPath).init(arguments.req, variables.FireBolt);
+				local.ret.isValid = true;	
+			}
+		}
+
+		// return from here if we have found a route
+		if(local.ret.isValid) return local.ret;
+
+		// if we get here, we check for making a recursive call
+		if(arrayLen(arguments.path)){
+			if(arguments.method != "index"
+				AND arguments.method != arguments.req.requestMethod()){
+				// try our index method
+				arrayPrepend(arguments.args, arguments.method);
+				return walkRoute(arguments.path, "index", arguments.args, arguments.history, arguments.req);
+			}else{
+				// check for a 404 method - if found, this stops our walk...
+				if(structKeyExists(variables.routes, local.cfcDotPath & ".do404")){
+				//if(containsFunction(local.cfc, "do404")){
+					local.fnc = variables.routes[local.cfcDotPath & ".do404"];
+					local.ret.cfc = createObject("component", local.fnc.cfcPath).init(arguments.req, variables.FireBolt);;
+					local.ret.isValid = true;
+					local.ret.method = "do404";
+					arguments.req.getResponse().setStatus(arguments.req.getResponse().codes.NOTFOUND);
+					return local.ret;
+				}
+				// move up our path
+				local.nextMethod = arguments.path[arrayLen(arguments.path)];
+				arrayDeleteAt(arguments.path, arrayLen(arguments.path));
+				return walkRoute(arguments.path, local.nextMethod, arguments.args, arguments.history, arguments.req);
+			}
+
+		}else if(arguments.method != "index"
+			AND arguments.method != arguments.req.requestMethod()){
+			arrayPrepend(arguments.args, arguments.method);
+			return walkRoute(arguments.path, "index", arguments.args, arguments.history, arguments.req);
+		}
+
+		// if we get here and have not found a valid route, look for a 404 controller
+		if(fileExists(expandPath(local.cfcPath) & "/404.cfc")){
+			local.cfcDotPath = cleanDotPath(local.cfcPath & ".404");
+			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, variables.FireBolt);
+			if(containsFunction(local.cfc, "do404")){
+				local.ret.cfc = local.cfc;
+				local.ret.isValid = true;
+				local.ret.method = "do404";
+				arguments.req.getResponse().setStatus(arguments.req.getResponse().codes.NOTFOUND);
+			}
+		}
+		
+		return local.ret;
 	}
 
 	/**
@@ -158,10 +313,17 @@ component{
 	* @hint cleans a path 
 	*/
 	public string function cleanDotPath(string path){
+		if(right(arguments.path, 4) IS ".cfc"){
+			arguments.path = mid(arguments.path, 1, len(arguments.path)-4);
+		}
+		arguments.path = replaceNoCase(arguments.path, "\", ".", "ALL");
 		local.cfcDotPath = replaceNoCase(arguments.path, "/", ".", "ALL");
 		local.cfcDotPath = replaceNoCase(local.cfcDotPath, "..", ".", "ALL");
 		if(left(local.cfcDotPath, 1) IS "."){
 			local.cfcDotPath = mid(local.cfcDotPath, 2, len(local.cfcDotPath));
+		}
+		if(right(local.cfcDotPath, 1) IS "."){
+			local.cfcDotPath = mid(local.cfcDotPath, 1, len(local.cfcDotPath)-1);
 		}
 		return local.cfcDotPath;
 	}
