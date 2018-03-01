@@ -1,9 +1,10 @@
 /**
-* @FB:transient true
+* @transient true
 */
 component{
 
 	variables.req = "";
+	variables.startTime = now();
 	
 	/**
 	* @hint constructor
@@ -15,7 +16,7 @@ component{
 
 	
 	public any function hello(){
-		return variables.req.duration();
+		return variables.startTime;
 	}
 
 

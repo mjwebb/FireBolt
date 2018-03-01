@@ -11,7 +11,7 @@ component{
 	}
 
 	/**
-	* @FB:inject true
+	* @inject true
 	*/
 	public void function circularDep(required testModule.sampleModule dep){
 		variables.sapleDep = arguments.dep;

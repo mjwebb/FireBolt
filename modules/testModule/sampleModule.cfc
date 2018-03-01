@@ -1,6 +1,6 @@
 component accessors="true"{
 
-	property name="FB" FB:inject="framework";
+	property name="FB" inject="framework";
 
 	variables.sapleDep = "";
 	//variables.FB;
@@ -17,7 +17,7 @@ component accessors="true"{
 	}
 
 	/**
-	* @FB:inject=true
+	* @inject=true
 	*/
 	public void function setSampleDep(required testModule.com.dep dep){
 		variables.sapleDep = arguments.dep;
@@ -41,7 +41,7 @@ component accessors="true"{
 	}
 
 	public string function AOPTestTarget(){
-		return "AOP TEST";
+		return "[AOP TEST]";
 	}
 
 	

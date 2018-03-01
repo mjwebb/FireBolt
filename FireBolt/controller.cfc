@@ -1,6 +1,6 @@
 component accessors="true"{
 	
-	//property name="FB" FB:inject="framework";
+	//property name="FB" inject="framework";
 
 	variables.FireBolt = "";
 	variables.req = "";

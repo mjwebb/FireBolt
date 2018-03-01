@@ -1,3 +1,5 @@
+<div style="border: 1px solid blue; padding: 20px; margin: 20px;">
+
 Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 
 <cfoutput>#view("nested.view", data)#</cfoutput>
@@ -23,9 +25,11 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 <cfset x = FB().getObject("transientWithArg@testModule", {
 	req: requestHandler()
 })>
-
+<p>transient module: <cfoutput>#x.hello()#</cfoutput></p>
 <!--- <cfdump var="#x#"> --->
-<cfoutput>[#FB().getSetting("env.test")#]</cfoutput>
+<p>
+Environment variable: <cfoutput>[#FB().getSetting("env.test")#]</cfoutput>
+</p>
 <!--- <cfdump var="#FB().getSetting("env")#">
 <cfset system = CreateObject("java", "java.lang.System")>
 <cfdump var="#system.getProperties()#"> --->
@@ -35,3 +39,6 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 <!--- <cfdump var="#requestHandler().getContext()#"> --->
 
 <!--- <cfdump var="#FB().getRouteService().getControllerRoutes()#"> --->
+
+
+</div>

@@ -6,6 +6,11 @@ component{
 	variables.aspectConcerns = {};
 	variables.moduleAliases = {};
 
+	variables.metaKeys = {
+		TRANSIENT: "transient",
+		INJECT: "inject"
+	};
+
 	/**
 	* @hint constructor
 	*/
@@ -208,7 +213,7 @@ component{
 			AND ! isBoolean(local.object)){
 			local.md = getMetaData(local.object);
 			// check for a transient flag in the metadata of our object
-			if(!structKeyExists(local.md, "FB:transient")){
+			if(!structKeyExists(local.md, variables.metaKeys.TRANSIENT)){
 				// we are OK to cache this object
 				addToCache(arguments.name, local.object);
 			}
@@ -237,23 +242,23 @@ component{
 		// check each function within it
 		for(local.f in local.md.functions){
 			// look for our dependency injection meta data and a single parameter
-			if(structKeyExists(local.f, "FB:inject")
+			if(structKeyExists(local.f, variables.metaKeys.INJECT)
 				AND arrayLen(local.f.parameters) EQ 1){
 				// our parameter type needs to be a FireBolt factory object
 				local.injectType = local.f.parameters[1].type;
 				// be default, we assume this is a singleton
 				local.singleton = true;
 				// adding a transient meta data flag to the function lets us use transient objects
-				if(structKeyExists(local.f, "FB:transient")){
+				if(structKeyExists(local.f, variables.metaKeys.TRANSIENT)){
 					local.singleton = false;
 				}
 				doInject(arguments.object, local.f.name, local.injectType, local.singleton);
 			}
 			for(local.p in local.f.parameters){
-				if(structKeyExists(local.p, "inject") AND structKeyExiss(local.p, "type")){
+				if(structKeyExists(local.p, variables.metaKeys.INJECT) AND structKeyExiss(local.p, "type")){
 					local.injectType = local.p.type;
 					local.singleton = true;
-					if(structKeyExists(local.p, "transient")){
+					if(structKeyExists(local.p, variables.metaKeys.TRANSIENT)){
 						local.singleton = false;
 					}
 					doInject(arguments.object, local.f.name, local.injectType, local.singleton);
@@ -262,13 +267,13 @@ component{
 		}
 		if(structKeyExists(local.md, "properties")){
 			for(local.p in local.md.properties){
-				if(structKeyExists(local.p, "FB:inject")){
+				if(structKeyExists(local.p, variables.metaKeys.INJECT)){
 					// our parameter type needs to be a FireBolt factory object
-					local.injectType = local.p["FB:inject"];
+					local.injectType = local.p[variables.metaKeys.INJECT];
 					// by default, we assume this is a singleton
 					local.singleton = true;
 					// adding a transient meta data flag to the function lets us use transient objects
-					if(structKeyExists(local.p, "FB:transient")){
+					if(structKeyExists(local.p, variables.metaKeys.TRANSIENT)){
 						local.singleton = false;
 					}
 					doInject(arguments.object, "set" & local.p.name, local.injectType, local.singleton);

@@ -1,5 +1,5 @@
 /**
-* @FB:transient true
+* @transient true
 */
 component{
 	
