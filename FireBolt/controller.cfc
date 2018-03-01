@@ -1,3 +1,6 @@
+/**
+* @transient true
+*/
 component accessors="true"{
 	
 	//property name="FB" inject="framework";
@@ -72,6 +75,13 @@ component accessors="true"{
 		return response().setBody(arguments.body);
 	}
 
+	/**
+	* @hint call our response for our request handler
+	*/
+	public function respond(){
+		return requestHandler().respond();
+	}
+
 
 	/**
 	* @hint helper for our view
@@ -115,11 +125,14 @@ component accessors="true"{
 			if(!structKeyExists(variables, key)){
 				variables[key] = this.outputProxyMethod;
 			}
+			if(!structKeyExists(this, key)){
+				this[key] = this.outputProxyMethod;
+			}
 		}
 	}
 
 	/**
-	* @hint this gets called by our proxied requestion output serice methods and makes the call back to the service
+	* @hint this gets called by our proxied request output serice methods and makes the call back to itself
 	*/
 	public any function outputProxyMethod(){
 		//return output()[getFunctionCalledName()](argumentCollection:arguments)

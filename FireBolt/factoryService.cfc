@@ -16,7 +16,7 @@ component{
 	*/
 	public factoryService function init(framework FireBolt){
 		variables.FireBolt = arguments.FireBolt;
-		variables.FireBolt.registerMethods("getObject,registerAlias,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
+		variables.FireBolt.registerMethods("getObject,getController,registerAlias,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
 		registerModules();
 		variables.aop = new aopService(this);
 		registerAOPConfig();
@@ -183,6 +183,20 @@ component{
 	================================ */
 
 	/**
+	* @hint get an controller
+	*/
+	public any function getController(string controller="", requestHandler req=request.FireBoltReq, framework FireBolt){
+		if(!len(arguments.controller)){
+			// returns a base controller
+			return getObject("FireBolt.controller", {req: request.FireBoltReq}, false);
+		}else{
+			// returns a controller based on our given path
+			local.controllerRoot = variables.FireBolt.getRouteService().cleanDotPath(variables.FireBolt.getSetting('paths.controllers'));
+			return getObject(local.controllerRoot & "." & arguments.controller, arguments, false);
+		}
+	}
+
+	/**
 	* @hint get an object
 	*/
 	public any function getObject(
@@ -205,9 +219,15 @@ component{
 			}
 		}
 
-		// create a new instance of our object
-		local.object = new "#arguments.name#"(argumentCollection:arguments.args);
-		
+		// check individual constructor arguments for injection and create our object
+		local.object = createObject("component", arguments.name);
+		structAppend(arguments.args, getMethodDependencies(local.object), false);
+		if(structKeyExists(local.object, "init")){
+			// call our init method with our arguments
+			local.object.init(argumentCollection:arguments.args);
+		}
+
+				
 		// if this is a singleton and we have a valid object, cache it
 		if(arguments.singleton 
 			AND ! isBoolean(local.object)){
@@ -234,6 +254,36 @@ component{
 	================================ */
 
 	/**
+	* @hint returns a struct of arguments with injection flags for a given object method
+	*/
+	public struct function getMethodDependencies(any obj, string fnc="init"){
+		local.dep = {};
+
+		if(structKeyExists(arguments.obj, arguments.fnc)){
+			local.md = getMetadata(arguments.obj[arguments.fnc]);
+			for(local.param in local.md.parameters){
+				if(structKeyExists(local.param, variables.metaKeys.INJECT)){
+					local.singleton = true;
+					if(structKeyExists(local.param, variables.metaKeys.TRANSIENT)){
+						local.singleton = false;
+					}
+					if(local.param.type IS "FireBolt.framework"
+						OR local.param.type IS "framework"){
+						local.dependency = variables.FireBolt;
+					}else{
+						// lets test our dependency path
+						local.dependency = getObject(name:local.param.type, singleton:arguments.singleton);
+					}
+					local.dep[local.param.name] = local.dependency;
+				}
+			}
+		}
+
+		return local.dep;
+	}
+	
+
+	/**
 	* @hint searches a given object for methods requesting a dependency injection
 	*/
 	public void function injectDependencies(required any object){
@@ -241,9 +291,10 @@ component{
 		local.md = getMetadata(arguments.object);
 		// check each function within it
 		for(local.f in local.md.functions){
-			// look for our dependency injection meta data and a single parameter
+			// look for our dependency injection meta data flag and a single parameter when the method name starts with 'set'
 			if(structKeyExists(local.f, variables.metaKeys.INJECT)
-				AND arrayLen(local.f.parameters) EQ 1){
+				AND arrayLen(local.f.parameters) EQ 1
+				AND left(local.f.name, 3) IS "set"){
 				// our parameter type needs to be a FireBolt factory object
 				local.injectType = local.f.parameters[1].type;
 				// be default, we assume this is a singleton
@@ -254,8 +305,8 @@ component{
 				}
 				doInject(arguments.object, local.f.name, local.injectType, local.singleton);
 			}
-			for(local.p in local.f.parameters){
-				if(structKeyExists(local.p, variables.metaKeys.INJECT) AND structKeyExiss(local.p, "type")){
+			/*for(local.p in local.f.parameters){
+				if(structKeyExists(local.p, variables.metaKeys.INJECT) AND structKeyExists(local.p, "type")){
 					local.injectType = local.p.type;
 					local.singleton = true;
 					if(structKeyExists(local.p, variables.metaKeys.TRANSIENT)){
@@ -263,7 +314,7 @@ component{
 					}
 					doInject(arguments.object, local.f.name, local.injectType, local.singleton);
 				}
-			}
+			}*/
 		}
 		if(structKeyExists(local.md, "properties")){
 			for(local.p in local.md.properties){
@@ -282,15 +333,15 @@ component{
 		}
 	}
 
-	public void function doInject(required any object, required string functionName, required string dependancyName, required boolean singleton){
-		if(len(arguments.dependancyName)){
+	public void function doInject(required any object, required string functionName, required string dependencyName, required boolean singleton){
+		if(len(arguments.dependencyName)){
 			// get our dependency object
-			if(arguments.dependancyName IS "FireBolt.framework"
-				OR arguments.dependancyName IS "framework"){
+			if(arguments.dependencyName IS "FireBolt.framework"
+				OR arguments.dependencyName IS "framework"){
 				local.dependency = variables.FireBolt;
 			}else{
-				// lets test our dependancy path
-				local.dependency = getObject(name:arguments.dependancyName, singleton:arguments.singleton);
+				// lets test our dependency path
+				local.dependency = getObject(name:arguments.dependencyName, singleton:arguments.singleton);
 			}
 			// call our setter method
 			//arguments.object[arguments.functionName](local.dependency);

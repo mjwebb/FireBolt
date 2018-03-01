@@ -33,9 +33,7 @@
 			){
 			OnApplicationStart();
 		}
-		if(arguments.targetPage IS "/index.cfm"){
-			application.FireBolt.onRequestStart(arguments.targetPage);
-		}
+		application.FireBolt.onRequestStart(arguments.targetPage);
 		return true;
 	}
 

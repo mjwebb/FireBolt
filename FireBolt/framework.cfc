@@ -48,16 +48,7 @@ component{
 		}
 	}
 
-	/**
-	* @hint write a var dump out as a string
-	*/
-	public string function stringDump(any var){
-		savecontent variable="local.content"{
-			writeDump(arguments.var);
-		}
-		return local.content;
-	}
-
+	
 	/**
 	* @hint adds a mapping to our application
 	*/
@@ -115,7 +106,7 @@ component{
 		return getFactoryService().getAOPService();
 	}
 
-	
+
 	
 	/*
 	missing method handler
@@ -168,8 +159,10 @@ component{
 	public function onRequestStart(string targetPage){
 		getFactoryService().addModuleMappings(); // mappings need to be added on every request
 		getEventService().trigger("req.start", arguments);
-		local.req = FireBoltRequest();
-		writeOutput(local.req.process());
+		request.FireBoltReq = FireBoltRequest();
+		if(arguments.targetPage IS "/index.cfm"){
+			writeOutput(request.FireBoltReq.process());
+		}
 	}
 
 	/**
