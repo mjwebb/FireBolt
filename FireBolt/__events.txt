@@ -1,0 +1,12 @@
+Events
+=========================
+FireBolt.loaded
+FireBolt.error
+FireBolt.missingTemplate
+
+session.start
+session.end
+
+req.start
+req.beforeProcess
+req.afterProcess

@@ -4,7 +4,7 @@
 	this.name = "FireBolt_" & hash(getCurrentTemplatePath());
 
 	// application configuration include
-	include "config/appSettings.cfm";
+	include "app/config/appSettings.cfm";
 
 	// this is our root path
 	this.rootPath = getDirectoryFromPath(getCurrentTemplatePath());

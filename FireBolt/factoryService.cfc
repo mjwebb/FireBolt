@@ -8,7 +8,8 @@ component{
 
 	variables.metaKeys = {
 		TRANSIENT: "transient",
-		INJECT: "inject"
+		INJECT: "inject",
+		SETTING: "setting:"
 	};
 
 	/**
@@ -335,13 +336,18 @@ component{
 
 	public void function doInject(required any object, required string functionName, required string dependencyName, required boolean singleton){
 		if(len(arguments.dependencyName)){
-			// get our dependency object
-			if(arguments.dependencyName IS "FireBolt.framework"
-				OR arguments.dependencyName IS "framework"){
-				local.dependency = variables.FireBolt;
+			if(left(arguments.dependencyName, 8) IS variables.metaKeys.SETTING){
+				local.settingName = replace(arguments.dependencyName, variables.metaKeys.SETTING, "");
+				local.dependency = variables.FireBolt.getSetting(local.settingName);
 			}else{
-				// lets test our dependency path
-				local.dependency = getObject(name:arguments.dependencyName, singleton:arguments.singleton);
+				// get our dependency object
+				if(arguments.dependencyName IS "FireBolt.framework"
+					OR arguments.dependencyName IS "framework"){
+					local.dependency = variables.FireBolt;
+				}else{
+					// lets test our dependency path
+					local.dependency = getObject(name:arguments.dependencyName, singleton:arguments.singleton);
+				}
 			}
 			// call our setter method
 			//arguments.object[arguments.functionName](local.dependency);

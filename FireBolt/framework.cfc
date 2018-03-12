@@ -183,7 +183,7 @@ component{
 	* @hint called when a template can not be found
 	*/
 	public boolean function onMissingTemplate(template){
-		
+			getEventService().trigger("FireBolt.missingTemplate", arguments);	
 	}
 
 	/**

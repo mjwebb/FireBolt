@@ -2,10 +2,10 @@ component{
 
 	this.config = {
 		paths: {
-			views: "/views/",
-			templates: "/templates/",
-			controllers: "/controllers/",
-			modules: "/modules/"
+			views: "/app/views/",
+			templates: "/app/templates/",
+			controllers: "/app/controllers/",
+			modules: "/app/modules/"
 		},
 
 		env:{
