@@ -268,13 +268,15 @@ component{
 					if(structKeyExists(local.param, variables.metaKeys.TRANSIENT)){
 						local.singleton = false;
 					}
+					local.dependency = getDepenency(local.param.type);
+					/*
 					if(local.param.type IS "FireBolt.framework"
 						OR local.param.type IS "framework"){
 						local.dependency = variables.FireBolt;
 					}else{
 						// lets test our dependency path
 						local.dependency = getObject(name:local.param.type, singleton:arguments.singleton);
-					}
+					}*/
 					local.dep[local.param.name] = local.dependency;
 				}
 			}
@@ -336,7 +338,8 @@ component{
 
 	public void function doInject(required any object, required string functionName, required string dependencyName, required boolean singleton){
 		if(len(arguments.dependencyName)){
-			if(left(arguments.dependencyName, 8) IS variables.metaKeys.SETTING){
+			local.dependency = getDepenency(arguments.dependencyName);
+			/*if(left(arguments.dependencyName, 8) IS variables.metaKeys.SETTING){
 				local.settingName = replace(arguments.dependencyName, variables.metaKeys.SETTING, "");
 				local.dependency = variables.FireBolt.getSetting(local.settingName);
 			}else{
@@ -348,11 +351,28 @@ component{
 					// lets test our dependency path
 					local.dependency = getObject(name:arguments.dependencyName, singleton:arguments.singleton);
 				}
-			}
+			}*/
 			// call our setter method
 			//arguments.object[arguments.functionName](local.dependency);
 			invoke(arguments.object, arguments.functionName, [local.dependency]);
 		}
+	}
+
+	public any function getDepenency(required string dependencyName){
+		if(left(arguments.dependencyName, 8) IS variables.metaKeys.SETTING){
+			local.settingName = replace(arguments.dependencyName, variables.metaKeys.SETTING, "");
+			return variables.FireBolt.getSetting(local.settingName);
+		}else{
+			// get our dependency object
+			if(arguments.dependencyName IS "FireBolt.framework"
+				OR arguments.dependencyName IS "framework"){
+				return variables.FireBolt;
+			}else{
+				// lets test our dependency path
+				return getObject(name:arguments.dependencyName);
+			}
+		}
+		return "";
 	}
 
 	/*
