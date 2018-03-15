@@ -23,7 +23,7 @@ component{
 	* @hint reads config settings
 	*/
 	public any function readConfig(string type="FireBolt"){
-		local.configPath = "config.#arguments.type#";
+		local.configPath = "app.config.#arguments.type#";
 		variables.config = new "#local.configPath#"().config;
 		parseConfig(variables.config);
 	}

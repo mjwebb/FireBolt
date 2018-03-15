@@ -2,7 +2,7 @@ component{
 
 	variables.FireBolt = "";
 	variables.routes = {};	
-	variables.controllerPath = "/controllers/";
+	variables.controllerPath = "/app/controllers/";
 	variables.routes = {};
 	variables.verbs = "POST,GET,PUT,PATCH,DELETE";
 	variables.specialMethods = "do404";
@@ -108,7 +108,7 @@ component{
 	* @hint defines a route manually
 	*/
 	public struct function defineRoute(requestHandler req, string cfcPath, string method, struct args={}){
-		local.cfcDotPath = replace(variables.controllerPath, "/", "", "ALL") & "." & arguments.cfcPath;
+		local.cfcDotPath = cleanDotPath(variables.controllerPath & "." & arguments.cfcPath);
 		local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, variables.FireBolt);
 		return {
 			cfc: local.cfc,

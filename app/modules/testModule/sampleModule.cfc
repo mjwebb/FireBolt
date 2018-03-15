@@ -1,6 +1,7 @@
 component accessors="true"{
 
 	property name="FB" inject="framework";
+	property name="testSetting" inject="setting:modules.testModule.setting";
 
 	variables.sapleDep = "";
 	//variables.FB;
