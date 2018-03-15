@@ -1,7 +1,7 @@
 /**
-* @transient true
+* @transientXX true
 */
-component{
+component transient{
 
 	variables.req = "";
 	variables.startTime = now();

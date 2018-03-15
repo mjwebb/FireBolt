@@ -8,6 +8,7 @@ component{
 
 	variables.metaKeys = {
 		TRANSIENT: "transient",
+		SINGLETON: "singleton",
 		INJECT: "inject"
 	};
 
