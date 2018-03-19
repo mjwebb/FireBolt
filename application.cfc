@@ -1,3 +1,3 @@
 ﻿component extends="FireBolt.app"{
-	
+
 }

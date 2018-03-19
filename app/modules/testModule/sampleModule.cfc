@@ -2,6 +2,7 @@ component accessors="true"{
 
 	property name="FB" inject="framework";
 	property name="testSetting" inject="setting:modules.testModule.setting";
+	property name="sampleDep" inject="testModule.com.dep";
 
 	variables.sapleDep = "";
 	//variables.FB;
@@ -17,12 +18,6 @@ component accessors="true"{
 		return this;
 	}
 
-	/**
-	* @inject=true
-	*/
-	public void function setSampleDep(required testModule.com.dep dep){
-		variables.sapleDep = arguments.dep;
-	}
 
 	/**
 	* 
@@ -37,10 +32,11 @@ component accessors="true"{
 			root: "/testModule/views/");
 	}
 
-	public any function getDep(){
-		return variables.sapleDep;
+	public string function world(){
+		return "hello";
 	}
 
+	
 	public string function AOPTestTarget(){
 		return "[AOP TEST]";
 	}

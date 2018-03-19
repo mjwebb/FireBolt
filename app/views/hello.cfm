@@ -16,7 +16,8 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 
 <!--- <cfset FB().after("testModule.sampleModule", "hello", "testModule.sampleModule.testAfterConcern")> --->
 
-<cfoutput>#d.hello(requestHandler())#</cfoutput>
+<cfoutput>#d.hello(requestHandler())#<br /></cfoutput>
+<cfoutput>circular dependancy: #d.getSampleDep().world()#<br /></cfoutput>
 <cfoutput>#d.AOPTestTarget()#</cfoutput>
 
 <!--- <cfdump var="#FB().getFactoryService().getAliases()#"> --->
