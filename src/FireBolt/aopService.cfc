@@ -1,6 +1,7 @@
-component{
+component accessors="true"{
 
-	variables.factory = "";
+	property factoryService;
+
 	variables.concerns = {};
 
 	/*
@@ -17,7 +18,7 @@ component{
 	* @hint constructor
 	*/
 	public aopService function init(required factory){
-		variables.factory = arguments.factory;
+		setFactoryService(arguments.factory);
 		variables.aopConfig = new configService("aspectConcerns");
 		addConfigConcerns();
 		return this;
@@ -173,8 +174,8 @@ component{
 	* @hint registers an object name for AOP wireup if 
 	*/
 	public void function registerIfFactoryCached(required string name, required string methodName){
-		if(variables.factory.isCached(arguments.name)){
-			local.obj = variables.factory.getObject(arguments.name);
+		if(getFactoryService().isCached(arguments.name)){
+			local.obj = getFactoryService().getObject(arguments.name);
 			attachIntercept(local.obj, arguments.methodName);
 		}
 	}
@@ -332,7 +333,7 @@ component{
 		// get our concern object name
 		local.concernName = left(arguments.concern.concern, len(arguments.concern.concern) - len(local.concernMethod) - 1);
 		// get our concer objet from our factory
-		local.concernObject = variables.factory.getObject(local.concernName);
+		local.concernObject = getFactoryService().getObject(local.concernName);
 
 		// call our concern
 		local.concernArgs = {

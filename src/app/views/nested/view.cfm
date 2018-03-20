@@ -2,7 +2,7 @@
 <h2>Hello From Nested View</h2>
 
 
-<cfoutput>#data.controller.wagga()# - #requestHandler().duration()#</cfoutput>
+<cfoutput>#data.controller.wagga()# - #getRequestHandler().duration()#</cfoutput>
 
 <!--- <cfdump var="#getRequest().url#"> --->
 

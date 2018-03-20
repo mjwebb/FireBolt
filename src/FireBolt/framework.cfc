@@ -146,6 +146,13 @@ component{
 	===================================== */
 
 	/**
+	* @hint called when our application starts
+	*/
+	public void function onApplicationStart(){
+		request.applicationStarted = true;
+	}
+
+	/**
 	* @hint called when our application ends
 	*/
 	public void function onApplicationEnd(struct appScope){
@@ -156,7 +163,17 @@ component{
 	* @hint called when a request starts
 	* @output true
 	*/
-	public function onRequestStart(string targetPage){
+	public void function onRequestStart(string targetPage){
+		if((
+				isDefined("url.recycleApplication") 
+				AND isBoolean(url.recycleApplication) 
+				AND url.recycleApplication
+			)
+				AND NOT isDefined("request.applicationStarted")
+			){
+			OnApplicationStart();
+		}
+		
 		getFactoryService().addModuleMappings(); // mappings need to be added on every request
 		getEventService().trigger("req.start", arguments);
 		request.FireBoltReq = FireBoltRequest();

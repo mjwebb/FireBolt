@@ -1,9 +1,9 @@
 /**
 * @transient true
 */
-component{ // transient request output service
+component accessors="true"{ // transient request output service
 
-	variables.req = "";
+	property requestHandler;
 	
 	variables.content = {};
 	variables.breadcrumbs = [];
@@ -16,25 +16,19 @@ component{ // transient request output service
 	* @hint constructor
 	*/
 	public requestOutputService function init(requestHandler req, string templateRootDir="", string viewRootDir=""){
-		variables.req = arguments.req;
+		setrequestHandler(arguments.req);
 		variables.templateRootDir = arguments.templateRootDir;
 		variables.viewRootDir = arguments.viewRootDir;
 		return this;
 	}
 
 	
-	/**
-	* @hint returns our request data struct
-	*/
-	public struct function requestHandler(){
-		return variables.req;
-	}
 
 	/**
 	* @hint framework shortcut
 	*/
 	public framework function FB(){
-		return requestHandler().FB();
+		return getRequestHandler().FB();
 	}
 
 	// ===================================
@@ -127,7 +121,7 @@ component{ // transient request output service
 	}
 
 	/**
-	* @hint clears content for a given content region
+	* @hint performs a template include
 	*/
 	public string function templateInclude(required string templateName){
 		savecontent variable="local.output" {include templatePath("includes." & arguments.templateName);};

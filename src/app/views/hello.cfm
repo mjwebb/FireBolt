@@ -16,7 +16,7 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 
 <!--- <cfset FB().after("testModule.sampleModule", "hello", "testModule.sampleModule.testAfterConcern")> --->
 
-<cfoutput>#d.hello(requestHandler())#<br /></cfoutput>
+<cfoutput>#d.hello(getRequestHandler())#<br /></cfoutput>
 <cfoutput>circular dependancy: #d.getSampleDep().world()#<br /></cfoutput>
 <cfoutput>#d.AOPTestTarget()#</cfoutput>
 
@@ -24,7 +24,7 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 
 
 <cfset x = FB().getObject("transientWithArg@testModule", {
-	req: requestHandler()
+	req: getRequestHandler()
 })>
 <p>transient module: <cfoutput>#x.hello()#</cfoutput></p>
 <!--- <cfdump var="#x#"> --->

@@ -1,6 +1,7 @@
-component{
+component accessors="true"{
 
-	variables.FireBolt = "";
+	property FireBolt;
+
 	variables.routes = {};	
 	variables.controllerPath = "/app/controllers/";
 	variables.routes = {};
@@ -11,8 +12,8 @@ component{
 	* @hint constructor
 	*/
 	public routeService function init(framework FireBolt){
-		variables.FireBolt = arguments.FireBolt;
-		variables.controllerPath = variables.FireBolt.getSetting('paths.controllers');
+		setFireBolt(arguments.FireBolt);
+		variables.controllerPath = getFireBolt().getSetting('paths.controllers');
 		scanControllers(variables.controllerPath);
 		return this;
 	}
@@ -109,7 +110,7 @@ component{
 	*/
 	public struct function defineRoute(requestHandler req, string cfcPath, string method, struct args={}){
 		local.cfcDotPath = cleanDotPath(variables.controllerPath & "." & arguments.cfcPath);
-		local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, variables.FireBolt);
+		local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, getFireBolt());
 		return {
 			cfc: local.cfc,
 			isValid: true,
@@ -152,7 +153,7 @@ component{
 			local.fnc = variables.routes[local.cfcDotPath & "." & arguments.method];
 			if(listFindNoCase(local.fnc.verbs, arguments.req.requestMethod())
 				AND local.fnc.argLength GTE arrayLen(arguments.args)){
-				local.ret.cfc = variables.FireBolt.getController(local.fnc.controllerPath, arguments.req, variables.FireBolt);
+				local.ret.cfc = getFireBolt().getController(local.fnc.controllerPath, arguments.req, getFireBolt());
 				local.ret.isValid = true;
 			}
 		}
@@ -164,7 +165,7 @@ component{
 			local.fnc = variables.routes[local.indexDotPath];
 			if(listFindNoCase(local.fnc.verbs, arguments.req.requestMethod())
 				AND local.fnc.argLength GTE arrayLen(arguments.args)){
-				local.ret.cfc = variables.FireBolt.getController(local.fnc.controllerPath, arguments.req, variables.FireBolt);
+				local.ret.cfc = getFireBolt().getController(local.fnc.controllerPath, arguments.req, getFireBolt());
 				local.ret.isValid = true;	
 			}
 		}
@@ -184,7 +185,7 @@ component{
 				if(structKeyExists(variables.routes, local.cfcDotPath & ".do404")){
 				//if(containsFunction(local.cfc, "do404")){
 					local.fnc = variables.routes[local.cfcDotPath & ".do404"];
-					local.ret.cfc = variables.FireBolt.getController(local.fnc.controllerPath, arguments.req, variables.FireBolt);
+					local.ret.cfc = getFireBolt().getController(local.fnc.controllerPath, arguments.req, getFireBolt());
 					local.ret.isValid = true;
 					local.ret.method = "do404";
 					arguments.req.getResponse().setStatus(arguments.req.getResponse().codes.NOTFOUND);
@@ -204,7 +205,7 @@ component{
 
 		// if we get here and have not found a valid route, look for a 404 controller
 		if(fileExists(expandPath(local.cfcPath) & "/404.cfc")){
-			local.cfc = variables.FireBolt.getController(local.cfcDotPath & ".404", arguments.req, variables.FireBolt);
+			local.cfc = getFireBolt().getController(local.cfcDotPath & ".404", arguments.req, getFireBolt());
 			if(containsFunction(local.cfc, "do404")){
 				local.ret.cfc = local.cfc;
 				local.ret.isValid = true;
@@ -246,7 +247,7 @@ component{
 		// check for cfc named as part of our path
 		if(fileExists(expandPath(local.cfcPath) & ".cfc")){
 			local.cfcDotPath = cleanDotPath(local.cfcPath);
-			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, variables.FireBolt);
+			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, getFireBolt());
 			if(containsFunction(local.cfc, arguments.method, arrayLen(arguments.args), arguments.req.requestMethod())){
 				local.ret.cfc = local.cfc;
 				local.ret.isValid = true;
@@ -256,7 +257,7 @@ component{
 		// check for our index cfc
 		if(!local.ret.isValid AND fileExists(expandPath(local.cfcPath) & "/index.cfc")){
 			local.cfcDotPath = cleanDotPath(local.cfcPath & ".index");
-			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, variables.FireBolt);
+			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, getFireBolt());
 			if(containsFunction(local.cfc, arguments.method, arrayLen(arguments.args), arguments.req.requestMethod())){
 				local.ret.cfc = local.cfc;
 				local.ret.isValid = true;
@@ -299,7 +300,7 @@ component{
 		// if we get here and have not found a valid route, look for a 404 controller
 		if(fileExists(expandPath(local.cfcPath) & "/404.cfc")){
 			local.cfcDotPath = cleanDotPath(local.cfcPath & ".404");
-			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, variables.FireBolt);
+			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, getFireBolt());
 			if(containsFunction(local.cfc, "do404")){
 				local.ret.cfc = local.cfc;
 				local.ret.isValid = true;

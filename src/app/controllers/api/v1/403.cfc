@@ -8,7 +8,4 @@ component output="false" extends="FireBolt.controller" {
 		}).setStatus(response().codes.FORBIDDEN);
 	}
 
-
-
-	
 }

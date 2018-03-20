@@ -1,6 +1,7 @@
-component{
+component accessors="true"{
 
-	variables.FireBolt = "";
+	property FireBolt;
+
 	variables.eventListeners = {};
 	variables.configService = "";
 
@@ -8,8 +9,8 @@ component{
 	* @hint constructor
 	*/
 	public eventService function init(framework FireBolt){
-		variables.FireBolt = arguments.FireBolt;
-		variables.FireBolt.registerMethods("trigger,addListeners,addListener,removeListener,listenerExists,getListeners", this);
+		setFireBolt(arguments.FireBolt);
+		getFireBolt().registerMethods("trigger,addListeners,addListener,removeListener,listenerExists,getListeners", this);
 		variables.configService = new configService("eventListeners");
 		addConfigListeners();
 		return this;
@@ -150,6 +151,16 @@ component{
 		for(local.listener in local.listeners){
 			// fire our event for our listener
 
+			local.i = local.i + 1;
+
+			// for some reason our arguments get destroyed on multiple event handlers for the same event
+			// by converting this to a local scope within our loop of listeners we prevent this... not sure why...
+			local.eventArgs = {};
+			for(local.arg in arguments.args){
+				local.eventArgs[local.arg] = arguments.args[local.arg];
+			}
+
+
 			if(local.listener.async){
 
 				local.threadName = "e_" & local.currentThreadName & "_" & local.threadUUID & "_" & local.i;
@@ -161,12 +172,12 @@ component{
 					name=local.threadName
 					eventName=arguments.eventName
 					listener=local.listener 
-					args=arguments.args{
+					args=local.eventArgs{
 					despatch(attributes.eventName, attributes.listener.target, attributes.args);
 				}
 
 			}else{
-				despatch(arguments.eventName, local.listener.target, arguments.args);
+				despatch(arguments.eventName, local.listener.target, local.eventArgs);
 			}
 
 		}
@@ -193,7 +204,7 @@ component{
 		local.method = listLast(arguments.target, ".");
 		local.objectName = left(arguments.target, len(arguments.target)-len(local.method)-1);
 
-		local.object = variables.FireBolt.getObject(local.objectName);
+		local.object = getFireBolt().getObject(local.objectName);
 
 		//local.object[local.method](argumentCollection:arguments.args);
 		invoke(local.object, local.method, arguments.args);

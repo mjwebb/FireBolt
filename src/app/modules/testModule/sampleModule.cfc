@@ -87,7 +87,7 @@ component accessors="true"{
 
 				local.interceptPath = ["403"];
 				if(arrayLen(local.route.path) AND local.route.path[1] IS "api"){
-					arrayPrepend(local.interceptPath, "api");
+					arrayPrepend(local.interceptPath, "api.v1");
 				}
 
 				arguments.req.defineRoute(

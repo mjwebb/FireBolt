@@ -1,7 +1,8 @@
-component{
+component accessors="true"{
 
-	variables.FireBolt = "";
-	variables.aop = "";
+	property FireBolt;
+	property AOPService;
+
 	variables.cache = {};
 	variables.aspectConcerns = {};
 	variables.moduleAliases = {};
@@ -17,10 +18,10 @@ component{
 	* @hint constructor
 	*/
 	public factoryService function init(framework FireBolt){
-		variables.FireBolt = arguments.FireBolt;
-		variables.FireBolt.registerMethods("getObject,getController,registerAlias,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
+		setFireBolt(arguments.FireBolt);
+		getFireBolt().registerMethods("getObject,getController,registerAlias,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
 		registerModules();
-		variables.aop = new aopService(this);
+		setAOPService(new aopService(this));
 		registerAOPConfig();
 		return this;
 	}
@@ -60,7 +61,7 @@ component{
 	*/
 	public void function addModuleMappings(array modulePaths=getModulePaths()){
 		for(local.modulePath in arguments.modulePaths){
-			variables.FireBolt.addMapping("/" & listLast(local.modulePath, "\"), local.modulePath);
+			getFireBolt().addMapping("/" & listLast(local.modulePath, "\"), local.modulePath);
 		}
 	}
 
@@ -72,10 +73,10 @@ component{
 			local.mapping = listLast(arguments.modulePath, "\");
 			local.moduleConfig = createObject("component", local.mapping & ".config");
 			if(structKeyExists(local.moduleConfig, "config")){
-				variables.FireBolt.mergeSetting("modules.#local.mapping#", local.moduleConfig.config);
+				getFireBolt().mergeSetting("modules.#local.mapping#", local.moduleConfig.config);
 			}
 			if(structKeyExists(local.moduleConfig, "listeners")){
-				variables.FireBolt.addListeners(local.moduleConfig.listeners);
+				getFireBolt().addListeners(local.moduleConfig.listeners);
 			}
 		}
 	}
@@ -92,7 +93,7 @@ component{
 				if(structKeyExists(local.moduleConfig.aspectConcerns, "before")) local.before = local.moduleConfig.aspectConcerns.before;
 				local.after = [];
 				if(structKeyExists(local.moduleConfig.aspectConcerns, "after")) local.after = local.moduleConfig.aspectConcerns.after;
-				variables.aop.addConcerns(local.before, local.after);
+				getAOPService().addConcerns(local.before, local.after);
 			}
 		}
 	}
@@ -166,7 +167,7 @@ component{
 	* @hint return our module path as dotnotation or directly as it is defined in the config
 	*/
 	public any function getModulePath(boolean dotNotation=false){
-		local.path = variables.FireBolt.getSetting('paths.modules');
+		local.path = getFireBolt().getSetting('paths.modules');
 		if(arguments.dotNotation){
 			local.path = replace(local.path, "/", ".", "ALL");
 			if(left(local.path, 1) IS "."){
@@ -193,9 +194,19 @@ component{
 			return getObject("FireBolt.controller", {req: request.FireBoltReq}, false);
 		}else{
 			// returns a controller based on our given path
-			local.controllerRoot = variables.FireBolt.getRouteService().cleanDotPath(variables.FireBolt.getSetting('paths.controllers'));
+			local.controllerRoot = getFireBolt().getRouteService().cleanDotPath(getFireBolt().getSetting('paths.controllers'));
 			return getObject(local.controllerRoot & "." & arguments.controller, arguments, false);
 		}
+	}
+
+	/**
+	* @hint proxy for getObject
+	*/
+	public any function getBean(
+		required string name, 
+		struct args={}, 
+		boolean singleton=true){
+		return getObject(argumentCollection:arguments);
 	}
 
 	/**
@@ -341,12 +352,12 @@ component{
 	public any function getDepenency(required string dependencyName){
 		if(left(arguments.dependencyName, 8) IS variables.metaKeys.SETTING){
 			local.settingName = replace(arguments.dependencyName, variables.metaKeys.SETTING, "");
-			return variables.FireBolt.getSetting(local.settingName);
+			return getFireBolt().getSetting(local.settingName);
 		}else{
 			// get our dependency object
 			if(arguments.dependencyName IS "FireBolt.framework"
 				OR arguments.dependencyName IS "framework"){
-				return variables.FireBolt;
+				return getFireBolt();
 			}else{
 				// lets test our dependency path
 				return getObject(name:arguments.dependencyName);
@@ -359,12 +370,6 @@ component{
 	AOP
 	================================ */
 
-	/**
-	* @hint returns our AOP service
-	*/
-	public aopService function getAOPService(){
-		return variables.aop;
-	}
 	
 	/**
 	* @hint registers a'before' aspect concern

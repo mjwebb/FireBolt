@@ -72,8 +72,8 @@ component{
 	/**
 	* @hint constructor
 	*/
-	public response function init(framework FireBolt){
-		variables.FireBolt = arguments.FireBolt;
+	public response function init(){
+		//variables.FireBolt = arguments.FireBolt;
 		return this;
 	}
 

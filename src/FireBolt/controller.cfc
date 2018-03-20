@@ -4,8 +4,10 @@
 component accessors="true"{
 	
 	//property name="FB" inject="framework";
+	property FireBolt;
+	property requestHandler;
 
-	variables.FireBolt = "";
+	//variables.FireBolt = "";
 	variables.req = "";
 
 	
@@ -14,8 +16,8 @@ component accessors="true"{
 	* @hint constructor
 	*/
 	public controller function init(requestHandler req, framework FireBolt inject){
-		variables.req = arguments.req;
-		variables.FireBolt = arguments.FireBolt;
+		setRequestHandler(arguments.req);
+		setFireBolt(arguments.FireBolt);
 		setOutputProxyMethods();
 		return this;
 	}
@@ -24,14 +26,14 @@ component accessors="true"{
 	* @hint framework shortcut
 	*/
 	public framework function FB(){
-		return variables.FireBolt;
+		return getFireBolt();
 	}
 
 	/**
 	* @hint request context shortcut
 	*/
 	public struct function rc(){
-		return variables.req.getContext();
+		return getRequestHandler().getContext();
 	}
 
 	/**
@@ -54,18 +56,12 @@ component accessors="true"{
 	}
 
 
-	/**
-	* @hint helper for our request henlder
-	*/
-	public function requestHandler(){
-		return variables.req;
-	}
 
 	/**
 	* @hint helper for our request response
 	*/
 	public function response(){
-		return requestHandler().getResponse();
+		return getRequestHandler().getResponse();
 	}
 
 	/**
@@ -79,7 +75,7 @@ component accessors="true"{
 	* @hint call our response for our request handler
 	*/
 	public function respond(){
-		return requestHandler().respond();
+		return getRequestHandler().respond();
 	}
 
 
@@ -114,7 +110,7 @@ component accessors="true"{
 	* @hint returns our request output service
 	*/
 	public requestOutputService function output(){
-		return variables.req.output();
+		return getRequestHandler().output();
 	}
 
 	/**
@@ -135,7 +131,6 @@ component accessors="true"{
 	* @hint this gets called by our proxied request output serice methods and makes the call back to itself
 	*/
 	public any function outputProxyMethod(){
-		//return output()[getFunctionCalledName()](argumentCollection:arguments)
 		return invoke(output(), getFunctionCalledName(), arguments);
 	}
 

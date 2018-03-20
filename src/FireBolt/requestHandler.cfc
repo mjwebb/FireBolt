@@ -1,9 +1,10 @@
 /**
 * @transient true
 */
-component{ // transient request handler
+component accessors="true"{ // transient request handler
 
-	variables.FireBolt = "";
+	property FireBolt;
+
 	variables.context = {
 		requestData: getHttpRequestData(false),
 		startTime: getTickCount(),
@@ -30,8 +31,8 @@ component{ // transient request handler
 		variables.context.url = arguments.urlScope;
 		variables.context.verb = determinRequestMethod();
 		variables.context.args = arguments;
-		variables.FireBolt = arguments.FireBolt;
-		variables.response = new response(variables.FireBolt);
+		setFireBolt(arguments.FireBolt);
+		variables.response = new response();
 		variables.outputService = newOutput();
 		return this;
 	}
@@ -217,7 +218,7 @@ component{ // transient request handler
 	* @hint framework shortcut
 	*/
 	public framework function FB(){
-		return variables.FireBolt;
+		return getFireBolt();
 	}
 
 	/**

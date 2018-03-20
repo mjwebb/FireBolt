@@ -1,5 +1,7 @@
 {
+    "name":"FireBolt",
     "web":{
+        "webroot":"www",
         "rewrites":{
             "enable":true
         }
