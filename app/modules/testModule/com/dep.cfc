@@ -1,7 +1,6 @@
-component{
+component accessors="true"{
 
-	
-	variables.sapleDep = "";
+	property name="sampleDep" inject="testModule.sampleModule";
 
 	/**
 	* @hint constructor
@@ -10,19 +9,13 @@ component{
 		return this;
 	}
 
-	/**
-	* @inject true
-	*/
-	public void function circularDep(required testModule.sampleModule dep){
-		variables.sapleDep = arguments.dep;
-	}
 	
 	public string function hello(){
 		return "from dependancy";
 	}
 
 	public any function world(){
-		return variables.sapleDep;
+		return getSampleDep().world();
 	}
 
 
