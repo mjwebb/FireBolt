@@ -70,8 +70,8 @@ component accessors="true"{
 
 			local.meta = getMetaData(local.route.cfc);
 			if(structKeyExists(local.meta, "functions")){
-				for(i=1; i<=arrayLen(local.meta.functions); i++){
-					local.functionMetaData = local.meta.functions[i];
+				for(local.i=1; local.i<=arrayLen(local.meta.functions); local.i++){
+					local.functionMetaData = local.meta.functions[local.i];
 					if(local.functionMetaData.name IS local.route.method){
 						if(structKeyExists(local.functionMetaData, "permissions")){
 							local.permissions = local.functionMetaData.permissions;
