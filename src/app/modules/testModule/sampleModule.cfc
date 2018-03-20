@@ -37,12 +37,13 @@ component accessors="true"{
 	}
 
 	
-	public string function AOPTestTarget(){
-		return "[AOP TEST]";
+	public string function AOPTestTarget(string t=""){
+		return "[AOP TEST]#arguments.t#";
 	}
 
 	
 	public function testBeforeConcern(string objectName, string methodName, struct methodArgs){
+		arguments.methodArgs.t = " altered argument from before concern";
 		writeLog(
 			text: "testBeforeConcern() - called",
 			type: "information",

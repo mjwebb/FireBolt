@@ -22,7 +22,7 @@ component{
 			{
 				"target": "testModule.sampleModule",
 				"method": "AOPTestTarget",
-				"concern": "testModule.sampleModule.testBeforeConcern",
+				"concern": "sampleModule@testModule.testBeforeConcern",
 				"async": false
 			}
 		],
@@ -30,7 +30,13 @@ component{
 			{
 				"target": "testModule.sampleModule",
 				"method": "AOPTestTarget",
-				"concern": "testModule.sampleModule.testAfterConcern",
+				"concern": "sampleModule@testModule.testAfterConcern",
+				"async": false
+			},
+			{
+				"target": "testModule.sampleModule",
+				"method": "AOPTestTarget",
+				"concern": "dep@testModule.anotherAspect",
 				"async": false
 			}
 		]

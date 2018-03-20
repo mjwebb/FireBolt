@@ -2,12 +2,14 @@
 
 Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 
+<!--- <cfdump var="#FB().getFactoryService().getCache()#"> --->
+
 <cfoutput>#view("nested.view", data)#</cfoutput>
 <!--- <cfdump var="#data#"> --->
 <!--- <cfdump var="#FB().getAllConcerns()#"> --->
 
-<!--- <cfdump var="#data#">
-<cfdump var="#FB().getFactoryService().getModulePaths()#"> --->
+
+<!---<cfdump var="#FB().getFactoryService().getModulePaths()#"> --->
 <br />	
 <cfset d = FB().getObject("sampleModule@testModule")>
 
@@ -19,7 +21,7 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 <cfoutput>#d.hello(getRequestHandler())#<br /></cfoutput>
 <cfoutput>circular dependancy: #d.getSampleDep().world()#<br /></cfoutput>
 <cfoutput>#d.AOPTestTarget()#</cfoutput>
-
+<!--- <cfdump var="#FB().getAOPService().getAllConcerns()#"> --->
 <!--- <cfdump var="#FB().getFactoryService().getAliases()#"> --->
 
 

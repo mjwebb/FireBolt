@@ -5,7 +5,7 @@ component{
 			/*{
 				"target": "testModule.sampleModule",
 				"method": "hello,getDep",
-				"concern": "testModule.sampleModule.testBeforeConcern",
+				"concern": "testModuleXX.sampleModule.testBeforeConcern",
 				"async": false
 			}*/
 		],

@@ -38,8 +38,8 @@
 	};*/
 	
 
-	public function getFireBolt(){
-		if(!structKeyExists(application, "FireBolt")){
+	public function getFireBolt(boolean reload=false){
+		if(!structKeyExists(application, "FireBolt") OR arguments.reload){
 			application.FireBolt = new FireBolt.framework();
 		}
 		return application.FireBolt;
@@ -60,7 +60,7 @@
 	// request start
 	public boolean function onRequestStart(string targetPage){
 		request.startTime = getTickCount();
-		getFireBolt().onRequestStart(arguments.targetPage);
+		getFireBolt(structKeyExists(url, "reload")).onRequestStart(arguments.targetPage);
 		return true;
 	}
 

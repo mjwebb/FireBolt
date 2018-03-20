@@ -1,7 +1,6 @@
 component{
 
 	variables.startTime = getTickCount();
-	variables.rootPath = "";
 	variables.flavour = "";
 	variables.configService = "";
 	variables.routeService = "";
@@ -14,8 +13,7 @@ component{
 	/**
 	* @hint constructor
 	*/
-	public framework function init(string rootPath){
-		variables.rootPath = rootPath;
+	public framework function init(){
 		loadFramework();
 		return this;
 	}
@@ -24,6 +22,8 @@ component{
 	* @hint loads our FireBolt framework
 	*/
 	public void function loadFramework(){
+		variables.startTime = getTickCount();
+		variables.startup = now();
 		variables.flavour = new flavour.engine();
 		variables.configService = new configService("FireBolt", this);
 		variables.routeService = new routeService(this);
@@ -171,7 +171,7 @@ component{
 			)
 				AND NOT isDefined("request.applicationStarted")
 			){
-			OnApplicationStart();
+			loadFramework();
 		}
 		
 		getFactoryService().addModuleMappings(); // mappings need to be added on every request
