@@ -20,7 +20,7 @@ component accessors="true"{
 	public factoryService function init(framework FireBolt){
 		setFireBolt(arguments.FireBolt);
 		getFireBolt().registerMethods("getObject,getController,registerAlias,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
-		registerModules();
+		register();
 		setAOPService(new aopService(this));
 		registerAOPConfig();
 		return this;
@@ -32,16 +32,18 @@ component accessors="true"{
 	/**
 	* @hint scan our modules directory for configuration files
 	*/
-	public void function registerModules(){
+	public void function register(){
 		// get our module paths
 		local.modulePaths = getModulePaths();
 		// add our mappings
-		addModuleMappings(local.modulePaths);
+		addMappings(local.modulePaths);
 		// read any config files
 		for(local.modulePath in local.modulePaths){
 			readModuleConfig(local.modulePath);
-			createModuleAliases(local.modulePath);
+			createAliases(local.modulePath);
 		}
+		// register our models
+		createAliases(expandPath(getModelsPath()), false);
 	}
 
 	/**
@@ -57,12 +59,13 @@ component accessors="true"{
 	}
 
 	/**
-	* @hint adds a mapping for each module directory
+	* @hint adds a mapping for each module sub-directory and our models directory
 	*/
-	public void function addModuleMappings(array modulePaths=getModulePaths()){
+	public void function addMappings(array modulePaths=getModulePaths()){
 		for(local.modulePath in arguments.modulePaths){
 			getFireBolt().addMapping("/" & listLast(local.modulePath, "\"), local.modulePath);
 		}
+		getFireBolt().addMapping("/models", expandPath(getModelsPath()));
 	}
 
 	/**
@@ -101,32 +104,38 @@ component accessors="true"{
 	/**
 	* @hint scans a given directrory for cfc's and generates aliases for each one
 	*/
-	public void function createModuleAliases(string modulePath){
+	public void function createAliases(string modulePath, boolean includeRootAlias=true){
 		local.moduleRoot = listLast(arguments.modulePath, "\");
 
-		// NOTE ACF does not accept named arguments for directoryList
-		local.cfcs = directoryList(arguments.modulePath, true, "path", "*.cfc");
+		local.cfcs = listComponents(arguments.modulePath);
 
 		for(local.cfc in local.cfcs){
-			// strip .cfc from file path
-			if(right(local.cfc, 4) IS ".cfc"){
-				local.cfc = mid(local.cfc, 1, len(local.cfc)-4);
-			}
-			// convert to dot notation
-			local.cfcDotPath = replace(replaceNoCase(local.cfc, arguments.modulePath, ""), "\", ".", "ALL");
-			if(left(local.cfcDotPath, 1) IS "."){
-				local.cfcDotPath = mid(local.cfcDotPath, 2, len(local.cfcDotPath));
-			}
-			if(right(local.cfcDotPath, 1) IS "."){
-				local.cfcDotPath = mid(local.cfcDotPath, 1, len(local.cfcDotPath)-1);
-			}
+			
+			local.cfcDotPath = getFireBolt().cleanDotPath(replaceNoCase(local.cfc, arguments.modulePath, ""))
+
 			// add our module root back into the path
 			local.cfcDotPath = local.moduleRoot & "." & local.cfcDotPath;
 			// form an alias based on the cfc name and the module root
-			local.alias = listLast(local.cfcDotPath, ".") & "@" & local.moduleRoot;
+
+			local.alias = listLast(local.cfcDotPath, ".");
+			if(arguments.includeRootAlias){
+				local.alias = local.alias & "@" & local.moduleRoot;
+			}
+			
 			registerAlias(local.cfcDotPath, local.alias);
 		}
 	}
+
+
+	/**
+	* @hint scans a given directrory for cfc's
+	*/
+	public array function listComponents(string modulePath){
+		// NOTE ACF does not accept named arguments for directoryList
+		return directoryList(arguments.modulePath, true, "path", "*.cfc");
+	}
+	
+	
 
 	/**
 	* @hint adds an alias for a module path
@@ -169,13 +178,18 @@ component accessors="true"{
 	public any function getModulePath(boolean dotNotation=false){
 		local.path = getFireBolt().getSetting('paths.modules');
 		if(arguments.dotNotation){
-			local.path = replace(local.path, "/", ".", "ALL");
-			if(left(local.path, 1) IS "."){
-				local.path = mid(local.path, 2, len(local.path));
-			}
-			if(right(local.path, 1) IS "."){
-				local.path = mid(local.path, 1, len(local.path)-1);
-			}
+			local.path = getFireBolt().cleanDotPath(local.path);
+		}
+		return local.path;
+	}
+
+	/**
+	* @hint return our models path as dotnotation or directly as it is defined in the config
+	*/
+	public any function getModelsPath(boolean dotNotation=false){
+		local.path = getFireBolt().getSetting('paths.models');
+		if(arguments.dotNotation){
+			local.path = getFireBolt().cleanDotPath(local.path);
 		}
 		return local.path;
 	}
@@ -194,7 +208,7 @@ component accessors="true"{
 			return getObject("FireBolt.controller", {req: request.FireBoltReq}, false);
 		}else{
 			// returns a controller based on our given path
-			local.controllerRoot = getFireBolt().getRouteService().cleanDotPath(getFireBolt().getSetting('paths.controllers'));
+			local.controllerRoot = getFireBolt().cleanDotPath(getFireBolt().getSetting('paths.controllers'));
 			return getObject(local.controllerRoot & "." & arguments.controller, arguments, false);
 		}
 	}
@@ -217,9 +231,15 @@ component accessors="true"{
 		struct args={}, 
 		boolean singleton=true){
 
+		// check for an alias
 		local.aliasResult = getAlias(arguments.name);
 		if(len(local.aliasResult)){
 			arguments.name = local.aliasResult;
+		}
+
+		// if we have a 'bean' treat it as transient
+		if(right(arguments.name, 4) IS "bean"){
+			arguments.singleton = false;
 		}
 
 

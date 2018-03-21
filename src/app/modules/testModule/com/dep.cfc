@@ -1,6 +1,6 @@
 component accessors="true"{
 
-	property name="sampleDep" inject="testModule.sampleModule";
+	property sampleDep inject="testModule.sampleModule";
 
 	/**
 	* @hint constructor

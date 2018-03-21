@@ -56,6 +56,25 @@ component{
 		variables.flavour.addMapping(arguments.name, arguments.path);
 	}
 
+	/**
+	* @hint cleans a path 
+	*/
+	public string function cleanDotPath(string path){
+		if(right(arguments.path, 4) IS ".cfc"){
+			arguments.path = mid(arguments.path, 1, len(arguments.path)-4);
+		}
+		arguments.path = replaceNoCase(arguments.path, "\", ".", "ALL");
+		local.cfcDotPath = replaceNoCase(arguments.path, "/", ".", "ALL");
+		local.cfcDotPath = replaceNoCase(local.cfcDotPath, "..", ".", "ALL");
+		if(left(local.cfcDotPath, 1) IS "."){
+			local.cfcDotPath = mid(local.cfcDotPath, 2, len(local.cfcDotPath));
+		}
+		if(right(local.cfcDotPath, 1) IS "."){
+			local.cfcDotPath = mid(local.cfcDotPath, 1, len(local.cfcDotPath)-1);
+		}
+		return local.cfcDotPath;
+	}
+
 	/*
 	request handler entry point
 	===================================== */
@@ -174,7 +193,7 @@ component{
 			loadFramework();
 		}
 		
-		getFactoryService().addModuleMappings(); // mappings need to be added on every request
+		getFactoryService().addMappings(); // mappings need to be added on every request
 		getEventService().trigger("req.start", arguments);
 		request.FireBoltReq = FireBoltRequest();
 		if(arguments.targetPage IS "/index.cfm"){

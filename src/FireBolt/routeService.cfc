@@ -23,7 +23,7 @@ component accessors="true"{
 	*/
 	public void function scanControllers(string rootPath){
 		local.fullPath = expandPath(arguments.rootPath);
-		local.dotRoot = cleanDotPath(arguments.rootPath);
+		local.dotRoot = getFireBolt().cleanDotPath(arguments.rootPath);
 
 
 		// NOTE ACF does not accept named arguments for directoryList
@@ -35,8 +35,8 @@ component accessors="true"{
 		for(local.cfc in local.cfcs){
 			// convert to dot notation
 			local.cfcPath = replaceNoCase(local.cfc, local.fullPath, "");
-			local.cfcDotPath = cleanDotPath(local.cfcPath);
-			local.cfcRootDotPath = cleanDotPath(local.dotRoot & "." & local.cfcPath);
+			local.cfcDotPath = getFireBolt().cleanDotPath(local.cfcPath);
+			local.cfcRootDotPath = getFireBolt().cleanDotPath(local.dotRoot & "." & local.cfcPath);
 
 			local.ctrl = createObject("component", local.cfcRootDotPath);
 			local.meta = getMetaData(local.ctrl);
@@ -109,7 +109,7 @@ component accessors="true"{
 	* @hint defines a route manually
 	*/
 	public struct function defineRoute(requestHandler req, string cfcPath, string method, struct args={}){
-		local.cfcDotPath = cleanDotPath(variables.controllerPath & "." & arguments.cfcPath);
+		local.cfcDotPath = getFireBolt().cleanDotPath(variables.controllerPath & "." & arguments.cfcPath);
 		local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, getFireBolt());
 		return {
 			cfc: local.cfc,
@@ -134,7 +134,7 @@ component accessors="true"{
 		arrayAppend(arguments.history, arguments);
 
 		local.cfcPath = variables.controllerPath & arrayTolist(arguments.path, "/");
-		local.cfcDotPath = cleanDotPath(arrayTolist(arguments.path, "."));
+		local.cfcDotPath = getFireBolt().cleanDotPath(arrayTolist(arguments.path, "."));
 
 		local.ret = {
 			cfc: "",
@@ -159,7 +159,7 @@ component accessors="true"{
 		}
 
 		// check for our index cfc
-		local.indexDotPath = cleanDotPath(local.cfcDotPath & ".index." & arguments.method);
+		local.indexDotPath = getFireBolt().cleanDotPath(local.cfcDotPath & ".index." & arguments.method);
 		if(!local.ret.isValid 
 			AND structKeyExists(variables.routes, local.indexDotPath)){
 			local.fnc = variables.routes[local.indexDotPath];
@@ -246,7 +246,7 @@ component accessors="true"{
 		
 		// check for cfc named as part of our path
 		if(fileExists(expandPath(local.cfcPath) & ".cfc")){
-			local.cfcDotPath = cleanDotPath(local.cfcPath);
+			local.cfcDotPath = getFireBolt().cleanDotPath(local.cfcPath);
 			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, getFireBolt());
 			if(containsFunction(local.cfc, arguments.method, arrayLen(arguments.args), arguments.req.requestMethod())){
 				local.ret.cfc = local.cfc;
@@ -256,7 +256,7 @@ component accessors="true"{
 
 		// check for our index cfc
 		if(!local.ret.isValid AND fileExists(expandPath(local.cfcPath) & "/index.cfc")){
-			local.cfcDotPath = cleanDotPath(local.cfcPath & ".index");
+			local.cfcDotPath = getFireBolt().cleanDotPath(local.cfcPath & ".index");
 			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, getFireBolt());
 			if(containsFunction(local.cfc, arguments.method, arrayLen(arguments.args), arguments.req.requestMethod())){
 				local.ret.cfc = local.cfc;
@@ -299,7 +299,7 @@ component accessors="true"{
 
 		// if we get here and have not found a valid route, look for a 404 controller
 		if(fileExists(expandPath(local.cfcPath) & "/404.cfc")){
-			local.cfcDotPath = cleanDotPath(local.cfcPath & ".404");
+			local.cfcDotPath = getFireBolt().cleanDotPath(local.cfcPath & ".404");
 			local.cfc = createObject("component", local.cfcDotPath).init(arguments.req, getFireBolt());
 			if(containsFunction(local.cfc, "do404")){
 				local.ret.cfc = local.cfc;
@@ -313,24 +313,7 @@ component accessors="true"{
 	}
 
 
-	/**
-	* @hint cleans a path 
-	*/
-	public string function cleanDotPath(string path){
-		if(right(arguments.path, 4) IS ".cfc"){
-			arguments.path = mid(arguments.path, 1, len(arguments.path)-4);
-		}
-		arguments.path = replaceNoCase(arguments.path, "\", ".", "ALL");
-		local.cfcDotPath = replaceNoCase(arguments.path, "/", ".", "ALL");
-		local.cfcDotPath = replaceNoCase(local.cfcDotPath, "..", ".", "ALL");
-		if(left(local.cfcDotPath, 1) IS "."){
-			local.cfcDotPath = mid(local.cfcDotPath, 2, len(local.cfcDotPath));
-		}
-		if(right(local.cfcDotPath, 1) IS "."){
-			local.cfcDotPath = mid(local.cfcDotPath, 1, len(local.cfcDotPath)-1);
-		}
-		return local.cfcDotPath;
-	}
+	
 
 	/**
 	* @hint returns true if a given cfc contains a function with a given name, matching verb and a given number of arguments

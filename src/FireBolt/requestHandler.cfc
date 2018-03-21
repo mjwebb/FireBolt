@@ -1,7 +1,4 @@
-/**
-* @transient true
-*/
-component accessors="true"{ // transient request handler
+component transient accessors="true"{ // transient request handler
 
 	property FireBolt;
 
@@ -52,17 +49,17 @@ component accessors="true"{ // transient request handler
 	}
 
 	/**
-	* @hint sets our request data variable
+	* @hint sets a request data variable
 	*/
-	public void function setRequestData(any data){
-		variables.reqData = arguments.data;
+	public void function setData(string key, any data){
+		variables.reqData[arguments.key] = arguments.data;
 	}
 
 	/**
-	* @hint sets our request data variable
+	* @hint gets a request data variable
 	*/
-	public any function getRequestData(){
-		return variables.reqData;
+	public any function getData(string key){
+		return variables.reqData[arguments.key];
 	}
 
 	/**

@@ -1,7 +1,4 @@
-/**
-* @transient true
-*/
-component accessors="true"{ // transient request output service
+component transient accessors="true"{ // transient request output service
 
 	property requestHandler;
 	

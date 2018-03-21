@@ -5,7 +5,8 @@ component{
 			views: "/app/views/",
 			templates: "/app/templates/",
 			controllers: "/app/controllers/",
-			modules: "/app/modules/"
+			modules: "/app/modules/",
+			models: "/app/models/"
 		},
 
 		env:{

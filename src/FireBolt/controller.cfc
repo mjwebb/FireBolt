@@ -1,7 +1,4 @@
-/**
-* @transient true
-*/
-component accessors="true"{
+component transient accessors="true"{
 	
 	//property name="FB" inject="framework";
 	property FireBolt;

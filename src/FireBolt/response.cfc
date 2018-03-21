@@ -1,7 +1,4 @@
-/**
-* @transient true
-*/
-component{
+component transient{
 	
 	variables.FireBolt = "";
 	
