@@ -99,4 +99,13 @@ component accessors="true"{
 
 	}
 
+	public any function qbIntercept(sql, bindings, options){
+
+		writeLog(
+			text: "QB CALLED: #arguments.sql#",
+			type: "information",
+			file: "QB");
+		//writeDump(data);
+	}
+
 }

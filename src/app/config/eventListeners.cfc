@@ -14,6 +14,10 @@ component{
 		{
 			"event": "req.beforeProcessXXX",
 			"listener": "testModule.sampleModule.intercept"
+		},
+		{
+			"event": "preQBExecute",
+			"listener": "testModule.sampleModule.qbIntercept"
 		}
 	];
 

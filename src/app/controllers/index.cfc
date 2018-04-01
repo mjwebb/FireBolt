@@ -64,6 +64,8 @@ component output="false" extends="FireBolt.controller" {
 		}
 		setTitleFromBreadCrumbs();
 		addContent("HELLO FROM TEST: #arguments.name# - [#arguments.surname#]"  & ' <a href="/">Home</a>  <a href="/test/dave/">Dave</a>');
+		//addView("wirebox", arguments);
+		addView("qb", arguments);
 		//addContent(stringDump(requestHandler().getContext()));
 		layout();
 	}

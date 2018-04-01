@@ -23,4 +23,38 @@ component{
 		}
 	};
 
+
+	public void function onApplicationStart(){
+		//this.FireBolt["wirebox"] = new wirebox.system.ioc.Injector("app.config.wirebox");
+
+		// define query builder
+		//local.qbGrammar = this.FireBolt.getObject("MSSQLGrammar@qb");
+		//local.qbGrammar.setInterceptorService(this.FireBolt.getEventService());
+		//local.qb = this.FireBolt.getObject("QueryBuilder@qb", {grammar: local.qbGrammar});
+
+		this.FireBolt.registerMapping("qb.models.Grammars.MSSQLGrammar", "MSSQLGrammar@qb", [], [{
+			name: "InterceptorService",
+			ref: "framework"
+		}]);
+
+		local.qbInitArgs = [
+			{
+				name: "grammar",
+				ref: "MSSQLGrammar@qb"
+			}
+		];
+
+		this.FireBolt.registerMapping("qb.models.Query.QueryBuilder", "QueryBuilder@qb", local.qbInitArgs, [], false);
+	}
+
+
+	public void function onSessionStart(){
+		
+	}
+
+
+	public void function onRequestStart(){
+		//this.FireBolt["wirebox"] = new wirebox.system.ioc.Injector("app.config.wirebox");
+	}
+
 }
