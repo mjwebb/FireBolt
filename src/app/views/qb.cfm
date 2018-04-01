@@ -2,8 +2,12 @@
 
 <cfset qb = FB().getObject("QueryBuilder@qb")>
 
-<cfdump var="#qb#">
-<cfdump var="#FB().getListeners()#">
+<!--- <cfset qb = FB().getMapping("QueryBuilder@qb")> --->
+<!--- <cfdump var="#qb#"> --->
+<!--- <cfdump var="#FB().getListeners()#"> --->
+
+
+
 
 
 <!--- <cftry> --->

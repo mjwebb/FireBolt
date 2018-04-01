@@ -19,8 +19,8 @@ component accessors="true"{
 	*/
 	public factoryService function init(framework FireBolt){
 		setFireBolt(arguments.FireBolt);
-		getFireBolt().registerMethods("getObject,getController,registerMapping,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
-		register();
+		getFireBolt().registerMethods("getObject,getController,registerMapping,getMapping,register,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
+		autoRegisterModules();
 		setAOPService(new aopService(this));
 		registerAOPConfig();
 		return this;
@@ -32,7 +32,7 @@ component accessors="true"{
 	/**
 	* @hint scan our modules directory for configuration files
 	*/
-	public void function register(){
+	public void function autoRegisterModules(){
 		// get our module paths
 		local.modulePaths = getModulePaths();
 		// add our mappings
@@ -176,6 +176,65 @@ component accessors="true"{
 	*/
 	public array function getModulePaths(){
 		return directoryList(expandPath(getModulePath()));
+	}
+
+
+
+	/**
+	* @hint syntax to register a component
+	*/
+	public struct function register(string dotPath){
+		var mapping = {
+			definition: {
+				alias: "",
+				modulePath: arguments.dotPath,
+				initArgs: [],
+				properties: [],
+				singleton: true
+			}
+		};
+
+		structAppend(mapping, {
+			as: function(string alias){
+				mapping.definition.alias = arguments.alias;
+				registerMapping(argumentCollection:mapping.definition);
+				return mapping;
+			},
+			withInitArg: function(string name, any value, string ref){
+				var m = getMapping(mapping.definition.alias);
+				if(isNull(arguments.value)){
+					structDelete(arguments, "value");
+				}
+				if(isNull(arguments.ref)){
+					structDelete(arguments, "ref");
+				}
+				arrayAppend(m.initArgs, arguments);
+				return mapping;
+			},
+			withProperty: function(string name, any value, string ref){
+				var m = getMapping(mapping.definition.alias);
+				if(isNull(arguments.value)){
+					structDelete(arguments, "value");
+				}
+				if(isNull(arguments.ref)){
+					structDelete(arguments, "ref");
+				}
+				arrayAppend(m.properties, arguments);
+				return mapping;
+			},
+			asSingleton: function(){
+				var m = getMapping(mapping.definition.alias);
+				m.singleton = true;
+				return mapping;
+			},
+			asTransient: function(){
+				var m = getMapping(mapping.definition.alias);
+				m.singleton = false;
+				return mapping;
+			}
+		});
+
+		return mapping;
 	}
 
 	/*

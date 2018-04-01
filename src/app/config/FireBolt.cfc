@@ -27,11 +27,12 @@ component{
 	public void function onApplicationStart(){
 		//this.FireBolt["wirebox"] = new wirebox.system.ioc.Injector("app.config.wirebox");
 
-		// define query builder
+		// define query builder manually
 		//local.qbGrammar = this.FireBolt.getObject("MSSQLGrammar@qb");
 		//local.qbGrammar.setInterceptorService(this.FireBolt.getEventService());
 		//local.qb = this.FireBolt.getObject("QueryBuilder@qb", {grammar: local.qbGrammar});
 
+		/*
 		this.FireBolt.registerMapping("qb.models.Grammars.MSSQLGrammar", "MSSQLGrammar@qb", [], [{
 			name: "InterceptorService",
 			ref: "framework"
@@ -45,6 +46,19 @@ component{
 		];
 
 		this.FireBolt.registerMapping("qb.models.Query.QueryBuilder", "QueryBuilder@qb", local.qbInitArgs, [], false);
+		*/
+
+		// register using 
+		this.FireBolt.register("qb.models.Grammars.MSSQLGrammar")
+			.as("MSSQLGrammar@qb")
+			.withProperty(name:"InterceptorService", ref:"framework");
+
+		this.FireBolt.register("qb.models.Query.QueryBuilder")
+			.as("QueryBuilder@qb")
+			.withInitArg(name:"grammar", ref:"MSSQLGrammar@qb")
+			.asTransient();
+
+		
 	}
 
 
