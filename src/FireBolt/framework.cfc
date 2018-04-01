@@ -29,6 +29,7 @@ component{
 		variables.routeService = new routeService(this);
 		variables.eventService = new eventService(this);
 		variables.factoryService = new factoryService(this);
+		onApplicationStart();
 		getEventService().trigger("FireBolt.loaded");
 		variables.isLoaded = true;
 	}
@@ -52,8 +53,8 @@ component{
 	/**
 	* @hint adds a mapping to our application
 	*/
-	public string function addMapping(required string name, required string path){
-		variables.flavour.addMapping(arguments.name, arguments.path);
+	public string function addCFMapping(required string name, required string path){
+		variables.flavour.addCFMapping(arguments.name, arguments.path);
 	}
 
 	/**
@@ -126,6 +127,12 @@ component{
 	}
 
 
+	/**
+	* @hint returns our config service
+	*/
+	public configService function getConfigService(){
+		return variables.configService;
+	}
 	
 	/*
 	missing method handler
@@ -168,6 +175,7 @@ component{
 	* @hint called when our application starts
 	*/
 	public void function onApplicationStart(){
+		variables.configService.getConfigObject().onApplicationStart();
 		request.applicationStarted = true;
 	}
 
@@ -193,7 +201,8 @@ component{
 			loadFramework();
 		}
 		
-		getFactoryService().addMappings(); // mappings need to be added on every request
+		getFactoryService().addCFMappings(); // mappings need to be added on every request
+		variables.configService.getConfigObject().onRequestStart();
 		getEventService().trigger("req.start", arguments);
 		request.FireBoltReq = FireBoltRequest();
 		if(arguments.targetPage IS "/index.cfm"){
@@ -205,6 +214,7 @@ component{
 	* @hint called when a sesison starts
 	*/
 	public void function onSessionStart(){
+		variables.configService.getConfigObject().onSessionStart();
 		getEventService().trigger("session.start");
 	}
 

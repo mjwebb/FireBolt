@@ -10,7 +10,7 @@ component accessors="true"{
 	*/
 	public eventService function init(framework FireBolt){
 		setFireBolt(arguments.FireBolt);
-		getFireBolt().registerMethods("trigger,addListeners,addListener,removeListener,listenerExists,getListeners", this);
+		getFireBolt().registerMethods("processState,trigger,addListeners,addListener,removeListener,listenerExists,getListeners", this);
 		variables.configService = new configService("eventListeners");
 		addConfigListeners();
 		return this;
@@ -130,6 +130,16 @@ component accessors="true"{
 		}
 
 		return [];
+	}
+
+	/**
+	* @hint coldbox proxy to trigger an event
+	*/
+	public any function processState(
+		required string eventName, 
+		struct args={},
+		numeric timout=1){
+		trigger(argumentCollection:arguments);
 	}
 
 	/**

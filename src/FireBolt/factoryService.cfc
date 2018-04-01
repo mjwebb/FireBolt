@@ -5,7 +5,7 @@ component accessors="true"{
 
 	variables.cache = {};
 	variables.aspectConcerns = {};
-	variables.moduleAliases = {};
+	variables.moduleMappings = {};
 
 	variables.metaKeys = {
 		TRANSIENT: "transient",
@@ -19,7 +19,7 @@ component accessors="true"{
 	*/
 	public factoryService function init(framework FireBolt){
 		setFireBolt(arguments.FireBolt);
-		getFireBolt().registerMethods("getObject,getController,registerAlias,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
+		getFireBolt().registerMethods("getObject,getController,registerMapping,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
 		register();
 		setAOPService(new aopService(this));
 		registerAOPConfig();
@@ -36,14 +36,14 @@ component accessors="true"{
 		// get our module paths
 		local.modulePaths = getModulePaths();
 		// add our mappings
-		addMappings(local.modulePaths);
+		addCFMappings(local.modulePaths);
 		// read any config files
 		for(local.modulePath in local.modulePaths){
 			readModuleConfig(local.modulePath);
-			createAliases(local.modulePath);
+			createMappings(local.modulePath);
 		}
 		// register our models
-		createAliases(expandPath(getModelsPath()), false);
+		createMappings(expandPath(getModelsPath()), false);
 	}
 
 	/**
@@ -61,11 +61,11 @@ component accessors="true"{
 	/**
 	* @hint adds a mapping for each module sub-directory and our models directory
 	*/
-	public void function addMappings(array modulePaths=getModulePaths()){
+	public void function addCFMappings(array modulePaths=getModulePaths()){
 		for(local.modulePath in arguments.modulePaths){
-			getFireBolt().addMapping("/" & listLast(local.modulePath, "\"), local.modulePath);
+			getFireBolt().addCFMapping("/" & listLast(local.modulePath, "\"), local.modulePath);
 		}
-		getFireBolt().addMapping("/models", expandPath(getModelsPath()));
+		getFireBolt().addCFMapping("/models", expandPath(getModelsPath()));
 	}
 
 	/**
@@ -104,7 +104,7 @@ component accessors="true"{
 	/**
 	* @hint scans a given directrory for cfc's and generates aliases for each one
 	*/
-	public void function createAliases(string modulePath, boolean includeRootAlias=true){
+	public void function createMappings(string modulePath, boolean includeRootAlias=true){
 		local.moduleRoot = listLast(arguments.modulePath, "\");
 
 		local.cfcs = listComponents(arguments.modulePath);
@@ -122,7 +122,7 @@ component accessors="true"{
 				local.alias = local.alias & "@" & local.moduleRoot;
 			}
 			
-			registerAlias(local.cfcDotPath, local.alias);
+			registerMapping(local.cfcDotPath, local.alias);
 		}
 	}
 
@@ -140,25 +140,35 @@ component accessors="true"{
 	/**
 	* @hint adds an alias for a module path
 	*/
-	public void function registerAlias(string modulePath, string alias){
-		variables.moduleAliases[arguments.alias] = arguments.modulePath;
+	public void function registerMapping(string modulePath, string alias, array initArgs=[], array properties=[], boolean singleton=true){
+		variables.moduleMappings[arguments.alias] = {
+			name: arguments.modulePath,
+			initArgs: arguments.initArgs, // { name: "", value | ref }
+			properties: arguments.properties, // { name: "", value | ref }
+			singleton: arguments.singleton
+		};
 	}
 
 	/**
 	* @hint searches our aliases for a given key
 	*/
-	public string function getAlias(string alias){
-		if(structKeyExists(variables.moduleAliases, arguments.alias)){
-			return variables.moduleAliases[arguments.alias];
+	public struct function getMapping(string alias){
+		if(structKeyExists(variables.moduleMappings, arguments.alias)){
+			return variables.moduleMappings[arguments.alias];
 		}
-		return "";
+		return {
+			name: "",
+			initArgs: [],
+			properties: [],
+			singleton: false
+		};
 	}
 
 	/**
 	* @hint returns all registered aliases
 	*/
-	public struct function getAliases(){
-		return variables.moduleAliases;
+	public struct function getMappings(){
+		return variables.moduleMappings;
 	}
 	
 	/**
@@ -231,10 +241,19 @@ component accessors="true"{
 		struct args={}, 
 		boolean singleton=true){
 
+		local.aliasInitArgs = [];
+		local.aliasProperties = [];
+
 		// check for an alias
-		local.aliasResult = getAlias(arguments.name);
-		if(len(local.aliasResult)){
-			arguments.name = local.aliasResult;
+		local.aliasResult = getMapping(arguments.name);
+		if(len(local.aliasResult.name)){
+			arguments.name = local.aliasResult.name;
+			local.aliasInitArgs = local.aliasResult.initArgs;
+			local.aliasProperties = local.aliasResult.properties;
+			//structAppend(local.aliasResults.initArgs, arguments.args);
+			if(!local.aliasResult.singleton){
+				arguments.singleton = false;
+			}
 		}
 
 		// if we have a 'bean' treat it as transient
@@ -256,9 +275,32 @@ component accessors="true"{
 		local.object = createObject("component", arguments.name);
 		structAppend(arguments.args, getMethodDependencies(local.object), false);
 		if(structKeyExists(local.object, "init")){
+			// process any init args
+			for(local.ia in local.aliasInitArgs){
+				if(!structKeyExists(arguments.args, local.ia.name)){
+					if(structKeyExists(local.ia, "value")){
+						arguments.args[local.ia.name] = local.ia.value;
+					}else if(structKeyExists(local.ia, "ref")){
+						arguments.args[local.ia.name] = getDepenency(local.ia.ref);
+					}
+				}
+			}
+
 			// call our init method with our arguments
 			local.object.init(argumentCollection:arguments.args);
 		}
+
+		// check for properties
+		for(local.prop in local.aliasProperties){
+			local.propertyValue = "";
+			if(structKeyExists(local.prop, "value")){
+				local.propertyValue  = local.prop.value;
+			}else if(structKeyExists(local.prop, "ref")){
+				local.propertyValue  = getDepenency(local.prop.ref);
+			}
+			invoke(local.object, "set#local.prop.name#", [local.propertyValue]);
+		}
+		
 
 				
 		// if this is a singleton and we have a valid object, cache it
@@ -467,9 +509,9 @@ component accessors="true"{
 			return true;
 		}
 		// also check an alias value
-		local.aliasResult = getAlias(arguments.name);
+		local.aliasResult = getMapping(arguments.name);
 		if(len(local.aliasResult)){
-			local.cacheResult = checkCache(local.aliasResult);
+			local.cacheResult = checkCache(local.aliasResult.name);
 			if(!isBoolean(local.cacheResult)){
 				return true;
 			}

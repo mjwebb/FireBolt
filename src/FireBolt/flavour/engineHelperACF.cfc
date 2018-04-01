@@ -12,7 +12,7 @@ component{
 	/**
 	* @hint adds a mapping to our application
 	*/
-	public string function addMapping(required string name, required string path){
+	public string function addCFMapping(required string name, required string path){
 		local.appMD = getApplicationMetadata();
 		local.appMD.mappings[arguments.name] = arguments.path;
 	}

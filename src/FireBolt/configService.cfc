@@ -1,6 +1,7 @@
 component{
 
 	variables.FireBolt = "";
+	variables.configObject = "";
 	variables.config = {};
 	variables.environmentPrefix = "env:";
 
@@ -24,7 +25,9 @@ component{
 	*/
 	public any function readConfig(string type="FireBolt"){
 		local.configPath = "app.config.#arguments.type#";
-		variables.config = new "#local.configPath#"().config;
+		variables.configObject = new "#local.configPath#"();
+		variables.configObject["FireBolt"] = variables.FireBolt;
+		variables.config = variables.configObject.config;
 		parseConfig(variables.config);
 	}
 
@@ -47,6 +50,13 @@ component{
 			}
 		}
 		return arguments.node;
+	}
+
+	/**
+	* @hint returns our config object
+	*/
+	public any function getConfigObject(){
+		return variables.configObject;
 	}
 
 	/**
