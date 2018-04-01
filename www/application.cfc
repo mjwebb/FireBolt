@@ -27,8 +27,9 @@
 	//this.enablerobustexception = false;
 
 	// application mappings
-	this.mappings["/FireBolt"] = getDirectoryFromPath(getCurrentTemplatePath()) & "..\src\FireBolt";
 	this.mappings["/app"] = getDirectoryFromPath(getCurrentTemplatePath()) & "..\src\app";
+	this.mappings["/FireBolt"] = getDirectoryFromPath(getCurrentTemplatePath()) & "..\src\FireBolt";
+	this.mappings["/wirebox"] = getDirectoryFromPath(getCurrentTemplatePath()) & "..\src\wirebox";
 
 	// Java Integration
 	/*this.javaSettings = { 
