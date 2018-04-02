@@ -16,7 +16,7 @@ component{
 			"listener": "testModule.sampleModule.intercept"
 		},
 		{
-			"event": "preQBExecute",
+			"event": "preQBExecuteXX",
 			"listener": "testModule.sampleModule.qbIntercept"
 		}
 	];

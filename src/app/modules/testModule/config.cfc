@@ -20,7 +20,7 @@ component{
 	this.aspectConcerns = {
 		"before": [
 			{
-				"target": "testModule.sampleModule",
+				"target": "XXtestModule.sampleModule",
 				"method": "AOPTestTarget",
 				"concern": "sampleModule@testModule.testBeforeConcern",
 				"async": false
@@ -28,13 +28,13 @@ component{
 		],
 		"after": [
 			{
-				"target": "testModule.sampleModule",
+				"target": "XXXtestModule.sampleModule",
 				"method": "AOPTestTarget",
 				"concern": "sampleModule@testModule.testAfterConcern",
 				"async": false
 			},
 			{
-				"target": "testModule.sampleModule",
+				"target": "XXtestModule.sampleModule",
 				"method": "AOPTestTarget",
 				"concern": "dep@testModule.anotherAspect",
 				"async": false

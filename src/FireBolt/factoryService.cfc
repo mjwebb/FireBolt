@@ -22,6 +22,7 @@ component accessors="true"{
 		getFireBolt().registerMethods("getObject,getController,registerMapping,getMapping,register,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
 		autoRegisterModules();
 		setAOPService(new aopService(this));
+		getFireBolt().registerMethods("call", getAOPService());
 		registerAOPConfig();
 		return this;
 	}

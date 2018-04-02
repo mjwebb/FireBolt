@@ -4,7 +4,7 @@
 
 <!--- <cfset qb = FB().getMapping("QueryBuilder@qb")> --->
 <!--- <cfdump var="#qb#"> --->
-<!--- <cfdump var="#FB().getListeners()#"> --->
+<cfdump var="#FB().getListeners()#">
 
 
 

@@ -55,6 +55,10 @@ component accessors="true"{
 	* @hint registers a'before' aspect concern
 	*/
 	public void function before(required string target, required string targetMethod, required string concern, boolean async=false){
+		local.aliasResult = getFactoryService().getMapping(arguments.target);
+		if(len(local.aliasResult.name)){
+			arguments.target = local.aliasResult.name;
+		}
 		local.methods = listToArray(arguments.targetMethod);
 		for(local.mthd in local.methods){
 			local.methodConcerns = defineMethodConcern(arguments.target, local.mthd);
@@ -72,6 +76,10 @@ component accessors="true"{
 	* @hint registers 'after' aspect concern
 	*/
 	public void function after(required string target, required string targetMethod, required string concern, boolean async=false){
+		local.aliasResult = getFactoryService().getMapping(arguments.target);
+		if(len(local.aliasResult.name)){
+			arguments.target = local.aliasResult.name;
+		}
 		local.methods = listToArray(arguments.targetMethod);
 		for(local.mthd in local.methods){
 			local.methodConcerns = defineMethodConcern(arguments.target, local.mthd);
@@ -84,6 +92,52 @@ component accessors="true"{
 			}
 		}
 	}
+
+	/**
+	* @hint adds a concern via a declaration syntax
+	*/
+	public struct function call(string concern){
+		var declaration = {
+			type: "",
+			definition: {
+				concern: arguments.concern,
+				target: "",
+				taretMethod: "",
+				async: false
+			}
+		};
+
+		structAppend(declaration, {
+			before: function(string target, string method){
+				declaration.type = "before";
+				declaration.definition.target = arguments.target;
+				declaration.definition.targetMethod = arguments.method;
+				return declaration;
+			},
+			after: function(string target, string method){
+				declaration.type = "after";
+				declaration.definition.target = arguments.target;
+				declaration.definition.targetMethod = arguments.method;
+				return declaration;
+			},
+			async: function(){
+				declaration.definition.async = true;
+				return declaration;
+			},
+			done: function(){
+				if(declaration.type IS "before"){
+					before(argumentCollection:declaration.definition);
+				}else{
+					after(argumentCollection:declaration.definition);
+				}
+				return declaration;
+			}
+		});
+
+		return declaration;
+	}
+
+
 
 	
 	/**
@@ -122,6 +176,10 @@ component accessors="true"{
 	* @hint returns any registered concerns for a given object name and optional method
 	*/
 	public struct function getConcerns(required string name, string method=""){
+		local.aliasResult = getFactoryService().getMapping(arguments.name);
+		if(len(local.aliasResult.name)){
+			arguments.name = local.aliasResult.name;
+		}
 		if(structKeyExists(variables.concerns, arguments.name)){
 			local.ret = variables.concerns[arguments.name];
 			if(len(arguments.method)){
@@ -150,7 +208,7 @@ component accessors="true"{
 	/**
 	* @hint returns true if a specific concern is already defined for a given object name and method
 	*/
-	public boolean function hasConcern(required string name,  required string method, required string concern, string aspect="after"){
+	public boolean function hasConcern(required string name, required string method, required string concern, string aspect="after"){
 		local.concerns = getConcerns(arguments.name, arguments.method);
 		if(structKeyExists(local.concerns, arguments.aspect)){
 			for(local.registeredConcern in local.concerns[arguments.aspect]){

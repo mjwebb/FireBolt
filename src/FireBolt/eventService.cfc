@@ -10,7 +10,7 @@ component accessors="true"{
 	*/
 	public eventService function init(framework FireBolt){
 		setFireBolt(arguments.FireBolt);
-		getFireBolt().registerMethods("processState,trigger,addListeners,addListener,removeListener,listenerExists,getListeners", this);
+		getFireBolt().registerMethods("processState,trigger,addListeners,addListener,listenFor,removeListener,listenerExists,getListeners", this);
 		variables.configService = new configService("eventListeners");
 		addConfigListeners();
 		return this;
@@ -60,6 +60,44 @@ component accessors="true"{
 		}
 		return false;
 	}
+
+
+	/**
+	* @hint adds a listener via a declaration syntax
+	*/
+	public struct function listenFor(string eventName){
+		var declaration = {
+			definition: {
+				eventName: arguments.eventName,
+				listener: "",
+				async: false,
+				isFireAndForget: false
+			}
+		};
+
+		structAppend(declaration, {
+			with: function(string listener){
+				declaration.definition.listener = arguments.listener;
+				return declaration;
+			},
+			async: function(){
+				declaration.definition.async = true;
+				return declaration;
+			},
+			fireAndForget: function(){
+				declaration.definition.async = true;
+				declaration.definition.isFireAndForget = true;
+				return declaration;
+			},
+			done: function(){
+				addListener(argumentCollection: declaration.definition);
+				return declaration;
+			}
+		});
+
+		return declaration;
+	}
+
 
 	/**
 	* @hint removes a listener or an entire event
