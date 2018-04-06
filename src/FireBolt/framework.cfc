@@ -76,6 +76,36 @@ component{
 		return local.cfcDotPath;
 	}
 
+	/**
+	* @hint injects a value to a given targets variables scope
+	*/
+	public void function inject(any target, string name, any value, boolean isPublic=false){
+		if(!structKeyExists(arguments.target, "$inejctor")){
+			structInsert(arguments.target, "$injector", this.injector);
+		}
+		arguments.target.$injector(arguments.name, arguments.value, arguments.isPublic);
+	}
+
+	/**
+	* @hint allows us to inject to private scope - this gets placed within a target object
+	*/
+	public void function injector(string name, any value, boolean isPublic=false){
+		variables[arguments.name] = arguments.value;
+		if(arguments.isPublic){
+			this[arguments.name] = arguments.value;
+		}
+	}
+
+	/**
+	* @hint inject the framework into a given object which can be accessed using the FB() method
+	*/
+	public void function injectFramework(any target){
+		var framework = this;
+		inject(arguments.target, "FB", function(){
+			return framework;
+		});
+	}
+
 	/*
 	request handler entry point
 	===================================== */

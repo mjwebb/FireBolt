@@ -26,7 +26,9 @@ component{
 	public any function readConfig(string type="FireBolt"){
 		local.configPath = "app.config.#arguments.type#";
 		variables.configObject = new "#local.configPath#"();
-		variables.configObject["FireBolt"] = variables.FireBolt;
+		if(! isSimpleValue(variables.FireBolt)){
+			variables.FireBolt.injectFramework(variables.configObject);
+		}
 		variables.config = variables.configObject.config;
 		parseConfig(variables.config);
 	}

@@ -279,7 +279,8 @@ component accessors="true"{
 		}
 
 		// attach our intercept method to OnMissingMethod
-		arguments.object["OnMissingMethod"] = this.onMissingMethodIntercept;
+		//arguments.object["OnMissingMethod"] = this.onMissingMethodIntercept;
+		getFactoryService().getFireBolt().inject(arguments.object, "OnMissingMethod", this.onMissingMethodIntercept, true);
 
 		writeLog(
 			text: getObjectName(arguments.object) & "." & arguments.methodName & "() - attached",

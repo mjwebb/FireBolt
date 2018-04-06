@@ -48,36 +48,21 @@ component{
 		this.FireBolt.registerMapping("qb.models.Query.QueryBuilder", "QueryBuilder@qb", local.qbInitArgs, [], false);
 		*/
 
-		// register using 
-		this.FireBolt.register("qb.models.Grammars.MSSQLGrammar")
+		// register QueryBuilder using DSL syntax
+		FB().register("qb.models.Grammars.MSSQLGrammar")
 			.as("MSSQLGrammar@qb")
 			.withProperty(name:"InterceptorService", ref:"framework");
 
-		this.FireBolt.register("qb.models.Query.QueryBuilder")
+		FB().register("qb.models.Query.QueryBuilder")
 			.as("QueryBuilder@qb")
 			.withInitArg(name:"grammar", ref:"MSSQLGrammar@qb")
 			.asTransient();
 
-
-
-
-		this.FireBolt.listenFor("preQBExecute")
+		FB().listenFor("preQBExecute")
 			.with("testModule.sampleModule.qbIntercept")
 			.done();
 
 		
-
-		this.FireBolt.call("sampleModule@testModule.testBeforeConcern")
-			.before(target:"sampleModule@testModule", method:"AOPTestTarget")
-			.done();
-
-		this.FireBolt.call("sampleModule@testModule.testAfterConcern")
-			.after(target:"sampleModule@testModule", method:"AOPTestTarget")
-			.done();
-
-		this.FireBolt.call("dep@testModule.anotherAspect")
-			.after(target:"sampleModule@testModule", method:"AOPTestTarget")
-			.done();
 	}
 
 

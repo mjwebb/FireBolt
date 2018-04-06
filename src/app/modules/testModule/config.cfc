@@ -43,9 +43,24 @@ component{
 	};
 
 
-	function init(){
-		
-	}
+	function configure(){
+		// listeners
+		FB().listenFor("waggawagga")
+			.with("testModule.sampleModule.qbIntercept")
+			.done();
+	
+		// aspect concerns
+		FB().call("sampleModule@testModule.testBeforeConcern")
+			.before(target:"sampleModule@testModule", method:"AOPTestTarget")
+			.done();
 
+		FB().call("sampleModule@testModule.testAfterConcern")
+			.after(target:"sampleModule@testModule", method:"AOPTestTarget")
+			.done();
+
+		FB().call("dep@testModule.anotherAspect")
+			.after(target:"sampleModule@testModule", method:"AOPTestTarget")
+			.done();
+	}
 	
 }

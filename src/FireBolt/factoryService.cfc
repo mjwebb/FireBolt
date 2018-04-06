@@ -23,7 +23,7 @@ component accessors="true"{
 		autoRegisterModules();
 		setAOPService(new aopService(this));
 		getFireBolt().registerMethods("call", getAOPService());
-		registerAOPConfig();
+		configureModules();
 		return this;
 	}
 
@@ -31,7 +31,7 @@ component accessors="true"{
 	register modules
 	================================ */
 	/**
-	* @hint scan our modules directory for configuration files
+	* @hint scan our modules and models directory and create mappings components within
 	*/
 	public void function autoRegisterModules(){
 		// get our module paths
@@ -40,7 +40,7 @@ component accessors="true"{
 		addCFMappings(local.modulePaths);
 		// read any config files
 		for(local.modulePath in local.modulePaths){
-			readModuleConfig(local.modulePath);
+			//readModuleConfig(local.modulePath);
 			createMappings(local.modulePath);
 		}
 		// register our models
@@ -50,17 +50,29 @@ component accessors="true"{
 	/**
 	* @hint scan our modules directory for configuration files
 	*/
-	public void function registerAOPConfig(){
+	public void function configureModules(){
 		// get our module paths
 		local.modulePaths = getModulePaths();
 		// read any config files
 		for(local.modulePath in local.modulePaths){
-			readModuleAOPConfig(local.modulePath);
+			moduleConfig(local.modulePath);
 		}
 	}
 
 	/**
-	* @hint adds a mapping for each module sub-directory and our models directory
+	* @hint scan our modules directory for configuration files for registering OP concerns
+	*/
+	/*public void function registerAOPConfig(){
+		// get our module paths
+		local.modulePaths = getModulePaths();
+		// read any config files
+		for(local.modulePath in local.modulePaths){
+			moduleConfig(local.modulePath);
+		}
+	}*/
+
+	/**
+	* @hint adds a mapping for each module sub-directory and our models directory - this needs to be done every request
 	*/
 	public void function addCFMappings(array modulePaths=getModulePaths()){
 		for(local.modulePath in arguments.modulePaths){
@@ -72,26 +84,28 @@ component accessors="true"{
 	/**
 	* @hint looks for a module config within a given module path
 	*/
+	/*
 	public void function readModuleConfig(string modulePath){
 		if(fileExists(arguments.modulePath & "\config.cfc")){
 			local.mapping = listLast(arguments.modulePath, "\");
-			local.moduleConfig = createObject("component", local.mapping & ".config");
+			local.moduleConfig = getConfigComponent(arguments.modulePath);
 			if(structKeyExists(local.moduleConfig, "config")){
 				getFireBolt().mergeSetting("modules.#local.mapping#", local.moduleConfig.config);
 			}
 			if(structKeyExists(local.moduleConfig, "listeners")){
 				getFireBolt().addListeners(local.moduleConfig.listeners);
 			}
+			local.moduleConfig.configure();
 		}
 	}
-
+	*/
 	/**
 	* @hint looks for a module config within a given module path
 	*/
+	/*
 	public void function readModuleAOPConfig(string modulePath){
 		if(fileExists(arguments.modulePath & "\config.cfc")){
-			local.mapping = listLast(arguments.modulePath, "\");
-			local.moduleConfig = createObject("component", local.mapping & ".config");
+			local.moduleConfig = getConfigComponent(arguments.modulePath);
 			if(structKeyExists(local.moduleConfig, "aspectConcerns")){
 				local.before = [];
 				if(structKeyExists(local.moduleConfig.aspectConcerns, "before")) local.before = local.moduleConfig.aspectConcerns.before;
@@ -99,9 +113,51 @@ component accessors="true"{
 				if(structKeyExists(local.moduleConfig.aspectConcerns, "after")) local.after = local.moduleConfig.aspectConcerns.after;
 				getAOPService().addConcerns(local.before, local.after);
 			}
+			local.moduleConfig.registerConcerns();
+		}
+	}
+	*/
+	/**
+	* @hint looks for a module config within a given module path
+	*/
+	public void function moduleConfig(string modulePath){
+		if(fileExists(arguments.modulePath & "\config.cfc")){
+			local.mapping = listLast(arguments.modulePath, "\");
+			local.moduleConfig = getConfigComponent(arguments.modulePath);
+			if(structKeyExists(local.moduleConfig, "config")){
+				getFireBolt().mergeSetting("modules.#local.mapping#", local.moduleConfig.config);
+			}
+			if(structKeyExists(local.moduleConfig, "listeners")){
+				getFireBolt().addListeners(local.moduleConfig.listeners);
+			}
+			if(structKeyExists(local.moduleConfig, "aspectConcerns")){
+				local.before = [];
+				if(structKeyExists(local.moduleConfig.aspectConcerns, "before")) local.before = local.moduleConfig.aspectConcerns.before;
+				local.after = [];
+				if(structKeyExists(local.moduleConfig.aspectConcerns, "after")) local.after = local.moduleConfig.aspectConcerns.after;
+				getAOPService().addConcerns(local.before, local.after);
+			}
+			local.moduleConfig.configure();
 		}
 	}
 
+	/**
+	* @hint get config component
+	*/
+	public any function getConfigComponent(string modulePath){
+		local.mapping = listLast(arguments.modulePath, "\");
+		local.moduleConfig = createObject("component", local.mapping & ".config");
+		getFireBolt().injectFramework(local.moduleConfig);
+		if(!structKeyExists(local.moduleConfig, "configure")){
+			local.moduleConfig["configure"] = function(){};
+		}
+		if(!structKeyExists(local.moduleConfig, "registerConcerns")){
+			local.moduleConfig["registerConcerns"] = function(){};
+		}
+		return local.moduleConfig;
+	}
+
+	
 	/**
 	* @hint scans a given directrory for cfc's and generates aliases for each one
 	*/
