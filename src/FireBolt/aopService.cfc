@@ -54,43 +54,53 @@ component accessors="true"{
 	/**
 	* @hint registers a'before' aspect concern
 	*/
-	public void function before(required string target, required string targetMethod, required string concern, boolean async=false){
+	public array function before(required string target, required string targetMethod, required string concern, boolean async=false){
 		local.aliasResult = getFactoryService().getMapping(arguments.target);
 		if(len(local.aliasResult.name)){
 			arguments.target = local.aliasResult.name;
 		}
 		local.methods = listToArray(arguments.targetMethod);
+		local.added = [];
 		for(local.mthd in local.methods){
 			local.methodConcerns = defineMethodConcern(arguments.target, local.mthd);
 			if(!hasConcern(arguments.target, local.mthd, arguments.concern, "before")){
-				arrayAppend(local.methodConcerns.before, {
+				local.concernDef = {
 					concern: arguments.concern,
-					async: arguments.async
-				});
+					async: arguments.async,
+					method: local.mthd
+				};
+				arrayAppend(local.methodConcerns.before, local.concernDef);
+				arrayAppend(local.added, local.concernDef);
 				registerIfFactoryCached(arguments.target, arguments.targetMethod);
 			}
 		}
+		return local.added;
 	}
 
 	/**
 	* @hint registers 'after' aspect concern
 	*/
-	public void function after(required string target, required string targetMethod, required string concern, boolean async=false){
+	public array function after(required string target, required string targetMethod, required string concern, boolean async=false){
 		local.aliasResult = getFactoryService().getMapping(arguments.target);
 		if(len(local.aliasResult.name)){
 			arguments.target = local.aliasResult.name;
 		}
 		local.methods = listToArray(arguments.targetMethod);
+		local.added = [];
 		for(local.mthd in local.methods){
 			local.methodConcerns = defineMethodConcern(arguments.target, local.mthd);
 			if(!hasConcern(arguments.target, local.mthd, arguments.concern, "after")){
-				arrayAppend(local.methodConcerns.after, {
+				local.concernDef = {
 					concern: arguments.concern,
-					async: arguments.async
-				});
+					async: arguments.async,
+					method: local.mthd
+				};
+				arrayAppend(local.methodConcerns.after, local.concernDef);
+				arrayAppend(local.added, local.concernDef);
 				registerIfFactoryCached(arguments.target, arguments.targetMethod);
 			}
 		}
+		return local.added;
 	}
 
 	/**
@@ -112,24 +122,20 @@ component accessors="true"{
 				declaration.type = "before";
 				declaration.definition.target = arguments.target;
 				declaration.definition.targetMethod = arguments.method;
+				local.added = before(argumentCollection:declaration.definition);
+				declaration.definition = local.added[1];
 				return declaration;
 			},
 			after: function(string target, string method){
 				declaration.type = "after";
 				declaration.definition.target = arguments.target;
 				declaration.definition.targetMethod = arguments.method;
+				local.added = after(argumentCollection:declaration.definition);
+				declaration.definition = local.added[1];
 				return declaration;
 			},
 			async: function(){
 				declaration.definition.async = true;
-				return declaration;
-			},
-			done: function(){
-				if(declaration.type IS "before"){
-					before(argumentCollection:declaration.definition);
-				}else{
-					after(argumentCollection:declaration.definition);
-				}
 				return declaration;
 			}
 		});

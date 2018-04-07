@@ -47,20 +47,19 @@ component{
 		// listeners
 		FB().listenFor("waggawagga")
 			.with("testModule.sampleModule.qbIntercept")
-			.done();
-	
+			.async();
+			
 		// aspect concerns
 		FB().call("sampleModule@testModule.testBeforeConcern")
-			.before(target:"sampleModule@testModule", method:"AOPTestTarget")
-			.done();
+			.before(target:"sampleModule@testModule", method:"AOPTestTarget");;
+			//.async();
 
 		FB().call("sampleModule@testModule.testAfterConcern")
-			.after(target:"sampleModule@testModule", method:"AOPTestTarget")
-			.done();
-
+			.after(target:"sampleModule@testModule", method:"AOPTestTarget");
+			
 		FB().call("dep@testModule.anotherAspect")
-			.after(target:"sampleModule@testModule", method:"AOPTestTarget")
-			.done();
+			.after(target:"sampleModule@testModule", method:"AOPTestTarget");
+			
 	}
 	
 }

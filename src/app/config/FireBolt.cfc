@@ -59,9 +59,7 @@ component{
 			.asTransient();
 
 		FB().listenFor("preQBExecute")
-			.with("testModule.sampleModule.qbIntercept")
-			.done();
-
+			.with("testModule.sampleModule.qbIntercept");
 		
 	}
 

@@ -42,7 +42,7 @@ component accessors="true"{
 	/**
 	* @hint adds a listener
 	*/
-	public boolean function addListener(
+	public any function addListener(
 		required string eventName, 
 		required string listener, 
 		boolean async=false,
@@ -52,11 +52,13 @@ component accessors="true"{
 			if(!structKeyExists(variables.eventListeners, arguments.eventName)){
 				variables.eventListeners[arguments.eventName] = [];
 			}
-			arrayAppend(variables.eventListeners[arguments.eventName], {
+			local.listenerDef = {
 				target: arguments.listener,
 				async: arguments.async,
 				isFireAndForget: arguments.isFireAndForget
-			});
+			};
+			arrayAppend(variables.eventListeners[arguments.eventName], local.listenerDef);
+			return local.listenerDef;
 		}
 		return false;
 	}
@@ -78,6 +80,7 @@ component accessors="true"{
 		structAppend(declaration, {
 			with: function(string listener){
 				declaration.definition.listener = arguments.listener;
+				declaration.definition = addListener(argumentCollection: declaration.definition);
 				return declaration;
 			},
 			async: function(){
@@ -87,10 +90,6 @@ component accessors="true"{
 			fireAndForget: function(){
 				declaration.definition.async = true;
 				declaration.definition.isFireAndForget = true;
-				return declaration;
-			},
-			done: function(){
-				addListener(argumentCollection: declaration.definition);
 				return declaration;
 			}
 		});
