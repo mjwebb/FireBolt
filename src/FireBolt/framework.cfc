@@ -80,7 +80,7 @@ component{
 	* @hint injects a value to a given targets variables scope
 	*/
 	public void function inject(any target, string name, any value, boolean isPublic=false){
-		if(!structKeyExists(arguments.target, "$inejctor")){
+		if(!structKeyExists(arguments.target, "$injector")){
 			structInsert(arguments.target, "$injector", this.injector);
 		}
 		arguments.target.$injector(arguments.name, arguments.value, arguments.isPublic);

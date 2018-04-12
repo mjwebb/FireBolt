@@ -27,7 +27,7 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 <!--- <cfdump var="#FB().getAOPService().getAllConcerns()#"> --->
 <!--- <cfdump var="#FB().getFactoryService().getAliases()#"> --->
 
-<cfoutput><p>User name: #getRequestHandler().getData("user").getFullName()# - #getRequestHandler().getData("user2").getFullName()#</p></cfoutput>
+<cfoutput><p>User name: #getData("user").getFullName()# - #getData("user2").getFullName()#</p></cfoutput>
 
 <!--- <cfdump var="#FB().getObject("UserService")#"> --->
 

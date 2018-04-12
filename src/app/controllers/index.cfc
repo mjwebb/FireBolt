@@ -17,13 +17,14 @@ component output="false" extends="FireBolt.controller" {
 		local.user = FB().getObject("UserService").getUser();
 		local.user.setForeName("Joe");
 		local.user.setSurName("Blogs");
-		getRequestHandler().setData("user", local.user);
+		setData("user", local.user);
 
 		local.user2 = FB().getObject("UserService").getUser();
 		local.user2.setForeName("John");
 		local.user2.setSurName("Smith");
-		getRequestHandler().setData("user2", local.user2);
+		setData("user2", local.user2);
 
+		
 		addBreadCrumb("home", "/");
 		setTitle("HELLO WORLD");
 		addView("hello", {test: "here"});

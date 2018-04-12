@@ -13,7 +13,7 @@ component transient accessors="true"{ // transient request output service
 	* @hint constructor
 	*/
 	public requestOutputService function init(requestHandler req, string templateRootDir="", string viewRootDir=""){
-		setrequestHandler(arguments.req);
+		setRequestHandler(arguments.req);
 		variables.templateRootDir = arguments.templateRootDir;
 		variables.viewRootDir = arguments.viewRootDir;
 		return this;
@@ -26,6 +26,20 @@ component transient accessors="true"{ // transient request output service
 	*/
 	public framework function FB(){
 		return getRequestHandler().FB();
+	}
+
+	/**
+	* @hint set request data variable shortcut
+	*/
+	public void function setData(string key, any data){
+		getRequestHandler().setData(arguments.key, arguments.data);
+	}
+
+	/**
+	* @hint get request data variable shortcut
+	*/
+	public any function getData(string key){
+		return getRequestHandler().getData(arguments.key);
 	}
 
 	// ===================================

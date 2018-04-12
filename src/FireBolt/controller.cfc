@@ -3,10 +3,6 @@ component transient accessors="true"{
 	//property name="FB" inject="framework";
 	property FireBolt;
 	property requestHandler;
-
-	//variables.FireBolt = "";
-	variables.req = "";
-
 	
 	
 	/**
@@ -32,6 +28,7 @@ component transient accessors="true"{
 	public struct function rc(){
 		return getRequestHandler().getContext();
 	}
+
 
 	/**
 	* @hint write a var dump out as a string
@@ -114,18 +111,20 @@ component transient accessors="true"{
 	* @hint creates proxy methods to our request output service methods
 	*/
 	public void function setOutputProxyMethods(){
-		for(var key in output()){
-			if(!structKeyExists(variables, key)){
-				variables[key] = this.outputProxyMethod;
+		local.outputService = output();
+		for(local.key in local.outputService){
+			//FB().inject(this, local.key, local.outputService[local.key], true);
+			if(!structKeyExists(variables, local.key)){
+				variables[local.key] = this.outputProxyMethod;
 			}
-			if(!structKeyExists(this, key)){
-				this[key] = this.outputProxyMethod;
+			if(!structKeyExists(this, local.key)){
+				this[local.key] = this.outputProxyMethod;
 			}
 		}
 	}
 
 	/**
-	* @hint this gets called by our proxied request output serice methods and makes the call back to itself
+	* @hint this gets called by our proxied request output service methods and makes the call back to itself
 	*/
 	public any function outputProxyMethod(){
 		return invoke(output(), getFunctionCalledName(), arguments);
