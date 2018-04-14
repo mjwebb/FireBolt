@@ -86,6 +86,12 @@ component output="false" extends="FireBolt.controller" {
 		return "wagga";
 	}
 
-
+	/**
+	* @verbs GET
+	*/
+	public function debug(){
+		addView("debug");
+		layout();
+	}
 	
 }

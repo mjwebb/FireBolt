@@ -1,8 +1,8 @@
 component accessors="true"{
 
-	property FB inject="framework";
-	property testSetting inject="setting:modules.testModule.setting";
-	property sampleDep inject="dep@testModule";
+	property name="FB" inject="framework";
+	property name="testSetting" inject="setting:modules.testModule.setting";
+	property name="sampleDep" inject="dep@testModule";
 
 	
 	//variables.FB;

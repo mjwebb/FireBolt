@@ -6,8 +6,7 @@ component output="false" extends="FireBolt.controller" {
 		//addContent("<p>FORBIDDEN</p>");
 		//layout();
 
-		setResponseBody("<h1>Forbidden</h1>");
-		response().setStatus(response().codes.FORBIDDEN);
+		setResponseBody("<h1>Forbidden</h1>").setStatus(response().codes.FORBIDDEN);
 	}
 
 	

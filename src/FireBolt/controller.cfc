@@ -101,30 +101,31 @@ component transient accessors="true"{
 	}
 
 	/**
-	* @hint returns our request output service
+	* @hint returns our response output service
 	*/
-	public requestOutputService function output(){
+	public responseOutputService function output(){
 		return getRequestHandler().output();
 	}
 
 	/**
-	* @hint creates proxy methods to our request output service methods
+	* @hint creates proxy methods to our response output service methods
 	*/
 	public void function setOutputProxyMethods(){
 		local.outputService = output();
 		for(local.key in local.outputService){
 			//FB().inject(this, local.key, local.outputService[local.key], true);
-			if(!structKeyExists(variables, local.key)){
-				variables[local.key] = this.outputProxyMethod;
-			}
+			
 			if(!structKeyExists(this, local.key)){
 				this[local.key] = this.outputProxyMethod;
+				if(!structKeyExists(variables, local.key)){
+					variables[local.key] = this.outputProxyMethod;
+				}
 			}
 		}
 	}
 
 	/**
-	* @hint this gets called by our proxied request output service methods and makes the call back to itself
+	* @hint this gets called by our proxied response output service methods and makes the call back to itself
 	*/
 	public any function outputProxyMethod(){
 		return invoke(output(), getFunctionCalledName(), arguments);

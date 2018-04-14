@@ -168,7 +168,7 @@ component accessors="true"{
 
 		for(local.cfc in local.cfcs){
 			
-			local.cfcDotPath = getFireBolt().cleanDotPath(replaceNoCase(local.cfc, arguments.modulePath, ""))
+			local.cfcDotPath = getFireBolt().cleanDotPath(replaceNoCase(local.cfc, arguments.modulePath, ""));
 
 			// add our module root back into the path
 			local.cfcDotPath = local.moduleRoot & "." & local.cfcDotPath;
@@ -209,8 +209,8 @@ component accessors="true"{
 	/**
 	* @hint searches our aliases for a given key
 	*/
-	public struct function getMapping(string alias){
-		if(structKeyExists(variables.moduleMappings, arguments.alias)){
+	public struct function getMapping(string alias=""){
+		if(len(arguments.alias) AND structKeyExists(variables.moduleMappings, arguments.alias)){
 			return variables.moduleMappings[arguments.alias];
 		}
 		return {
@@ -626,7 +626,7 @@ component accessors="true"{
 		}
 		// also check an alias value
 		local.aliasResult = getMapping(arguments.name);
-		if(len(local.aliasResult)){
+		if(len(local.aliasResult.name)){
 			local.cacheResult = checkCache(local.aliasResult.name);
 			if(!isBoolean(local.cacheResult)){
 				return true;

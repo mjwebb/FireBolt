@@ -6,7 +6,7 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
 
 <cfoutput>#view("nested.view", data)#</cfoutput>
 <!--- <cfdump var="#data#"> --->
-<cfdump var="#FB().getAllConcerns()#">
+<!--- <cfdump var="#FB().getAllConcerns()#"> --->
 
 
 <!---<cfdump var="#FB().getFactoryService().getModulePaths()#"> --->

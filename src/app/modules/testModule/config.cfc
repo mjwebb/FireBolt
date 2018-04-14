@@ -51,7 +51,7 @@ component{
 			
 		// aspect concerns
 		FB().call("sampleModule@testModule.testBeforeConcern")
-			.before(target:"sampleModule@testModule", method:"AOPTestTarget");;
+			.before(target:"sampleModule@testModule", method:"AOPTestTarget");
 			//.async();
 
 		FB().call("sampleModule@testModule.testAfterConcern")

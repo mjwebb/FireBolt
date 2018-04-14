@@ -1,7 +1,7 @@
-component transient accessors="true"{ // transient request output service
+component transient{ // transient response output service
 
-	property requestHandler;
-	
+	//property requestHandler;
+	variables.requestHandler = "";
 	variables.content = {};
 	variables.breadcrumbs = [];
 	variables.title = "";
@@ -12,14 +12,26 @@ component transient accessors="true"{ // transient request output service
 	/**
 	* @hint constructor
 	*/
-	public requestOutputService function init(requestHandler req, string templateRootDir="", string viewRootDir=""){
+	public responseOutputService function init(requestHandler req, string templateRootDir="", string viewRootDir=""){
 		setRequestHandler(arguments.req);
 		variables.templateRootDir = arguments.templateRootDir;
 		variables.viewRootDir = arguments.viewRootDir;
 		return this;
 	}
 
-	
+	/**
+	* @hint set request handler
+	*/
+	public void function setRequestHandler(any handler){
+		variables.requestHandler = arguments.handler;
+	}
+
+	/**
+	* @hint get request handler
+	*/
+	public any function getRequestHandler(){
+		return variables.requestHandler;
+	}
 
 	/**
 	* @hint framework shortcut

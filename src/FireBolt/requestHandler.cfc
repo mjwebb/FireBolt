@@ -177,6 +177,30 @@ component transient accessors="true"{ // transient request handler
 		return variables.response;
 	}
 
+	/**
+	* @hint set response header
+	*/
+	public void function setResponseHeader(string name, string value){
+		local.pc = getpagecontext().getresponse();
+		local.pc.setHeader(arguments.name, arguments.value);
+	}
+
+	/**
+	* @hint set response status
+	*/
+	public void function setResponseStatus(string statusCode, string statusText=""){
+		local.pc = getpagecontext().getresponse();
+		local.pc.getresponse().setstatus(arguments.statusCode, arguments.statusText);
+	}
+
+	/**
+	* @hint set response content type
+	*/
+	public void function setResponseContentType(string type){
+		local.pc = getpagecontext().getresponse();
+		local.pc.getresponse().setcontenttype(arguments.type);
+	}
+
 
 	/**
 	* @hint return a response
@@ -184,20 +208,20 @@ component transient accessors="true"{ // transient request handler
 	public any function respond(boolean setHeaders=true){
 		if(!len(variables.response.getStatusText())) variables.response.autoStatusText();
 		if(arguments.setHeaders){
-			cfheader(
+			setResponseStatus(
 				statusCode=variables.response.getStatus(),
 				statusText=variables.response.getStatusText());
 			if(structKeyExists(variables.context.url, "timerHeader")){
-				cfheader(
+				setResponseHeader(
 					name="ServerTimer", 
 					value=duration());
 			}
 			if(isBinary(variables.response.getBody())){
-				cfheader(
+				setResponseHeader(
 					name="Content-Length", 
 					value=variables.response.getLength());
 			}
-			cfcontent(
+			setResponseContentType(
 				type="#variables.response.getType()#; charset=#variables.response.getEncoding()#");
 		}
 		return variables.response.getBody();
@@ -221,14 +245,14 @@ component transient accessors="true"{ // transient request handler
 	/**
 	* @hint create a requestOutputService for this request
 	*/
-	public requestOutputService function newOutput(){
-		return new requestOutputService(this);
+	public responseOutputService function newOutput(){
+		return new responseOutputService(this);
 	}
 
 	/**
 	* @hint returns our request output service
 	*/
-	public requestOutputService function output(){
+	public responseOutputService function output(){
 		return variables.outputService;
 	}
 

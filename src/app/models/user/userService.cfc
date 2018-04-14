@@ -1,6 +1,6 @@
 component accessors="true"{
 
-	property FB inject="framework";
+	property name="FB" inject="framework";
 	
 	/**
 	* @hint constructor
