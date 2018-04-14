@@ -283,9 +283,9 @@ component{
 
 			// attempt to process an error controller
 			try{
-				getFactoryService().addModuleMappings(); // mappings need to be added on every request
+				getFactoryService().addCFMappings(); // mappings need to be added on every request
 				local.errReq = FireBoltRequest("onError");
-				local.errReq.setRequestData(local.err);
+				local.errReq.setData("error", duplicate(local.err));
 				// set an error status code
 				local.errReq.getResponse().setStatus(local.errReq.getResponse().codes.ERROR);
 				// call our error route
