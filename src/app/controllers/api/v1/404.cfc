@@ -3,7 +3,7 @@ component output="false" extends="FireBolt.controller" {
 	/**	
 	*/
 	public function get(){
-		setResponseBody({
+		respondWith({
 			"error": "not found"
 		}).setStatus(response().codes.NOTFOUND);
 	}

@@ -3,7 +3,7 @@ component output="false" extends="FireBolt.controller" {
 	/**
 	*/
 	public function get(){
-		setResponseBody({
+		respondWith({
 			"api": "response"
 		});
 	}
@@ -11,7 +11,7 @@ component output="false" extends="FireBolt.controller" {
 	/**
 	*/
 	public function do404(){
-		setResponseBody({
+		respondWith({
 			"error": "method not found"
 		});
 	}
@@ -20,7 +20,7 @@ component output="false" extends="FireBolt.controller" {
 	* @verbs GET
 	*/
 	public function test(){
-		setResponseBody({
+		respondWith({
 			"api": "response",
 			"method": "test"
 		});
@@ -32,7 +32,7 @@ component output="false" extends="FireBolt.controller" {
 	* @permissions adminUser
 	*/
 	public function secure(){
-		setResponseBody({
+		respondWith({
 			"api": "response",
 			"method": "secure"
 		});

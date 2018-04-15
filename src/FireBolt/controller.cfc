@@ -23,6 +23,13 @@ component transient accessors="true"{
 	}
 
 	/**
+	* @hint request hander shortcut
+	*/
+	public struct function req(){
+		return getRequestHandler();
+	}
+
+	/**
 	* @hint request context shortcut
 	*/
 	public struct function rc(){
@@ -61,7 +68,7 @@ component transient accessors="true"{
 	/**
 	* @hint helper for setting our request response body
 	*/
-	public function setResponseBody(any body){
+	public function respondWith(any body){
 		return response().setBody(arguments.body);
 	}
 

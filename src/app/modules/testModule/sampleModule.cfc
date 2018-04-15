@@ -92,7 +92,7 @@ component accessors="true"{
 
 				arguments.req.defineRoute(
 					arrayToList(local.interceptPath, "."), 
-					"get");
+					"index");
 
 			}
 		}

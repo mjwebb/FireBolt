@@ -26,10 +26,6 @@
 	// Overrides the default administrator settings. It does not report compile-time exceptions.
 	//this.enablerobustexception = false;
 
-	// application mappings
-	this.mappings["/app"] = getDirectoryFromPath(getCurrentTemplatePath()) & "..\src\app";
-	this.mappings["/FireBolt"] = getDirectoryFromPath(getCurrentTemplatePath()) & "..\src\FireBolt";
-	this.mappings["/wirebox"] = getDirectoryFromPath(getCurrentTemplatePath()) & "..\src\wirebox";
 
 	// Java Integration
 	/*this.javaSettings = { 
@@ -37,59 +33,13 @@
 		loadColdFusionClassPath = true, 
 		reloadOnChange= false 
 	};*/
-	
 
-	public function getFireBolt(boolean reload=false){
-		if(!structKeyExists(application, "FireBolt") OR arguments.reload){
-			application.FireBolt = new FireBolt.framework();
-		}
-		return application.FireBolt;
-	}
+	// application mappings
+	this.mappings["/app"] = getDirectoryFromPath(getCurrentTemplatePath()) & "..\src\app";
+	this.mappings["/FireBolt"] = getDirectoryFromPath(getCurrentTemplatePath()) & "..\src\FireBolt";
+	this.mappings["/wirebox"] = getDirectoryFromPath(getCurrentTemplatePath()) & "..\src\wirebox";
 
-
-	// application start
-	public boolean function onApplicationStart(){
-		getFireBolt().onApplicationStart();
-		return true;
-	}
-
-	// application end
-	/*public void function onApplicationEnd(struct appScope){
-		arguments.appScope.FireBolt.onApplicationEnd(arguments.appScope);
-	}*/
-
-	// request start
-	public boolean function onRequestStart(string targetPage){
-		request.startTime = getTickCount();
-		getFireBolt(structKeyExists(url, "reload")).onRequestStart(arguments.targetPage);
-		return true;
-	}
-
-	// session start
-	public void function onSessionStart(){
-		getFireBolt().onSessionStart();
-	}
-
-	// session end
-	/*public void function onSessionEnd(struct sessionScope, struct appScope){
-		arguments.appScope.FireBolt.onSessionEnd(argumentCollection:arguments);
-	}*/
-
-	
-	// error
-	/**
-	* @output=true
-	*/
-	public void function onError(any exception, string eventName=""){
-		try{
-			writeOutput(getFireBolt().onError(argumentCollection:arguments));
-		}catch(any e){
-			writeDump(var:arguments, label:"Error", format:"text");
-			//rethrow;
-		}
-		
-		return;
-	}
-
+	// application configuration include
+	include "../src/FireBolt/bootstrap.cfm";
 
 }

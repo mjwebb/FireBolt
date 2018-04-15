@@ -91,6 +91,9 @@ component accessors="true"{
 				writeDump(local.c);
 			}
 			arguments.req.getResponse().setBody(local.err);*/
+			getFireBolt().trigger("req.routeNotFound", {
+				req: arguments.req
+			});
 			arguments.req.getResponse().setStatus(arguments.req.getResponse().codes.NOTFOUND);
 			return "";
 		}

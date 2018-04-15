@@ -1,12 +1,13 @@
 component output="false" extends="FireBolt.controller" {
 
-	/**	
+	/**
+	* @verbs *
 	*/
-	public function get(){
+	public function index(){
 		//addContent("<p>FORBIDDEN</p>");
 		//layout();
 
-		setResponseBody("<h1>Forbidden</h1>").setStatus(response().codes.FORBIDDEN);
+		respondWith("<h1>Forbidden</h1>").setStatus(response().codes.FORBIDDEN);
 	}
 
 	

@@ -3,7 +3,7 @@ component output="false" extends="FireBolt.controller" {
 	/**	
 	*/
 	public function get(){
-		setResponseBody("HELLO FROM CONTROLLER");
+		respondWith("HELLO FROM CONTROLLER");
 
 		/*
 		local.t = FB().getModule("testModule.sampleModule");
