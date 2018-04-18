@@ -1,7 +1,5 @@
 component transient{
 	
-	variables.FireBolt = "";
-	
 	this.types = {
 		HTML:	"text/html",
 		JSON:	"application/json",
@@ -70,7 +68,6 @@ component transient{
 	* @hint constructor
 	*/
 	public response function init(){
-		//variables.FireBolt = arguments.FireBolt;
 		return this;
 	}
 

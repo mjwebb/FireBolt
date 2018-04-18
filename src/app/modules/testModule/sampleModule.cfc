@@ -25,10 +25,8 @@ component accessors="true"{
 	//	variables.FB = arguments.FB;
 	//}
 
-	public string function hello(req){
-		return "world " & variables.startTime & arguments.req.output().view(
-			viewFile: "test",
-			root: "/testModule/views/");
+	public string function hello(controller){
+		return "world " & variables.startTime & arguments.controller.moduleView("testModule", "test");
 	}
 
 	public string function world(){
@@ -90,9 +88,7 @@ component accessors="true"{
 					arrayPrepend(local.interceptPath, "api.v1");
 				}
 
-				arguments.req.defineRoute(
-					arrayToList(local.interceptPath, "."), 
-					"index");
+				arguments.req.defineRoute(arrayToList(local.interceptPath, "."), "index");
 
 			}
 		}

@@ -12,7 +12,6 @@ component transient accessors="true"{ // transient request handler
 		verb: ""
 	};
 	variables.route = "";
-	variables.outputService = "";
 	variables.reqData = {};
 
 	/**
@@ -30,7 +29,6 @@ component transient accessors="true"{ // transient request handler
 		variables.context.args = arguments;
 		setFireBolt(arguments.FireBolt);
 		variables.response = new response();
-		variables.outputService = newOutput();
 		return this;
 	}
 
@@ -242,18 +240,5 @@ component transient accessors="true"{ // transient request handler
 		return getFireBolt();
 	}
 
-	/**
-	* @hint create a requestOutputService for this request
-	*/
-	public responseOutputService function newOutput(){
-		return new responseOutputService(this);
-	}
-
-	/**
-	* @hint returns our request output service
-	*/
-	public responseOutputService function output(){
-		return variables.outputService;
-	}
-
+	
 }

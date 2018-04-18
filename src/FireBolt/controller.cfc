@@ -1,39 +1,45 @@
-component transient accessors="true"{
+component transient{
 	
-	//property name="FB" inject="framework";
-	property FireBolt;
-	property requestHandler;
 	
+	variables.FireBolt = "";
+	variables.requestHandler = "";
+	variables.templateRootDir = "";
+	variables.viewRootDir = "";
+	variables.templateService = "";
 	
 	/**
 	* @hint constructor
 	*/
 	public controller function init(requestHandler req, framework FireBolt inject){
-		setRequestHandler(arguments.req);
-		setFireBolt(arguments.FireBolt);
-		setOutputProxyMethods();
+		variables.requestHandler = arguments.req;
+		variables.FireBolt = arguments.FireBolt;
+		setTemplateProxyMethods();
 		return this;
 	}
 
+	// ===================================
+	// SHORTCUTS & HELPERS
+	
+	
 	/**
 	* @hint framework shortcut
 	*/
 	public framework function FB(){
-		return getFireBolt();
+		return variables.FireBolt;
 	}
 
 	/**
 	* @hint request hander shortcut
 	*/
 	public struct function req(){
-		return getRequestHandler();
+		return variables.requestHandler;
 	}
 
 	/**
 	* @hint request context shortcut
 	*/
 	public struct function rc(){
-		return getRequestHandler().getContext();
+		return req().getContext();
 	}
 
 
@@ -56,13 +62,30 @@ component transient accessors="true"{
 		return callMe(argumentCollection=arguments.args);
 	}
 
+	// ===================================
+	// REQUEST
+	/**
+	* @hint set request data variable shortcut
+	*/
+	public void function setData(string key, any data){
+		req().setData(arguments.key, arguments.data);
+	}
+
+	/**
+	* @hint get request data variable shortcut
+	*/
+	public any function getData(string key){
+		return req().getData(arguments.key);
+	}
 
 
+	// ===================================
+	// RESPONSE HANDLING
 	/**
 	* @hint helper for our request response
 	*/
 	public function response(){
-		return getRequestHandler().getResponse();
+		return req().getResponse();
 	}
 
 	/**
@@ -76,56 +99,130 @@ component transient accessors="true"{
 	* @hint call our response for our request handler
 	*/
 	public function respond(){
-		return getRequestHandler().respond();
+		return req().respond();
 	}
 
 
+
+	
+
+	// ===================================
+	// TEMPLATES
 	/**
-	* @hint helper for our view
+	* @hint returns a template path
 	*/
-	public any function view(string viewFile, any viewData={}, string contentRegion="", string root=FB().getSetting('paths.views')){
-		if(isStruct(arguments.viewData)){
-			structAppend(arguments.viewData, {controller:this});
+	public string function templateRoot(string templateRootDir=""){
+		if(len(arguments.templateRootDir)){
+			variables.templateRootDir = arguments.templateRootDir;
 		}
-		return output().view(argumentCollection:arguments);
+		if(len(variables.templateRootDir)){
+			return variables.templateRootDir;
+		}else{
+			return FB().getSetting('paths.templates');
+		}
 	}
 
 	/**
-	* @hint render a view and add it by default to the default content region
+	* @hint returns a template path
 	*/
-	public any function addView(string viewFile, any viewData={}, string contentRegion="default", string root=FB().getSetting('paths.views')){
-		return view(argumentCollection:arguments);
+	public string function templatePath(string template="default", string root=templateRoot()){
+		return "#arguments.root##replaceNoCase(arguments.template, '.', '/', 'ALL')#.cfm";
 	}
 
 
 	/**
-	* @hint render a given output
+	* @hint render a given template
 	*/
 	public any function layout(string templateName="default"){
-		local.output = output().layout(argumentCollection:arguments);
+		local.pathToTemplate = templatePath(arguments.templateName);
+		savecontent variable="local.output" {include local.pathToTemplate;};
 		response().setBody(local.output);
 		return local.output;
 	}
 
 	/**
-	* @hint returns our response output service
+	* @hint performs a template include
 	*/
-	public responseOutputService function output(){
-		return getRequestHandler().output();
+	public string function templateInclude(required string templateName){
+		savecontent variable="local.output" {include templatePath("includes." & arguments.templateName);};
+		return local.output;
 	}
+
+
+	// ===================================
+	// VIEWS
+	public string function viewRoot(string viewRootDir=""){
+		if(len(arguments.viewRootDir)){
+			variables.viewRootDir = arguments.viewRootDir;
+		}
+		if(len(variables.viewRootDir)){
+			return variables.viewRootDir;
+		}else{
+			return FB().getSetting('paths.views');
+		}
+	}
+
+	/**
+	* @hint returns a view path
+	*/
+	public string function viewPath(string viewFile="default", string root=viewRoot()){
+		return "#arguments.root##replaceNoCase(arguments.viewFile, '.', '/', 'ALL')#.cfm";
+	}
+
+	/**
+	* @hint render a view
+	*/
+	public any function view(string viewFile, any viewData={}, string contentRegion="", string root=viewRoot()){
+		var data = arguments.viewData;
+		savecontent variable="local.ret"{include "#viewPath(arguments.viewFile, arguments.root)#";}
+		if(len(arguments.contentRegion)){
+			variables.templateService.addContent(local.ret, arguments.contentRegion);
+		}
+		return local.ret;
+	}
+
+	/**
+	* @hint render a view and add it by default to the default content region
+	*/
+	public any function addView(string viewFile, any viewData={}, string contentRegion="default", string root=viewRoot()){
+		return view(argumentCollection:arguments);
+	}
+
+
+	/**
+	* @hint render a module view
+	*/
+	public any function moduleView(string moduleRoot, string viewFile, any viewData={}, string contentRegion="", string viewPath="views"){
+		local.pathToView = "/#arguments.moduleRoot#/#arguments.viewPath#/";
+		return view(arguments.viewFile, arguments.viewData, arguments.contentRegion,  local.pathToView);
+	}
+
+	/**
+	* @hint render a view and add it by default to the default content region
+	*/
+	public any function addModuleView(string moduleRoot, string viewFile, any viewData={}, string contentRegion="default", string viewPath="views"){
+		return moduleView(argumentCollection:arguments);
+
+	}
+
+
+
+	// ===================================
+	// TEMPLATE SERVICE PROXY
+	
 
 	/**
 	* @hint creates proxy methods to our response output service methods
 	*/
-	public void function setOutputProxyMethods(){
-		local.outputService = output();
-		for(local.key in local.outputService){
-			//FB().inject(this, local.key, local.outputService[local.key], true);
+	public void function setTemplateProxyMethods(){
+		variables.templateService = new templateService(this);
+		for(local.key in variables.templateService){
+			//FB().inject(this, local.key, local.templateService[local.key], true);
 			
 			if(!structKeyExists(this, local.key)){
-				this[local.key] = this.outputProxyMethod;
+				this[local.key] = this.templateProxyMethod;
 				if(!structKeyExists(variables, local.key)){
-					variables[local.key] = this.outputProxyMethod;
+					variables[local.key] = this.templateProxyMethod;
 				}
 			}
 		}
@@ -134,8 +231,8 @@ component transient accessors="true"{
 	/**
 	* @hint this gets called by our proxied response output service methods and makes the call back to itself
 	*/
-	public any function outputProxyMethod(){
-		return invoke(output(), getFunctionCalledName(), arguments);
+	public any function templateProxyMethod(){
+		return invoke(variables.templateService, getFunctionCalledName(), arguments);
 	}
 
 	
