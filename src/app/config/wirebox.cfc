@@ -1,5 +1,13 @@
 component extends="wirebox.system.ioc.config.Binder"{
 
+	/*
+	Configures wirebox for use within FireBolt
+
+	Within the FireBolt onApplicationStart wirebox can be defined as follows:
+
+	FB()["wirebox"] = new wirebox.system.ioc.Injector("app.config.wirebox");
+
+	*/
 
 	function configure(){
 		wireBox = {
@@ -7,7 +15,6 @@ component extends="wirebox.system.ioc.config.Binder"{
 		};
 
 		mapFireBoltAliases();
-
 	}
 
 
@@ -22,7 +29,5 @@ component extends="wirebox.system.ioc.config.Binder"{
 			return application.FireBolt;
 		});
 	}
-
-
 
 }

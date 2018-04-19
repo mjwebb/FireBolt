@@ -1,4 +1,4 @@
-component accessors="true" transient{ // transient response output service
+component accessors="true" transient{ // transient template output service
 
 	
 	variables.content = {};

@@ -15,7 +15,7 @@ component{
 		},
 
 		siteName: "FireBolt",
-		modules: {},
+		modules: {}, // 
 
 		test: "this is a test setting",
 		struct: {
@@ -70,7 +70,7 @@ component{
 
 
 	public void function onRequestStart(){
-		//this.FireBolt["wirebox"] = new wirebox.system.ioc.Injector("app.config.wirebox");
+		
 	}
 
 }
