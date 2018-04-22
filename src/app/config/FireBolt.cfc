@@ -1,3 +1,12 @@
+/**
+* This is the main configuration file for the FireBolt framework
+* Configuration options get added to the main config struct. 
+* The only required items are the paths with the paths key - views, templates, controllers, modules and models
+* If environment variables are used, they can be included in this using the prefix env: - eg, env:DSN
+* <p>
+* Application lifecycle event handlers are also included here - onApplicationStart, onSessionStart, onRequestStart
+*/
+
 component{
 
 	this.config = {
@@ -23,7 +32,10 @@ component{
 		}
 	};
 
-
+	/**
+	* Runs when the application starts and can be used to configure modules, event listeners and aspect concerns using
+	* their respective DSL syntaxes
+	*/
 	public void function onApplicationStart(){
 		//this.FireBolt["wirebox"] = new wirebox.system.ioc.Injector("app.config.wirebox");
 
@@ -63,12 +75,16 @@ component{
 		
 	}
 
-
+	/**
+	* Called at the start of a user session
+	*/
 	public void function onSessionStart(){
 		
 	}
 
-
+	/**
+	* Called at the start of every request
+	*/ 
 	public void function onRequestStart(){
 		
 	}

@@ -1,6 +1,13 @@
 ﻿<cfscript>
-	// bootstratp for use as an include in an application.cfc
+	/**
+	* Bootstrap for the FireBolt framework that can be used as an include in an application.cfc 
+	*/
 
+	/**
+	* Returns our FireBolt instance
+	* @param reload		if set to true, the framework is reloaded before it is returned
+	* @return 			FireBolt framework
+	*/
 	public function getFireBolt(boolean reload=false){
 		if(!structKeyExists(application, "FireBolt") OR arguments.reload){
 			application.FireBolt = new FireBolt.framework();
@@ -8,38 +15,46 @@
 		return application.FireBolt;
 	}
 
-
-	// application start
+	/**
+	* onApplicationStart event handler
+	*/
 	public boolean function onApplicationStart(){
 		getFireBolt().onApplicationStart();
 		return true;
 	}
 
-	// application end
+	/**
+	* onApplicationEnd event handler
+	*/
 	/*public void function onApplicationEnd(struct appScope){
-		arguments.appScope.FireBolt.onApplicationEnd(arguments.appScope);
+		getFireBolt().onApplicationEnd(arguments.appScope);
 	}*/
 
-	// request start
+	/**
+	* onRequestStart event handler
+	*/
 	public boolean function onRequestStart(string targetPage){
 		request.startTime = getTickCount();
 		getFireBolt(structKeyExists(url, "reload")).onRequestStart(arguments.targetPage);
 		return true;
 	}
 
-	// session start
+	/**
+	* onSessionStart event handler
+	*/
 	public void function onSessionStart(){
 		getFireBolt().onSessionStart();
 	}
 
-	// session end
-	/*public void function onSessionEnd(struct sessionScope, struct appScope){
-		arguments.appScope.FireBolt.onSessionEnd(argumentCollection:arguments);
-	}*/
-
-	
-	// error
 	/**
+	* onSessionEnd event handler
+	*/
+	/*public void function onSessionEnd(struct sessionScope, struct appScope){
+		getFireBolt().onSessionEnd(argumentCollection:arguments);
+	}*/
+	
+	/**
+	* onError event handler
 	* @output=true
 	*/
 	public void function onError(any exception, string eventName=""){
@@ -52,7 +67,5 @@
 		
 		return;
 	}
-
-	
 
 </cfscript>

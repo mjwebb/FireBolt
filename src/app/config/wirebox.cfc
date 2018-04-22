@@ -1,13 +1,12 @@
+/**
+* Configures wirebox for use within FireBolt
+* <p>
+* Within the FireBolt onApplicationStart wirebox can be defined as follows:
+* <p>
+* FB()["wirebox"] = new wirebox.system.ioc.Injector("app.config.wirebox");
+*/
+
 component extends="wirebox.system.ioc.config.Binder"{
-
-	/*
-	Configures wirebox for use within FireBolt
-
-	Within the FireBolt onApplicationStart wirebox can be defined as follows:
-
-	FB()["wirebox"] = new wirebox.system.ioc.Injector("app.config.wirebox");
-
-	*/
 
 	function configure(){
 		wireBox = {

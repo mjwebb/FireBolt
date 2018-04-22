@@ -1,21 +1,26 @@
-component accessors="true"{
-
-	property factoryService;
-
-	variables.concerns = {};
-
-	/*
-	cache takes the form of:
+/**
+* Service for aspect orientated programming to handle adding concerns for methods and injecting the inteceptor to
+* the parent component. 
+* <p>
+* Concerns are cached in the form of:
 	name: {
 		method: {
 			before: [],
 			after: []
 		}
 	}
-	*/
+*
+*/
+component accessors="true"{
 
+	property factoryService;
+
+	variables.concerns = {};
+
+	
 	/**
 	* @hint constructor
+	* @param factory 	framework factoryService instance
 	*/
 	public aopService function init(required factory){
 		setFactoryService(arguments.factory);
@@ -35,6 +40,8 @@ component accessors="true"{
 
 	/**
 	* @hint add concerns from given arrays of concerns
+	* @param beforeConcerns	array of 'before' config structs
+	* @param afterConcerns	array of 'after' config structs
 	*/
 	public void function addConcerns(array beforeConcerns=[], array afterConcerns=[]){
 		for(local.concern in arguments.beforeConcerns){
@@ -53,6 +60,11 @@ component accessors="true"{
 
 	/**
 	* @hint registers a'before' aspect concern
+	* @param target 		the name of the component that we are targeting
+	* @param targetMethod	the name of the method that we are targeting. Multiple methods can be separated with a comma
+	* @param concern 		the path to the concern method 
+	* @param async 			if true, the concern will be registered to run asynchronously
+	* @return array of added concern definitions
 	*/
 	public array function before(required string target, required string targetMethod, required string concern, boolean async=false){
 		local.aliasResult = getFactoryService().getMapping(arguments.target);
@@ -79,6 +91,11 @@ component accessors="true"{
 
 	/**
 	* @hint registers 'after' aspect concern
+	* @param target 		the name of the component that we are targeting
+	* @param targetMethod	the name of the method that we are targeting. Multiple methods can be separated with a comma
+	* @param concern 		the path to the concern method 
+	* @param async 			if true, the concern will be registered to run asynchronously
+	* @return array of added concern definitions
 	*/
 	public array function after(required string target, required string targetMethod, required string concern, boolean async=false){
 		local.aliasResult = getFactoryService().getMapping(arguments.target);
@@ -105,6 +122,7 @@ component accessors="true"{
 
 	/**
 	* @hint adds a concern via a declaration syntax
+	* @param concern 	the path to the concern method
 	*/
 	public struct function call(string concern){
 		var declaration = {
@@ -118,6 +136,11 @@ component accessors="true"{
 		};
 
 		structAppend(declaration, {
+			/**
+			* @hint adds our concern to a 'before' target
+			* @param target 	the name of the component that we are targeting
+			* @param method		the name of the method that we are targeting
+			*/
 			before: function(string target, string method){
 				declaration.type = "before";
 				declaration.definition.target = arguments.target;
@@ -126,6 +149,11 @@ component accessors="true"{
 				declaration.definition = local.added[1];
 				return declaration;
 			},
+			/**
+			* @hint adds our concern to a 'after' target
+			* @param target 	the name of the component that we are targeting
+			* @param method		the name of the method that we are targeting
+			*/
 			after: function(string target, string method){
 				declaration.type = "after";
 				declaration.definition.target = arguments.target;
@@ -134,6 +162,9 @@ component accessors="true"{
 				declaration.definition = local.added[1];
 				return declaration;
 			},
+			/**
+			* @hint defines our concern as asynchronous
+			*/
 			async: function(){
 				declaration.definition.async = true;
 				return declaration;
@@ -148,6 +179,8 @@ component accessors="true"{
 	
 	/**
 	* @hint define a given object name in our concern struct
+	* @param target 	defines a new AOP target in our cache and retunrs it
+	* @return cached AOP target struct
 	*/
 	public struct function defineObject(required string target){
 		if(NOT structKeyExists(variables.concerns, arguments.target)){
@@ -158,6 +191,9 @@ component accessors="true"{
 
 	/**
 	* @hint define a given object and method in our concern struct
+	* @param target 		the name of the target object for which we are defining a concern
+	* @param targetMethod 	the method name for which we are defining a concern
+	* @return the concern definition struct for the target method
 	*/
 	public struct function defineMethodConcern(required string target, required string targetMethod){
 		local.objConcern = defineObject(arguments.target);
@@ -173,6 +209,8 @@ component accessors="true"{
 
 	/**
 	* @hint returns a given objects name from its meta data
+	* @param object the object instance for which we want the name
+	* @return the name of the object
 	*/
 	public string function getObjectName(required any object){
 		return getMetaData(arguments.object).name;
@@ -180,6 +218,9 @@ component accessors="true"{
 
 	/**
 	* @hint returns any registered concerns for a given object name and optional method
+	* @param name 	the target component to check
+	* @param method options name of the method to check. If no method is passed in, all concerns for the matched 'name' argument are returned 
+	* @return the struct representing the concens defined
 	*/
 	public struct function getConcerns(required string name, string method=""){
 		local.aliasResult = getFactoryService().getMapping(arguments.name);
@@ -202,6 +243,9 @@ component accessors="true"{
 
 	/**
 	* @hint returns true if concerns are defined for a given object name and method
+	* @param name 	the target component to check
+	* @param method the name of the method to check 
+	* @return true if the given taret has concerns defined
 	*/
 	public boolean function hasConcerns(required string name,  string method=""){
 		local.concerns = getConcerns(arguments.name, arguments.method);
@@ -228,6 +272,7 @@ component accessors="true"{
 
 	/**
 	* @hint returns all our registered concerns
+	* @return struct of our concern definitions
 	*/
 	public struct function getAllConcerns(){
 		return variables.concerns;
