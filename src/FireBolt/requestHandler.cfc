@@ -1,9 +1,12 @@
+/**
+* Manages a request lifecylce by determining the require route, calling the route and responding with the output from the routes controller
+*/
 component transient accessors="true"{ // transient request handler
 
 	property FireBolt;
 
 	variables.context = {
-		requestData: getHttpRequestData(false),
+		requestData: {},
 		startTime: getTickCount(),
 		path: "",
 		form: {},
@@ -22,6 +25,7 @@ component transient accessors="true"{ // transient request handler
 		struct formScope=form,
 		struct urlScope=url,
 		framework FireBolt){
+		variables.context.requestData = getHttpRequestData();
 		variables.context.path = arguments.path;
 		variables.context.form = arguments.formScope;
 		variables.context.url = arguments.urlScope;

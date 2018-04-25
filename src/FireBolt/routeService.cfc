@@ -1,3 +1,6 @@
+/**
+* Caches routes on initiation and uses a given path and HTTP verb to determine a route that can be called
+*/
 component accessors="true"{
 
 	property FireBolt;

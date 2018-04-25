@@ -257,6 +257,11 @@ component accessors="true"{
 
 	/**
 	* @hint returns true if a specific concern is already defined for a given object name and method
+	* @param name 			the name of the object we want to check for a concern
+	* @param methodName 	the name of the method that we checking
+	* @param concern 		the name of the concern that we are checking for
+	* @param aspect 		defaults to 'after' - after | before
+	* @return true if the concern exists
 	*/
 	public boolean function hasConcern(required string name, required string method, required string concern, string aspect="after"){
 		local.concerns = getConcerns(arguments.name, arguments.method);
@@ -280,7 +285,9 @@ component accessors="true"{
 
 
 	/**
-	* @hint registers an object name for AOP wireup if 
+	* @hint attaches the AOP intercept methods to an object if it is already cached in the factory service
+	* @param name 			the name of the object we want to attach the intercept to
+	* @param methodName 	the name of the method that we are intercepting
 	*/
 	public void function registerIfFactoryCached(required string name, required string methodName){
 		if(getFactoryService().isCached(arguments.name)){
@@ -290,7 +297,8 @@ component accessors="true"{
 	}
 
 	/**
-	* @hint registers a given object for AOP wireup
+	* @hint attaches the AOP intercpet method to a given object if it has concerns registerd against it
+	* @param object the object that we are registering
 	*/
 	public void function registerObject(required any object){
 		local.name = getObjectName(arguments.object);
@@ -309,9 +317,13 @@ component accessors="true"{
 
 
 	/**
-	* @hint attaches our AOP intercept method to a given object
+	* performs the attachement of the AOP intercept method to a given object. This re-names the target method using
+	* an 'aop_' prefix, renames any pre-exisiting onMissingMethod method, deletes the original target method and then
+	* injects our own onMissingMethod to act as the intercept.
+	* @param object 		the object that we are attaching the intercept to
+	* @param methodName 	the method that is being intercepted
 	*/
-	public any function attachIntercept(required any object, required string methodName){
+	public void function attachIntercept(required any object, required string methodName){
 		// copy our original method
 		if(structKeyExists(arguments.object, arguments.methodName)){
 			arguments.object["aop_" & arguments.methodName] = duplicate(arguments.object[arguments.methodName]);
@@ -330,7 +342,6 @@ component accessors="true"{
 		}
 
 		// attach our intercept method to OnMissingMethod
-		//arguments.object["OnMissingMethod"] = this.onMissingMethodIntercept;
 		getFactoryService().getFireBolt().inject(arguments.object, "OnMissingMethod", this.onMissingMethodIntercept, true);
 
 		writeLog(
@@ -372,7 +383,7 @@ component accessors="true"{
 	
 
 	/**
-	* @hint this is the proxy method that gets called before a method gets called
+	* @hint this is the proxy method that gets called before a method gets called. This calls any 'before' concerns for the given object and method
 	*/
 	public boolean function beforeAdvice(
 		required string objectName, 
@@ -399,7 +410,7 @@ component accessors="true"{
 	}
 
 	/**
-	* @hint this is the proxy method that gets called after a method gets called
+	* @hint this is the proxy method that gets called after a method gets called. This calls any 'after' concerns for the given object and method
 	*/
 	public any function afterAdvice(
 		required string objectName, 
@@ -428,7 +439,7 @@ component accessors="true"{
 	
 
 	/**
-	* @hint call a concern method
+	* @hint responsible for actually calling the target concern method. This will be called from the beforeAdvice or afterAdvice methods
 	*/
 	public any function callConcern(
 		required struct concern,

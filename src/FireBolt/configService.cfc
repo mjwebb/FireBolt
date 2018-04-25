@@ -1,3 +1,6 @@
+/**
+* Reads and handles FireBolt configuration files
+*/
 component{
 
 	variables.FireBolt = "";

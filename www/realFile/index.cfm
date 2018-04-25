@@ -4,7 +4,7 @@
 <cfoutput>#structKeyExists(x, "init")#</cfoutput>
 <cfdump var="#getMetaData(x.init)#"> --->
 
-<cfscript>
+<!--- <cfscript>
 controller.addBreadCrumb("home", "/");
 controller.setTitle("HELLO WORLD");
 
@@ -18,5 +18,10 @@ controller.addMetaData("dc.title", controller.getTitle());
 
 <cfset controller.addContent("Hello from a real physical page - #now()#")>
 <cfset controller.layout()>
-<cfoutput>#controller.respond()#</cfoutput>
+<cfoutput>#controller.respond()#</cfoutput> --->
 <!--- <cfcontent reset="true"><cfoutput>#controller.output().layout()#</cfoutput> --->
+
+
+<!--- <cfset r = new FireBolt.requestHandler()>
+<cfdump var="#getMetaData(r)#"> --->
+<cfdump var="#getComponentMetaData("FireBolt.requestHandler")#">

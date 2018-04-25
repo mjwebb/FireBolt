@@ -1,3 +1,6 @@
+/**
+* Factory service used to create and cache objects / components / beans
+*/
 component accessors="true"{
 
 	property FireBolt;

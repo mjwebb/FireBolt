@@ -1,0 +1,1264 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>response</title>
+	<meta name="keywords" content="FireBolt.concurrent.Callable interface">
+	<!-- common assets -->
+	
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel ="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css">
+<link rel ="stylesheet" type="text/css" href="../stylesheet.css">
+	
+<link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,700,700italic|Ubuntu+Mono' rel='stylesheet' type='text/css' />
+	
+<script src="../bootstrap/js/jquery-2.1.0.min.js" type="text/javascript"></script>
+<script src="../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script>
+$(document).ready(function() {
+	// Global Tool Tip Settings
+	$( '[title]' ).tooltip({
+		 animation: 'slide',
+		 delay: { show: 250, hide: 250 }
+	});
+});
+</script>
+	<!-- syntax highlighter -->
+	<link type="text/css" rel="stylesheet" href="../highlighter/styles/shCoreDefault.css">
+	<script src="../highlighter/scripts/shCore.js"></script>
+	<script src="../highlighter/scripts/shBrushColdFusion.js"></script>
+	<script src="../highlighter/scripts/shBrushXml.js"></script>
+	<script src="../highlighter/scripts/shBrushSql.js"></script>
+	<script src="../highlighter/scripts/shBrushJScript.js"></script>
+	<script src="../highlighter/scripts/shBrushJava.js"></script>
+	<script src="../highlighter/scripts/shBrushCss.js"></script>
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+
+<body class="withNavbar">
+
+
+
+
+
+
+<!-- ========= START OF NAVBAR ======= -->
+<a name="navbar_top"></a>
+<a href="#skip-navbar_top" title="skip navigation links"></a>	
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container-fluid">
+    
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#class-navigation">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#"><strong>FireBolt Docs</strong></a>
+		</div>
+
+	    <div class="collapse navbar-collapse" id="class-navigation">
+	    	<ul class="nav navbar-nav">
+				
+					
+					<li><a href="../overview-summary.html"><i class="glyphicon glyphicon-plane"></i> overview</a></li>
+					
+				
+
+				
+					<li><a href="package-summary.html"><i class="glyphicon glyphicon-folder-open"></i> &nbsp;package</a></li>
+				
+
+			  	
+					<li class="dropdown active">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-file"></i> class <b class="caret"></b></a>
+
+						<ul class="dropdown-menu">
+							<li><a href="#class">Class Definition</a></li>
+							<li><a href="#constructor_summary">Constructor Summary</a></li>
+							<li><a href="#constructor_detail">Constructor Detail</a></li>
+							<li><a href="#inherited_methods">Inherited Methods</a></li>
+							<li><a href="#method_summary">Method Summary</a></li>
+							<li><a href="#method_detail">Method Detail</a></li>
+							<li><a href="#property_summary">Property Summary</a></li>
+							<li><a href="#property_detail">Property Detail</a></li>
+							
+						</ul>
+					</li>
+				
+	      	</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="../index.html?FireBolt/response.html" target="_top">
+					<i class="glyphicon glyphicon-fullscreen"></i> Frames
+					</a>
+				</li>
+			</ul>
+	    </div>
+
+	</div>
+</nav>	
+
+<a name="skip-navbar_top"></a>
+<!-- ========= END OF NAVBAR ========= -->
+
+<!-- ======== start of class data ======== -->
+<a name="class"><!-- --></a>
+
+<!-- Package -->
+<div class="pull-right">
+	<a href="package-summary.html" title="Package: FireBolt"><span class="label label-success">FireBolt</span></a>
+</div>
+
+<h2>
+
+
+Class
+
+ response</h2>
+
+
+
+
+
+
+
+
+	
+		
+	
+	
+
+	
+		
+		
+			
+		
+	
+	
+
+
+<!-- Inheritance Tree-->
+<pre style="background:white">lucee.Component
+    <img src="../resources/inherit.gif" alt="extended by ">FireBolt.response
+</pre>
+
+
+
+	
+	
+
+
+
+
+
+
+
+<div id="class-hint">
+	<p>Handles a request resopnse by setting the response headers and body</p>
+</div>
+
+
+<!-- Clas Attributes -->
+<div class="panel panel-info">
+	<div class="panel-heading"><strong>Class Attributes:</strong></div>
+		<div class="panel-body">
+		
+		
+			
+		
+			
+		
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				synchronized
+				
+				: false
+				
+			</li>
+			&nbsp;
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				accessors
+				
+				: false
+				
+			</li>
+			&nbsp;
+			
+		
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				transient
+				
+			</li>
+			&nbsp;
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				persistent
+				
+				: false
+				
+			</li>
+			&nbsp;
+			
+		
+			
+		
+			
+		
+		
+	</div>
+</div>
+
+
+
+
+
+
+	
+	
+	<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+	<a name="constructor_summary"><!-- --></a>
+	<table class="table table-bordered table-hover">
+		<tr class="info">
+			<th align="left" colspan="2">
+				<strong>Constructor Summary</strong>
+			</th>
+		</tr>
+		<tr>
+			
+			<td>
+				<strong><a href="response.html#init()">init</A></strong>()
+				<br>
+				
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; constructor.
+				
+			</td>
+		</tr>
+	</table>
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="method_summary"><!-- --></a>
+<table class="table table-bordered table-hover">
+	<tr class="info">
+		<th align="left" colspan="2">
+			<strong>Method Summary</strong>
+		</th>
+	</tr>
+
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code><a href="../FireBolt/response.html" title="class in FireBolt">response</a></code>
+		</td>
+		<td>
+			<strong><a href="response.html#autoStatusText()">autoStatusText</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attempt to detect the status text from the status code.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code><a href="../FireBolt/response.html" title="class in FireBolt">response</a></code>
+		</td>
+		<td>
+			<strong><a href="response.html#autoType()">autoType</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attempt to detect a response content type.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="response.html#get()">get</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return our response struct.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="response.html#getBody()">getBody</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return our response body.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="response.html#getEncoding()">getEncoding</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return our response encoding.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>numeric</code>
+		</td>
+		<td>
+			<strong><a href="response.html#getLength()">getLength</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return our response length.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="response.html#getRequestData()">getRequestData</A></strong>([string key=''])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return our request data.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>numeric</code>
+		</td>
+		<td>
+			<strong><a href="response.html#getStatus()">getStatus</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return our response status code.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="response.html#getStatusText()">getStatusText</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return our response status code.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="response.html#getType()">getType</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return our response type.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code><a href="../FireBolt/response.html" title="class in FireBolt">response</a></code>
+		</td>
+		<td>
+			<strong><a href="response.html#setBody()">setBody</A></strong>([any bodyContent], [boolean detectType='true'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set our response body.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code><a href="../FireBolt/response.html" title="class in FireBolt">response</a></code>
+		</td>
+		<td>
+			<strong><a href="response.html#setEncoding()">setEncoding</A></strong>([string responseEncoding])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set a response encoding.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code><a href="../FireBolt/response.html" title="class in FireBolt">response</a></code>
+		</td>
+		<td>
+			<strong><a href="response.html#setLength()">setLength</A></strong>([numeric responseLength])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set our response length.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="response.html#setRequestData()">setRequestData</A></strong>([string key=''], [any value])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sets our request data.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code><a href="../FireBolt/response.html" title="class in FireBolt">response</a></code>
+		</td>
+		<td>
+			<strong><a href="response.html#setStatus()">setStatus</A></strong>([numeric responseStatusCode])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set a response status code.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code><a href="../FireBolt/response.html" title="class in FireBolt">response</a></code>
+		</td>
+		<td>
+			<strong><a href="response.html#setStatusText()">setStatusText</A></strong>([string responseStatusText])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set a response status text.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code><a href="../FireBolt/response.html" title="class in FireBolt">response</a></code>
+		</td>
+		<td>
+			<strong><a href="response.html#setType()">setType</A></strong>([string responseType])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set a response content type.
+			
+		</td>
+	</tr>
+	
+</table>
+
+
+
+<a name="inherited_methods"><!-- --></a>
+
+
+	
+
+	
+
+	&nbsp;
+	<a name="methods_inherited_from_class_lucee.Component"><!-- --></a>
+	<table class="table table-hover table-bordered">
+		<tr class="info">
+			<th align="left">
+				<strong>Methods inherited from class <kbd>lucee.Component</kbd></strong>
+			</th>
+		</tr>
+		<tr>
+			<td>
+				
+				
+				
+
+				
+					<span class="label label-warning"><em>None</em></span>
+				
+			</td>
+		</tr>
+	</table>
+
+
+<hr>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+	<a name="constructor_detail"><!-- --></a>
+	<table class="table table-bordered">
+		<tr class="info">
+			<th colspan="1" align="left">
+				<strong>Constructor Detail</strong>
+			</th>
+		</tr>
+	</table>
+
+	<a name="init()"><!-- --></a><h3>
+	init</h3>
+	<kbd>public <strong>init</strong>()</kbd>
+
+	<br><br>
+
+	
+	<p>constructor</p>
+	
+
+	
+	<hr>
+
+
+<!-- ============ PROPERTY DETAIL ========== -->
+
+
+
+
+
+
+
+
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<a name="method_detail"><!-- --></a>
+<table class="table table-bordered">
+	<tr class="info">
+		<th colspan="1" align="left">
+			<strong>Method Detail</strong>
+		</th>
+	</tr>
+</table>
+
+
+	
+	<a name="autoStatusText()"><!-- --></a>
+	<h3>
+		autoStatusText
+		
+	</h3>
+
+	<kbd>public <a href="../FireBolt/response.html" title="class in FireBolt">response</a> <strong>autoStatusText</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>attempt to detect the status text from the status code</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="autoType()"><!-- --></a>
+	<h3>
+		autoType
+		
+	</h3>
+
+	<kbd>public <a href="../FireBolt/response.html" title="class in FireBolt">response</a> <strong>autoType</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>attempt to detect a response content type</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="get()"><!-- --></a>
+	<h3>
+		get
+		
+	</h3>
+
+	<kbd>public struct <strong>get</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>return our response struct</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getBody()"><!-- --></a>
+	<h3>
+		getBody
+		
+	</h3>
+
+	<kbd>public any <strong>getBody</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>return our response body</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getEncoding()"><!-- --></a>
+	<h3>
+		getEncoding
+		
+	</h3>
+
+	<kbd>public string <strong>getEncoding</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>return our response encoding</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getLength()"><!-- --></a>
+	<h3>
+		getLength
+		
+	</h3>
+
+	<kbd>public numeric <strong>getLength</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>return our response length</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getRequestData()"><!-- --></a>
+	<h3>
+		getRequestData
+		
+	</h3>
+
+	<kbd>public any <strong>getRequestData</strong>([string key=''])</kbd>
+
+	<br><br>
+
+	
+		<p>return our request data</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>key</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getStatus()"><!-- --></a>
+	<h3>
+		getStatus
+		
+	</h3>
+
+	<kbd>public numeric <strong>getStatus</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>return our response status code</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getStatusText()"><!-- --></a>
+	<h3>
+		getStatusText
+		
+	</h3>
+
+	<kbd>public string <strong>getStatusText</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>return our response status code</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getType()"><!-- --></a>
+	<h3>
+		getType
+		
+	</h3>
+
+	<kbd>public string <strong>getType</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>return our response type</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="setBody()"><!-- --></a>
+	<h3>
+		setBody
+		
+	</h3>
+
+	<kbd>public <a href="../FireBolt/response.html" title="class in FireBolt">response</a> <strong>setBody</strong>([any bodyContent], [boolean detectType='true'])</kbd>
+
+	<br><br>
+
+	
+		<p>set our response body</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>bodyContent</code></dd>
+		
+		<dd><code>detectType</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="setEncoding()"><!-- --></a>
+	<h3>
+		setEncoding
+		
+	</h3>
+
+	<kbd>public <a href="../FireBolt/response.html" title="class in FireBolt">response</a> <strong>setEncoding</strong>([string responseEncoding])</kbd>
+
+	<br><br>
+
+	
+		<p>set a response encoding</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>responseEncoding</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="setLength()"><!-- --></a>
+	<h3>
+		setLength
+		
+	</h3>
+
+	<kbd>public <a href="../FireBolt/response.html" title="class in FireBolt">response</a> <strong>setLength</strong>([numeric responseLength])</kbd>
+
+	<br><br>
+
+	
+		<p>set our response length</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>responseLength</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="setRequestData()"><!-- --></a>
+	<h3>
+		setRequestData
+		
+	</h3>
+
+	<kbd>public void <strong>setRequestData</strong>([string key=''], [any value])</kbd>
+
+	<br><br>
+
+	
+		<p>sets our request data</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>key</code></dd>
+		
+		<dd><code>value</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="setStatus()"><!-- --></a>
+	<h3>
+		setStatus
+		
+	</h3>
+
+	<kbd>public <a href="../FireBolt/response.html" title="class in FireBolt">response</a> <strong>setStatus</strong>([numeric responseStatusCode])</kbd>
+
+	<br><br>
+
+	
+		<p>set a response status code</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>responseStatusCode</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="setStatusText()"><!-- --></a>
+	<h3>
+		setStatusText
+		
+	</h3>
+
+	<kbd>public <a href="../FireBolt/response.html" title="class in FireBolt">response</a> <strong>setStatusText</strong>([string responseStatusText])</kbd>
+
+	<br><br>
+
+	
+		<p>set a response status text</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>responseStatusText</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="setType()"><!-- --></a>
+	<h3>
+		setType
+		
+	</h3>
+
+	<kbd>public <a href="../FireBolt/response.html" title="class in FireBolt">response</a> <strong>setType</strong>([string responseType])</kbd>
+
+	<br><br>
+
+	
+		<p>set a response content type</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>responseType</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+
+
+
+</body>
+</html>
+

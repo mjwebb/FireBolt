@@ -1,0 +1,1763 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>aopService</title>
+	<meta name="keywords" content="FireBolt.concurrent.Callable interface">
+	<!-- common assets -->
+	
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel ="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css">
+<link rel ="stylesheet" type="text/css" href="../stylesheet.css">
+	
+<link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,700,700italic|Ubuntu+Mono' rel='stylesheet' type='text/css' />
+	
+<script src="../bootstrap/js/jquery-2.1.0.min.js" type="text/javascript"></script>
+<script src="../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script>
+$(document).ready(function() {
+	// Global Tool Tip Settings
+	$( '[title]' ).tooltip({
+		 animation: 'slide',
+		 delay: { show: 250, hide: 250 }
+	});
+});
+</script>
+	<!-- syntax highlighter -->
+	<link type="text/css" rel="stylesheet" href="../highlighter/styles/shCoreDefault.css">
+	<script src="../highlighter/scripts/shCore.js"></script>
+	<script src="../highlighter/scripts/shBrushColdFusion.js"></script>
+	<script src="../highlighter/scripts/shBrushXml.js"></script>
+	<script src="../highlighter/scripts/shBrushSql.js"></script>
+	<script src="../highlighter/scripts/shBrushJScript.js"></script>
+	<script src="../highlighter/scripts/shBrushJava.js"></script>
+	<script src="../highlighter/scripts/shBrushCss.js"></script>
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+
+<body class="withNavbar">
+
+
+
+
+
+
+<!-- ========= START OF NAVBAR ======= -->
+<a name="navbar_top"></a>
+<a href="#skip-navbar_top" title="skip navigation links"></a>	
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container-fluid">
+    
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#class-navigation">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#"><strong>FireBolt Docs</strong></a>
+		</div>
+
+	    <div class="collapse navbar-collapse" id="class-navigation">
+	    	<ul class="nav navbar-nav">
+				
+					
+					<li><a href="../overview-summary.html"><i class="glyphicon glyphicon-plane"></i> overview</a></li>
+					
+				
+
+				
+					<li><a href="package-summary.html"><i class="glyphicon glyphicon-folder-open"></i> &nbsp;package</a></li>
+				
+
+			  	
+					<li class="dropdown active">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-file"></i> class <b class="caret"></b></a>
+
+						<ul class="dropdown-menu">
+							<li><a href="#class">Class Definition</a></li>
+							<li><a href="#constructor_summary">Constructor Summary</a></li>
+							<li><a href="#constructor_detail">Constructor Detail</a></li>
+							<li><a href="#inherited_methods">Inherited Methods</a></li>
+							<li><a href="#method_summary">Method Summary</a></li>
+							<li><a href="#method_detail">Method Detail</a></li>
+							<li><a href="#property_summary">Property Summary</a></li>
+							<li><a href="#property_detail">Property Detail</a></li>
+							
+						</ul>
+					</li>
+				
+	      	</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="../index.html?FireBolt/aopService.html" target="_top">
+					<i class="glyphicon glyphicon-fullscreen"></i> Frames
+					</a>
+				</li>
+			</ul>
+	    </div>
+
+	</div>
+</nav>	
+
+<a name="skip-navbar_top"></a>
+<!-- ========= END OF NAVBAR ========= -->
+
+<!-- ======== start of class data ======== -->
+<a name="class"><!-- --></a>
+
+<!-- Package -->
+<div class="pull-right">
+	<a href="package-summary.html" title="Package: FireBolt"><span class="label label-success">FireBolt</span></a>
+</div>
+
+<h2>
+
+
+Class
+
+ aopService</h2>
+
+
+
+
+
+
+
+
+	
+		
+	
+	
+
+	
+		
+		
+			
+		
+	
+	
+
+
+<!-- Inheritance Tree-->
+<pre style="background:white">lucee.Component
+    <img src="../resources/inherit.gif" alt="extended by ">FireBolt.aopService
+</pre>
+
+
+
+	
+	
+
+
+
+
+
+
+
+<div id="class-hint">
+	<p>Service for aspect orientated programming to handle adding concerns for methods and injecting the inteceptor to
+the parent component. 
+<p>
+Concerns are cached in the form of:
+name: {
+method: {
+before: [],
+after: []
+}
+}</p>
+</div>
+
+
+<!-- Clas Attributes -->
+<div class="panel panel-info">
+	<div class="panel-heading"><strong>Class Attributes:</strong></div>
+		<div class="panel-body">
+		
+		
+			
+		
+			
+		
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				synchronized
+				
+				: false
+				
+			</li>
+			&nbsp;
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				accessors
+				
+				: true
+				
+			</li>
+			&nbsp;
+			
+		
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				persistent
+				
+				: false
+				
+			</li>
+			&nbsp;
+			
+		
+			
+		
+			
+		
+		
+	</div>
+</div>
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="property_summary"><!-- --></a>
+<table class="table table-bordered table-hover">
+	<tr class="info">
+		<th align="left" colspan="5">
+			<strong>Property Summary</strong>
+		</th>
+	</tr>
+	<tr class="info">
+		<th align="left">
+			<strong>type</strong>
+		</th>
+		<th align="left">
+			<strong>property</strong>
+		</th>
+		<th align="left">
+			<strong>default</strong>
+		</th>
+		<th align="left">
+			<strong>serializable</strong>
+		</th>
+		<th align="left">
+			<strong>required</strong>
+		</th>
+	</tr>
+
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#factoryService()">factoryService</A></strong>
+			<br>
+			
+			<br><br>
+			<ul>
+			
+				
+			
+				
+				<li class="label label-default label-annotations">access = public</li>
+				
+			
+				
+			
+				
+			
+				
+				<li class="label label-default label-annotations">returntype = any</li>
+				
+			
+				
+			
+				
+			
+				
+			
+			</ul>
+
+		</td>
+		<td align="right" valign="top" width="1%">
+			
+		</td>
+		<td align="right" valign="top" width="1%">
+			<code>
+				true
+			</code>
+		</td>
+		<td align="right" valign="top" width="1%">
+			<code>
+				false
+			</code>
+		</td>
+	</tr>
+	
+	</tr>
+</table>
+
+
+
+	
+	
+	<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+	<a name="constructor_summary"><!-- --></a>
+	<table class="table table-bordered table-hover">
+		<tr class="info">
+			<th align="left" colspan="2">
+				<strong>Constructor Summary</strong>
+			</th>
+		</tr>
+		<tr>
+			
+			<td>
+				<strong><a href="aopService.html#init()">init</A></strong>(any factory)
+				<br>
+				
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; constructor.
+				
+			</td>
+		</tr>
+	</table>
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="method_summary"><!-- --></a>
+<table class="table table-bordered table-hover">
+	<tr class="info">
+		<th align="left" colspan="2">
+			<strong>Method Summary</strong>
+		</th>
+	</tr>
+
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#addConcerns()">addConcerns</A></strong>([array beforeConcerns='[runtime expression]'], [array afterConcerns='[runtime expression]'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add concerns from given arrays of concerns.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#addConfigConcerns()">addConfigConcerns</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add concerns from our configuration.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>array</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#after()">after</A></strong>(string target, string targetMethod, string concern, [boolean async='false'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registers 'after' aspect concern.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#afterAdvice()">afterAdvice</A></strong>(string objectName, string methodName, struct methodArgs, [any methodResult=''], [numeric methodTimer='0'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this is the proxy method that gets called after a method gets called.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#attachIntercept()">attachIntercept</A></strong>(any object, string methodName)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;performs the attachement of the AOP intercept method to a given object.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>array</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#before()">before</A></strong>(string target, string targetMethod, string concern, [boolean async='false'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registers a'before' aspect concern.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>boolean</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#beforeAdvice()">beforeAdvice</A></strong>(string objectName, string methodName, struct methodArgs)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this is the proxy method that gets called before a method gets called.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#call()">call</A></strong>([string concern])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;adds a concern via a declaration syntax.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#callConcern()">callConcern</A></strong>(struct concern, string objectName, string methodName, struct methodArgs, [any methodResult=''], [numeric methodTimer='0'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;responsible for actually calling the target concern method.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#defineMethodConcern()">defineMethodConcern</A></strong>(string target, string targetMethod)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;define a given object and method in our concern struct.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#defineObject()">defineObject</A></strong>(string target)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;define a given object name in our concern struct.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#getAllConcerns()">getAllConcerns</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns all our registered concerns.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#getConcerns()">getConcerns</A></strong>(string name, [string method=''])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns any registered concerns for a given object name and optional method.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#getFactoryService()">getFactoryService</A></strong>()
+			<br>
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#getObjectName()">getObjectName</A></strong>(any object)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns a given objects name from its meta data.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>boolean</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#hasConcern()">hasConcern</A></strong>(string name, string method, string concern, [string aspect='after'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns true if a specific concern is already defined for a given object name and method.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>boolean</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#hasConcerns()">hasConcerns</A></strong>(string name, [string method=''])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns true if concerns are defined for a given object name and method.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#onMissingMethodIntercept()">onMissingMethodIntercept</A></strong>(string MissingMethodName, struct MissingMethodArguments)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this gets injected into target objects to replace any existing onMissingMethod functions.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#registerIfFactoryCached()">registerIfFactoryCached</A></strong>(string name, string methodName)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attaches the AOP intercept methods to an object if it is already cached in the factory service.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#registerObject()">registerObject</A></strong>(any object)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attaches the AOP intercpet method to a given object if it has concerns registerd against it.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="aopService.html#setFactoryService()">setFactoryService</A></strong>(any factoryService)
+			<br>
+			
+		</td>
+	</tr>
+	
+</table>
+
+
+
+<a name="inherited_methods"><!-- --></a>
+
+
+	
+
+	
+
+	&nbsp;
+	<a name="methods_inherited_from_class_lucee.Component"><!-- --></a>
+	<table class="table table-hover table-bordered">
+		<tr class="info">
+			<th align="left">
+				<strong>Methods inherited from class <kbd>lucee.Component</kbd></strong>
+			</th>
+		</tr>
+		<tr>
+			<td>
+				
+				
+				
+
+				
+					<span class="label label-warning"><em>None</em></span>
+				
+			</td>
+		</tr>
+	</table>
+
+
+<hr>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+	<a name="constructor_detail"><!-- --></a>
+	<table class="table table-bordered">
+		<tr class="info">
+			<th colspan="1" align="left">
+				<strong>Constructor Detail</strong>
+			</th>
+		</tr>
+	</table>
+
+	<a name="init()"><!-- --></a><h3>
+	init</h3>
+	<kbd>public <strong>init</strong>(any factory)</kbd>
+
+	<br><br>
+
+	
+	<p>constructor</p>
+	
+
+	
+	<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+			<dd><code>factory</code></dd>
+		
+	</dl>
+	
+	<hr>
+
+
+<!-- ============ PROPERTY DETAIL ========== -->
+
+	<a name="property_detail"><!-- --></a>
+	<table class="table table-bordered">
+		<tr class="info">
+			<th colspan="1" align="left">
+				<strong>Property Detail</strong>
+			</th>
+		</tr>
+	</table>
+
+	
+		
+		<a name="factoryService()"><!-- --></a>
+		<h3>factoryService</h3>
+
+		<kbd>
+			property any
+			<strong>factoryService</strong>
+			
+		</kbd>
+
+		<br><br>
+		
+
+		<dl>
+		<dt><strong>Attributes:</strong></dt>
+		
+			
+		
+			
+			<dd><code>access</code> - public</dd>
+			
+		
+			
+			<dd><code>required</code> - false</dd>
+			
+		
+			
+		
+			
+			<dd><code>returntype</code> - any</dd>
+			
+		
+			
+		
+			
+		
+			
+			<dd><code>serializable</code> - true</dd>
+			
+		
+		</dl>
+
+		<hr>
+	
+
+
+
+
+
+
+
+
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<a name="method_detail"><!-- --></a>
+<table class="table table-bordered">
+	<tr class="info">
+		<th colspan="1" align="left">
+			<strong>Method Detail</strong>
+		</th>
+	</tr>
+</table>
+
+
+	
+	<a name="addConcerns()"><!-- --></a>
+	<h3>
+		addConcerns
+		
+	</h3>
+
+	<kbd>public void <strong>addConcerns</strong>([array beforeConcerns='[runtime expression]'], [array afterConcerns='[runtime expression]'])</kbd>
+
+	<br><br>
+
+	
+		<p>add concerns from given arrays of concerns</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>beforeConcerns</code></dd>
+		
+		<dd><code>afterConcerns</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="addConfigConcerns()"><!-- --></a>
+	<h3>
+		addConfigConcerns
+		
+	</h3>
+
+	<kbd>public void <strong>addConfigConcerns</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>add concerns from our configuration</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="after()"><!-- --></a>
+	<h3>
+		after
+		
+	</h3>
+
+	<kbd>public array <strong>after</strong>(string target, string targetMethod, string concern, [boolean async='false'])</kbd>
+
+	<br><br>
+
+	
+		<p>registers 'after' aspect concern</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>target</code></dd>
+		
+		<dd><code>targetMethod</code></dd>
+		
+		<dd><code>concern</code></dd>
+		
+		<dd><code>async</code></dd>
+		
+		</dl>
+	
+
+	
+		<dl>
+			<dt><strong>Returns:</strong></dt>
+			<dd>array of added concern definitions</dd>
+		</dl>
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="afterAdvice()"><!-- --></a>
+	<h3>
+		afterAdvice
+		
+	</h3>
+
+	<kbd>public any <strong>afterAdvice</strong>(string objectName, string methodName, struct methodArgs, [any methodResult=''], [numeric methodTimer='0'])</kbd>
+
+	<br><br>
+
+	
+		<p>this is the proxy method that gets called after a method gets called. This calls any 'after' concerns for the given object and method</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>objectName</code></dd>
+		
+		<dd><code>methodName</code></dd>
+		
+		<dd><code>methodArgs</code></dd>
+		
+		<dd><code>methodResult</code></dd>
+		
+		<dd><code>methodTimer</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="attachIntercept()"><!-- --></a>
+	<h3>
+		attachIntercept
+		
+	</h3>
+
+	<kbd>public void <strong>attachIntercept</strong>(any object, string methodName)</kbd>
+
+	<br><br>
+
+	
+		<p>performs the attachement of the AOP intercept method to a given object. This re-names the target method using
+an 'aop_' prefix, renames any pre-exisiting onMissingMethod method, deletes the original target method and then
+injects our own onMissingMethod to act as the intercept.</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>object</code></dd>
+		
+		<dd><code>methodName</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="before()"><!-- --></a>
+	<h3>
+		before
+		
+	</h3>
+
+	<kbd>public array <strong>before</strong>(string target, string targetMethod, string concern, [boolean async='false'])</kbd>
+
+	<br><br>
+
+	
+		<p>registers a'before' aspect concern</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>target</code></dd>
+		
+		<dd><code>targetMethod</code></dd>
+		
+		<dd><code>concern</code></dd>
+		
+		<dd><code>async</code></dd>
+		
+		</dl>
+	
+
+	
+		<dl>
+			<dt><strong>Returns:</strong></dt>
+			<dd>array of added concern definitions</dd>
+		</dl>
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="beforeAdvice()"><!-- --></a>
+	<h3>
+		beforeAdvice
+		
+	</h3>
+
+	<kbd>public boolean <strong>beforeAdvice</strong>(string objectName, string methodName, struct methodArgs)</kbd>
+
+	<br><br>
+
+	
+		<p>this is the proxy method that gets called before a method gets called. This calls any 'before' concerns for the given object and method</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>objectName</code></dd>
+		
+		<dd><code>methodName</code></dd>
+		
+		<dd><code>methodArgs</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="call()"><!-- --></a>
+	<h3>
+		call
+		
+	</h3>
+
+	<kbd>public struct <strong>call</strong>([string concern])</kbd>
+
+	<br><br>
+
+	
+		<p>adds a concern via a declaration syntax</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>concern</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="callConcern()"><!-- --></a>
+	<h3>
+		callConcern
+		
+	</h3>
+
+	<kbd>public any <strong>callConcern</strong>(struct concern, string objectName, string methodName, struct methodArgs, [any methodResult=''], [numeric methodTimer='0'])</kbd>
+
+	<br><br>
+
+	
+		<p>responsible for actually calling the target concern method. This will be called from the beforeAdvice or afterAdvice methods</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>concern</code></dd>
+		
+		<dd><code>objectName</code></dd>
+		
+		<dd><code>methodName</code></dd>
+		
+		<dd><code>methodArgs</code></dd>
+		
+		<dd><code>methodResult</code></dd>
+		
+		<dd><code>methodTimer</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="defineMethodConcern()"><!-- --></a>
+	<h3>
+		defineMethodConcern
+		
+	</h3>
+
+	<kbd>public struct <strong>defineMethodConcern</strong>(string target, string targetMethod)</kbd>
+
+	<br><br>
+
+	
+		<p>define a given object and method in our concern struct</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>target</code></dd>
+		
+		<dd><code>targetMethod</code></dd>
+		
+		</dl>
+	
+
+	
+		<dl>
+			<dt><strong>Returns:</strong></dt>
+			<dd>the concern definition struct for the target method</dd>
+		</dl>
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="defineObject()"><!-- --></a>
+	<h3>
+		defineObject
+		
+	</h3>
+
+	<kbd>public struct <strong>defineObject</strong>(string target)</kbd>
+
+	<br><br>
+
+	
+		<p>define a given object name in our concern struct</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>target</code></dd>
+		
+		</dl>
+	
+
+	
+		<dl>
+			<dt><strong>Returns:</strong></dt>
+			<dd>cached AOP target struct</dd>
+		</dl>
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getAllConcerns()"><!-- --></a>
+	<h3>
+		getAllConcerns
+		
+	</h3>
+
+	<kbd>public struct <strong>getAllConcerns</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>returns all our registered concerns</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+		<dl>
+			<dt><strong>Returns:</strong></dt>
+			<dd>struct of our concern definitions</dd>
+		</dl>
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getConcerns()"><!-- --></a>
+	<h3>
+		getConcerns
+		
+	</h3>
+
+	<kbd>public struct <strong>getConcerns</strong>(string name, [string method=''])</kbd>
+
+	<br><br>
+
+	
+		<p>returns any registered concerns for a given object name and optional method</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>name</code></dd>
+		
+		<dd><code>method</code></dd>
+		
+		</dl>
+	
+
+	
+		<dl>
+			<dt><strong>Returns:</strong></dt>
+			<dd>the struct representing the concens defined</dd>
+		</dl>
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getFactoryService()"><!-- --></a>
+	<h3>
+		getFactoryService
+		
+	</h3>
+
+	<kbd>public string <strong>getFactoryService</strong>()</kbd>
+
+	<br><br>
+
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getObjectName()"><!-- --></a>
+	<h3>
+		getObjectName
+		
+	</h3>
+
+	<kbd>public string <strong>getObjectName</strong>(any object)</kbd>
+
+	<br><br>
+
+	
+		<p>returns a given objects name from its meta data</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>object</code></dd>
+		
+		</dl>
+	
+
+	
+		<dl>
+			<dt><strong>Returns:</strong></dt>
+			<dd>the name of the object</dd>
+		</dl>
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="hasConcern()"><!-- --></a>
+	<h3>
+		hasConcern
+		
+	</h3>
+
+	<kbd>public boolean <strong>hasConcern</strong>(string name, string method, string concern, [string aspect='after'])</kbd>
+
+	<br><br>
+
+	
+		<p>returns true if a specific concern is already defined for a given object name and method</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>name</code></dd>
+		
+		<dd><code>method</code></dd>
+		
+		<dd><code>concern</code></dd>
+		
+		<dd><code>aspect</code></dd>
+		
+		</dl>
+	
+
+	
+		<dl>
+			<dt><strong>Returns:</strong></dt>
+			<dd>true if the concern exists</dd>
+		</dl>
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="hasConcerns()"><!-- --></a>
+	<h3>
+		hasConcerns
+		
+	</h3>
+
+	<kbd>public boolean <strong>hasConcerns</strong>(string name, [string method=''])</kbd>
+
+	<br><br>
+
+	
+		<p>returns true if concerns are defined for a given object name and method</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>name</code></dd>
+		
+		<dd><code>method</code></dd>
+		
+		</dl>
+	
+
+	
+		<dl>
+			<dt><strong>Returns:</strong></dt>
+			<dd>true if the given taret has concerns defined</dd>
+		</dl>
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="onMissingMethodIntercept()"><!-- --></a>
+	<h3>
+		onMissingMethodIntercept
+		
+	</h3>
+
+	<kbd>public any <strong>onMissingMethodIntercept</strong>(string MissingMethodName, struct MissingMethodArguments)</kbd>
+
+	<br><br>
+
+	
+		<p>this gets injected into target objects to replace any existing onMissingMethod functions. This is used to intercept any methods with listeners attached.</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>MissingMethodName</code></dd>
+		
+		<dd><code>MissingMethodArguments</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="registerIfFactoryCached()"><!-- --></a>
+	<h3>
+		registerIfFactoryCached
+		
+	</h3>
+
+	<kbd>public void <strong>registerIfFactoryCached</strong>(string name, string methodName)</kbd>
+
+	<br><br>
+
+	
+		<p>attaches the AOP intercept methods to an object if it is already cached in the factory service</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>name</code></dd>
+		
+		<dd><code>methodName</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="registerObject()"><!-- --></a>
+	<h3>
+		registerObject
+		
+	</h3>
+
+	<kbd>public void <strong>registerObject</strong>(any object)</kbd>
+
+	<br><br>
+
+	
+		<p>attaches the AOP intercpet method to a given object if it has concerns registerd against it</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>object</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="setFactoryService()"><!-- --></a>
+	<h3>
+		setFactoryService
+		
+	</h3>
+
+	<kbd>public any <strong>setFactoryService</strong>(any factoryService)</kbd>
+
+	<br><br>
+
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>factoryService</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+
+
+
+</body>
+</html>
+

@@ -1,3 +1,6 @@
+/**
+* Register event listeners and triggers events
+*/
 component accessors="true"{
 
 	property FireBolt;

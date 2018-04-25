@@ -1,3 +1,6 @@
+/**
+* Request controller base component. Routed controllers extend this to give all the FireBolt helper methods and the request context.
+*/
 component transient{
 	
 	

@@ -1,3 +1,6 @@
+/**
+* Handles a request resopnse by setting the response headers and body
+*/
 component transient{
 	
 	this.types = {

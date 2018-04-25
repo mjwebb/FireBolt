@@ -1,3 +1,6 @@
+/**
+* This is core framework file that handles the event scoming from the application.cfc and loads the framework services
+*/
 component{
 
 	variables.startTime = getTickCount();

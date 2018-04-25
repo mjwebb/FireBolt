@@ -1,0 +1,2471 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>factoryService</title>
+	<meta name="keywords" content="FireBolt.concurrent.Callable interface">
+	<!-- common assets -->
+	
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel ="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css">
+<link rel ="stylesheet" type="text/css" href="../stylesheet.css">
+	
+<link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,700,700italic|Ubuntu+Mono' rel='stylesheet' type='text/css' />
+	
+<script src="../bootstrap/js/jquery-2.1.0.min.js" type="text/javascript"></script>
+<script src="../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script>
+$(document).ready(function() {
+	// Global Tool Tip Settings
+	$( '[title]' ).tooltip({
+		 animation: 'slide',
+		 delay: { show: 250, hide: 250 }
+	});
+});
+</script>
+	<!-- syntax highlighter -->
+	<link type="text/css" rel="stylesheet" href="../highlighter/styles/shCoreDefault.css">
+	<script src="../highlighter/scripts/shCore.js"></script>
+	<script src="../highlighter/scripts/shBrushColdFusion.js"></script>
+	<script src="../highlighter/scripts/shBrushXml.js"></script>
+	<script src="../highlighter/scripts/shBrushSql.js"></script>
+	<script src="../highlighter/scripts/shBrushJScript.js"></script>
+	<script src="../highlighter/scripts/shBrushJava.js"></script>
+	<script src="../highlighter/scripts/shBrushCss.js"></script>
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+
+<body class="withNavbar">
+
+
+
+
+
+
+<!-- ========= START OF NAVBAR ======= -->
+<a name="navbar_top"></a>
+<a href="#skip-navbar_top" title="skip navigation links"></a>	
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container-fluid">
+    
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#class-navigation">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#"><strong>FireBolt Docs</strong></a>
+		</div>
+
+	    <div class="collapse navbar-collapse" id="class-navigation">
+	    	<ul class="nav navbar-nav">
+				
+					
+					<li><a href="../overview-summary.html"><i class="glyphicon glyphicon-plane"></i> overview</a></li>
+					
+				
+
+				
+					<li><a href="package-summary.html"><i class="glyphicon glyphicon-folder-open"></i> &nbsp;package</a></li>
+				
+
+			  	
+					<li class="dropdown active">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-file"></i> class <b class="caret"></b></a>
+
+						<ul class="dropdown-menu">
+							<li><a href="#class">Class Definition</a></li>
+							<li><a href="#constructor_summary">Constructor Summary</a></li>
+							<li><a href="#constructor_detail">Constructor Detail</a></li>
+							<li><a href="#inherited_methods">Inherited Methods</a></li>
+							<li><a href="#method_summary">Method Summary</a></li>
+							<li><a href="#method_detail">Method Detail</a></li>
+							<li><a href="#property_summary">Property Summary</a></li>
+							<li><a href="#property_detail">Property Detail</a></li>
+							
+						</ul>
+					</li>
+				
+	      	</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="../index.html?FireBolt/factoryService.html" target="_top">
+					<i class="glyphicon glyphicon-fullscreen"></i> Frames
+					</a>
+				</li>
+			</ul>
+	    </div>
+
+	</div>
+</nav>	
+
+<a name="skip-navbar_top"></a>
+<!-- ========= END OF NAVBAR ========= -->
+
+<!-- ======== start of class data ======== -->
+<a name="class"><!-- --></a>
+
+<!-- Package -->
+<div class="pull-right">
+	<a href="package-summary.html" title="Package: FireBolt"><span class="label label-success">FireBolt</span></a>
+</div>
+
+<h2>
+
+
+Class
+
+ factoryService</h2>
+
+
+
+
+
+
+
+
+	
+		
+	
+	
+
+	
+		
+		
+			
+		
+	
+	
+
+
+<!-- Inheritance Tree-->
+<pre style="background:white">lucee.Component
+    <img src="../resources/inherit.gif" alt="extended by ">FireBolt.factoryService
+</pre>
+
+
+
+	
+	
+
+
+
+
+
+
+
+<div id="class-hint">
+	<p>Factory service used to create and cache objects / components / beans</p>
+</div>
+
+
+<!-- Clas Attributes -->
+<div class="panel panel-info">
+	<div class="panel-heading"><strong>Class Attributes:</strong></div>
+		<div class="panel-body">
+		
+		
+			
+		
+			
+		
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				synchronized
+				
+				: false
+				
+			</li>
+			&nbsp;
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				accessors
+				
+				: true
+				
+			</li>
+			&nbsp;
+			
+		
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				persistent
+				
+				: false
+				
+			</li>
+			&nbsp;
+			
+		
+			
+		
+			
+		
+		
+	</div>
+</div>
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="property_summary"><!-- --></a>
+<table class="table table-bordered table-hover">
+	<tr class="info">
+		<th align="left" colspan="5">
+			<strong>Property Summary</strong>
+		</th>
+	</tr>
+	<tr class="info">
+		<th align="left">
+			<strong>type</strong>
+		</th>
+		<th align="left">
+			<strong>property</strong>
+		</th>
+		<th align="left">
+			<strong>default</strong>
+		</th>
+		<th align="left">
+			<strong>serializable</strong>
+		</th>
+		<th align="left">
+			<strong>required</strong>
+		</th>
+	</tr>
+
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#AOPService()">AOPService</A></strong>
+			<br>
+			
+			<br><br>
+			<ul>
+			
+				
+			
+				
+				<li class="label label-default label-annotations">access = public</li>
+				
+			
+				
+			
+				
+			
+				
+				<li class="label label-default label-annotations">returntype = any</li>
+				
+			
+				
+			
+				
+			
+				
+			
+			</ul>
+
+		</td>
+		<td align="right" valign="top" width="1%">
+			
+		</td>
+		<td align="right" valign="top" width="1%">
+			<code>
+				true
+			</code>
+		</td>
+		<td align="right" valign="top" width="1%">
+			<code>
+				false
+			</code>
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#FireBolt()">FireBolt</A></strong>
+			<br>
+			
+			<br><br>
+			<ul>
+			
+				
+			
+				
+				<li class="label label-default label-annotations">access = public</li>
+				
+			
+				
+			
+				
+			
+				
+				<li class="label label-default label-annotations">returntype = any</li>
+				
+			
+				
+			
+				
+			
+				
+			
+			</ul>
+
+		</td>
+		<td align="right" valign="top" width="1%">
+			
+		</td>
+		<td align="right" valign="top" width="1%">
+			<code>
+				true
+			</code>
+		</td>
+		<td align="right" valign="top" width="1%">
+			<code>
+				false
+			</code>
+		</td>
+	</tr>
+	
+	</tr>
+</table>
+
+
+
+	
+	
+	<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+	<a name="constructor_summary"><!-- --></a>
+	<table class="table table-bordered table-hover">
+		<tr class="info">
+			<th align="left" colspan="2">
+				<strong>Constructor Summary</strong>
+			</th>
+		</tr>
+		<tr>
+			
+			<td>
+				<strong><a href="factoryService.html#init()">init</A></strong>([<a href="../FireBolt/framework.html" title="class in FireBolt">framework</a> FireBolt])
+				<br>
+				
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; constructor.
+				
+			</td>
+		</tr>
+	</table>
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="method_summary"><!-- --></a>
+<table class="table table-bordered table-hover">
+	<tr class="info">
+		<th align="left" colspan="2">
+			<strong>Method Summary</strong>
+		</th>
+	</tr>
+
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#addCFMappings()">addCFMappings</A></strong>([array modulePaths='[runtime expression]'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;adds a mapping for each module sub-directory and our models directory - this needs to be done every request.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#addToCache()">addToCache</A></strong>(string name, any object)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;adds an object to our cache.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#after()">after</A></strong>(string target, string targetMethod, string concern, [boolean async='false'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registers 'after' aspect concern.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#autoRegisterModules()">autoRegisterModules</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scan our modules and models directory and create mappings components within.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#before()">before</A></strong>(string target, string targetMethod, string concern, [boolean async='false'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registers a'before' aspect concern.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#checkCache()">checkCache</A></strong>(string name)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;check cache for an object.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#configureModules()">configureModules</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scan our modules directory for configuration files.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#createMappings()">createMappings</A></strong>([string modulePath], [boolean includeRootAlias='true'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scans a given directrory for cfc's and generates aliases for each one.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#doInject()">doInject</A></strong>(any object, string functionName, string dependencyName, boolean singleton)
+			<br>
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getAllConcerns()">getAllConcerns</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns all our registered concerns.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getAOPService()">getAOPService</A></strong>()
+			<br>
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getBean()">getBean</A></strong>(string name, [struct args='[runtime expression]'], [boolean singleton='true'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;proxy for getObject.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getCache()">getCache</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;converts a dot notation to underscore for use as a cache key.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getCacheKey()">getCacheKey</A></strong>(string name)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;converts a dot notation to underscore for use as a cache key.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getConcerns()">getConcerns</A></strong>(string name, [string method=''])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns any registered concerns for a given object name and optional method.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getConfigComponent()">getConfigComponent</A></strong>([string modulePath])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get config component.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getController()">getController</A></strong>([string controller=''], [<a href="../FireBolt/requestHandler.html" title="class in FireBolt">requestHandler</a> req='[runtime expression]'], [<a href="../FireBolt/framework.html" title="class in FireBolt">framework</a> FireBolt])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get an controller.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getDepenency()">getDepenency</A></strong>(string dependencyName)
+			<br>
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getFireBolt()">getFireBolt</A></strong>()
+			<br>
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getMapping()">getMapping</A></strong>([string alias=''])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searches our aliases for a given key.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getMappings()">getMappings</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns all registered aliases.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getMethodDependencies()">getMethodDependencies</A></strong>([any obj], [string fnc='init'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns a struct of arguments with injection flags for a given object method.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getModelsPath()">getModelsPath</A></strong>([boolean dotNotation='false'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return our models path as dotnotation or directly as it is defined in the config.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getModulePath()">getModulePath</A></strong>([boolean dotNotation='false'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return our module path as dotnotation or directly as it is defined in the config.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>array</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getModulePaths()">getModulePaths</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns an array of directories within our modules path.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#getObject()">getObject</A></strong>(string name, [struct args='[runtime expression]'], [boolean singleton='true'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get an object.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#injectDependencies()">injectDependencies</A></strong>(any object)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searches a given object for methods requesting a dependency injection.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>boolean</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#isCached()">isCached</A></strong>(string name)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns true if a given object name is cached.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>array</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#listComponents()">listComponents</A></strong>([string modulePath])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;scans a given directrory for cfc's.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#moduleConfig()">moduleConfig</A></strong>([string modulePath])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;looks for a module config within a given module path.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#register()">register</A></strong>([string dotPath])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;syntax to register a component.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#registerMapping()">registerMapping</A></strong>([string modulePath], [string alias], [array initArgs='[runtime expression]'], [array properties='[runtime expression]'], [boolean singleton='true'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;adds an alias for a module path.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#setAOPService()">setAOPService</A></strong>(any AOPService)
+			<br>
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="factoryService.html#setFireBolt()">setFireBolt</A></strong>(any FireBolt)
+			<br>
+			
+		</td>
+	</tr>
+	
+</table>
+
+
+
+<a name="inherited_methods"><!-- --></a>
+
+
+	
+
+	
+
+	&nbsp;
+	<a name="methods_inherited_from_class_lucee.Component"><!-- --></a>
+	<table class="table table-hover table-bordered">
+		<tr class="info">
+			<th align="left">
+				<strong>Methods inherited from class <kbd>lucee.Component</kbd></strong>
+			</th>
+		</tr>
+		<tr>
+			<td>
+				
+				
+				
+
+				
+					<span class="label label-warning"><em>None</em></span>
+				
+			</td>
+		</tr>
+	</table>
+
+
+<hr>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+	<a name="constructor_detail"><!-- --></a>
+	<table class="table table-bordered">
+		<tr class="info">
+			<th colspan="1" align="left">
+				<strong>Constructor Detail</strong>
+			</th>
+		</tr>
+	</table>
+
+	<a name="init()"><!-- --></a><h3>
+	init</h3>
+	<kbd>public <strong>init</strong>([<a href="../FireBolt/framework.html" title="class in FireBolt">framework</a> FireBolt])</kbd>
+
+	<br><br>
+
+	
+	<p>constructor</p>
+	
+
+	
+	<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+			<dd><code>FireBolt</code></dd>
+		
+	</dl>
+	
+	<hr>
+
+
+<!-- ============ PROPERTY DETAIL ========== -->
+
+	<a name="property_detail"><!-- --></a>
+	<table class="table table-bordered">
+		<tr class="info">
+			<th colspan="1" align="left">
+				<strong>Property Detail</strong>
+			</th>
+		</tr>
+	</table>
+
+	
+		
+		<a name="AOPService()"><!-- --></a>
+		<h3>AOPService</h3>
+
+		<kbd>
+			property any
+			<strong>AOPService</strong>
+			
+		</kbd>
+
+		<br><br>
+		
+
+		<dl>
+		<dt><strong>Attributes:</strong></dt>
+		
+			
+		
+			
+			<dd><code>access</code> - public</dd>
+			
+		
+			
+			<dd><code>required</code> - false</dd>
+			
+		
+			
+		
+			
+			<dd><code>returntype</code> - any</dd>
+			
+		
+			
+		
+			
+		
+			
+			<dd><code>serializable</code> - true</dd>
+			
+		
+		</dl>
+
+		<hr>
+	
+		
+		<a name="FireBolt()"><!-- --></a>
+		<h3>FireBolt</h3>
+
+		<kbd>
+			property any
+			<strong>FireBolt</strong>
+			
+		</kbd>
+
+		<br><br>
+		
+
+		<dl>
+		<dt><strong>Attributes:</strong></dt>
+		
+			
+		
+			
+			<dd><code>access</code> - public</dd>
+			
+		
+			
+			<dd><code>required</code> - false</dd>
+			
+		
+			
+		
+			
+			<dd><code>returntype</code> - any</dd>
+			
+		
+			
+		
+			
+		
+			
+			<dd><code>serializable</code> - true</dd>
+			
+		
+		</dl>
+
+		<hr>
+	
+
+
+
+
+
+
+
+
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<a name="method_detail"><!-- --></a>
+<table class="table table-bordered">
+	<tr class="info">
+		<th colspan="1" align="left">
+			<strong>Method Detail</strong>
+		</th>
+	</tr>
+</table>
+
+
+	
+	<a name="addCFMappings()"><!-- --></a>
+	<h3>
+		addCFMappings
+		
+	</h3>
+
+	<kbd>public void <strong>addCFMappings</strong>([array modulePaths='[runtime expression]'])</kbd>
+
+	<br><br>
+
+	
+		<p>adds a mapping for each module sub-directory and our models directory - this needs to be done every request</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>modulePaths</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="addToCache()"><!-- --></a>
+	<h3>
+		addToCache
+		
+	</h3>
+
+	<kbd>public void <strong>addToCache</strong>(string name, any object)</kbd>
+
+	<br><br>
+
+	
+		<p>adds an object to our cache</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>name</code></dd>
+		
+		<dd><code>object</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="after()"><!-- --></a>
+	<h3>
+		after
+		
+	</h3>
+
+	<kbd>public void <strong>after</strong>(string target, string targetMethod, string concern, [boolean async='false'])</kbd>
+
+	<br><br>
+
+	
+		<p>registers 'after' aspect concern</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>target</code></dd>
+		
+		<dd><code>targetMethod</code></dd>
+		
+		<dd><code>concern</code></dd>
+		
+		<dd><code>async</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="autoRegisterModules()"><!-- --></a>
+	<h3>
+		autoRegisterModules
+		
+	</h3>
+
+	<kbd>public void <strong>autoRegisterModules</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>scan our modules and models directory and create mappings components within</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="before()"><!-- --></a>
+	<h3>
+		before
+		
+	</h3>
+
+	<kbd>public void <strong>before</strong>(string target, string targetMethod, string concern, [boolean async='false'])</kbd>
+
+	<br><br>
+
+	
+		<p>registers a'before' aspect concern</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>target</code></dd>
+		
+		<dd><code>targetMethod</code></dd>
+		
+		<dd><code>concern</code></dd>
+		
+		<dd><code>async</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="checkCache()"><!-- --></a>
+	<h3>
+		checkCache
+		
+	</h3>
+
+	<kbd>public any <strong>checkCache</strong>(string name)</kbd>
+
+	<br><br>
+
+	
+		<p>check cache for an object</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>name</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="configureModules()"><!-- --></a>
+	<h3>
+		configureModules
+		
+	</h3>
+
+	<kbd>public void <strong>configureModules</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>scan our modules directory for configuration files</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="createMappings()"><!-- --></a>
+	<h3>
+		createMappings
+		
+	</h3>
+
+	<kbd>public void <strong>createMappings</strong>([string modulePath], [boolean includeRootAlias='true'])</kbd>
+
+	<br><br>
+
+	
+		<p>scans a given directrory for cfc's and generates aliases for each one</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>modulePath</code></dd>
+		
+		<dd><code>includeRootAlias</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="doInject()"><!-- --></a>
+	<h3>
+		doInject
+		
+	</h3>
+
+	<kbd>public void <strong>doInject</strong>(any object, string functionName, string dependencyName, boolean singleton)</kbd>
+
+	<br><br>
+
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>object</code></dd>
+		
+		<dd><code>functionName</code></dd>
+		
+		<dd><code>dependencyName</code></dd>
+		
+		<dd><code>singleton</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getAllConcerns()"><!-- --></a>
+	<h3>
+		getAllConcerns
+		
+	</h3>
+
+	<kbd>public struct <strong>getAllConcerns</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>returns all our registered concerns</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getAOPService()"><!-- --></a>
+	<h3>
+		getAOPService
+		
+	</h3>
+
+	<kbd>public string <strong>getAOPService</strong>()</kbd>
+
+	<br><br>
+
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getBean()"><!-- --></a>
+	<h3>
+		getBean
+		
+	</h3>
+
+	<kbd>public any <strong>getBean</strong>(string name, [struct args='[runtime expression]'], [boolean singleton='true'])</kbd>
+
+	<br><br>
+
+	
+		<p>proxy for getObject</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>name</code></dd>
+		
+		<dd><code>args</code></dd>
+		
+		<dd><code>singleton</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getCache()"><!-- --></a>
+	<h3>
+		getCache
+		
+	</h3>
+
+	<kbd>public struct <strong>getCache</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>converts a dot notation to underscore for use as a cache key</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getCacheKey()"><!-- --></a>
+	<h3>
+		getCacheKey
+		
+	</h3>
+
+	<kbd>public string <strong>getCacheKey</strong>(string name)</kbd>
+
+	<br><br>
+
+	
+		<p>converts a dot notation to underscore for use as a cache key</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>name</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getConcerns()"><!-- --></a>
+	<h3>
+		getConcerns
+		
+	</h3>
+
+	<kbd>public struct <strong>getConcerns</strong>(string name, [string method=''])</kbd>
+
+	<br><br>
+
+	
+		<p>returns any registered concerns for a given object name and optional method</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>name</code></dd>
+		
+		<dd><code>method</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getConfigComponent()"><!-- --></a>
+	<h3>
+		getConfigComponent
+		
+	</h3>
+
+	<kbd>public any <strong>getConfigComponent</strong>([string modulePath])</kbd>
+
+	<br><br>
+
+	
+		<p>get config component</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>modulePath</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getController()"><!-- --></a>
+	<h3>
+		getController
+		
+	</h3>
+
+	<kbd>public any <strong>getController</strong>([string controller=''], [<a href="../FireBolt/requestHandler.html" title="class in FireBolt">requestHandler</a> req='[runtime expression]'], [<a href="../FireBolt/framework.html" title="class in FireBolt">framework</a> FireBolt])</kbd>
+
+	<br><br>
+
+	
+		<p>get an controller</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>controller</code></dd>
+		
+		<dd><code>req</code></dd>
+		
+		<dd><code>FireBolt</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getDepenency()"><!-- --></a>
+	<h3>
+		getDepenency
+		
+	</h3>
+
+	<kbd>public any <strong>getDepenency</strong>(string dependencyName)</kbd>
+
+	<br><br>
+
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>dependencyName</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getFireBolt()"><!-- --></a>
+	<h3>
+		getFireBolt
+		
+	</h3>
+
+	<kbd>public string <strong>getFireBolt</strong>()</kbd>
+
+	<br><br>
+
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getMapping()"><!-- --></a>
+	<h3>
+		getMapping
+		
+	</h3>
+
+	<kbd>public struct <strong>getMapping</strong>([string alias=''])</kbd>
+
+	<br><br>
+
+	
+		<p>searches our aliases for a given key</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>alias</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getMappings()"><!-- --></a>
+	<h3>
+		getMappings
+		
+	</h3>
+
+	<kbd>public struct <strong>getMappings</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>returns all registered aliases</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getMethodDependencies()"><!-- --></a>
+	<h3>
+		getMethodDependencies
+		
+	</h3>
+
+	<kbd>public struct <strong>getMethodDependencies</strong>([any obj], [string fnc='init'])</kbd>
+
+	<br><br>
+
+	
+		<p>returns a struct of arguments with injection flags for a given object method</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>obj</code></dd>
+		
+		<dd><code>fnc</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getModelsPath()"><!-- --></a>
+	<h3>
+		getModelsPath
+		
+	</h3>
+
+	<kbd>public any <strong>getModelsPath</strong>([boolean dotNotation='false'])</kbd>
+
+	<br><br>
+
+	
+		<p>return our models path as dotnotation or directly as it is defined in the config</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>dotNotation</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getModulePath()"><!-- --></a>
+	<h3>
+		getModulePath
+		
+	</h3>
+
+	<kbd>public any <strong>getModulePath</strong>([boolean dotNotation='false'])</kbd>
+
+	<br><br>
+
+	
+		<p>return our module path as dotnotation or directly as it is defined in the config</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>dotNotation</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getModulePaths()"><!-- --></a>
+	<h3>
+		getModulePaths
+		
+	</h3>
+
+	<kbd>public array <strong>getModulePaths</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>returns an array of directories within our modules path</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getObject()"><!-- --></a>
+	<h3>
+		getObject
+		
+	</h3>
+
+	<kbd>public any <strong>getObject</strong>(string name, [struct args='[runtime expression]'], [boolean singleton='true'])</kbd>
+
+	<br><br>
+
+	
+		<p>get an object</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>name</code></dd>
+		
+		<dd><code>args</code></dd>
+		
+		<dd><code>singleton</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="injectDependencies()"><!-- --></a>
+	<h3>
+		injectDependencies
+		
+	</h3>
+
+	<kbd>public void <strong>injectDependencies</strong>(any object)</kbd>
+
+	<br><br>
+
+	
+		<p>searches a given object for methods requesting a dependency injection</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>object</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="isCached()"><!-- --></a>
+	<h3>
+		isCached
+		
+	</h3>
+
+	<kbd>public boolean <strong>isCached</strong>(string name)</kbd>
+
+	<br><br>
+
+	
+		<p>returns true if a given object name is cached</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>name</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="listComponents()"><!-- --></a>
+	<h3>
+		listComponents
+		
+	</h3>
+
+	<kbd>public array <strong>listComponents</strong>([string modulePath])</kbd>
+
+	<br><br>
+
+	
+		<p>scans a given directrory for cfc's</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>modulePath</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="moduleConfig()"><!-- --></a>
+	<h3>
+		moduleConfig
+		
+	</h3>
+
+	<kbd>public void <strong>moduleConfig</strong>([string modulePath])</kbd>
+
+	<br><br>
+
+	
+		<p>looks for a module config within a given module path</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>modulePath</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="register()"><!-- --></a>
+	<h3>
+		register
+		
+	</h3>
+
+	<kbd>public struct <strong>register</strong>([string dotPath])</kbd>
+
+	<br><br>
+
+	
+		<p>syntax to register a component</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>dotPath</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="registerMapping()"><!-- --></a>
+	<h3>
+		registerMapping
+		
+	</h3>
+
+	<kbd>public void <strong>registerMapping</strong>([string modulePath], [string alias], [array initArgs='[runtime expression]'], [array properties='[runtime expression]'], [boolean singleton='true'])</kbd>
+
+	<br><br>
+
+	
+		<p>adds an alias for a module path</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>modulePath</code></dd>
+		
+		<dd><code>alias</code></dd>
+		
+		<dd><code>initArgs</code></dd>
+		
+		<dd><code>properties</code></dd>
+		
+		<dd><code>singleton</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="setAOPService()"><!-- --></a>
+	<h3>
+		setAOPService
+		
+	</h3>
+
+	<kbd>public any <strong>setAOPService</strong>(any AOPService)</kbd>
+
+	<br><br>
+
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>AOPService</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="setFireBolt()"><!-- --></a>
+	<h3>
+		setFireBolt
+		
+	</h3>
+
+	<kbd>public any <strong>setFireBolt</strong>(any FireBolt)</kbd>
+
+	<br><br>
+
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>FireBolt</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+
+
+
+</body>
+</html>
+

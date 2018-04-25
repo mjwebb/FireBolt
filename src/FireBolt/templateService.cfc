@@ -1,3 +1,6 @@
+/**
+* Helps with the construction of HTML templates
+*/
 component accessors="true" transient{ // transient template output service
 
 	

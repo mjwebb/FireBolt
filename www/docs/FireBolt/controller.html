@@ -1,0 +1,1595 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>controller</title>
+	<meta name="keywords" content="FireBolt.concurrent.Callable interface">
+	<!-- common assets -->
+	
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel ="stylesheet" type="text/css" href="../bootstrap/css/bootstrap.min.css">
+<link rel ="stylesheet" type="text/css" href="../stylesheet.css">
+	
+<link href='https://fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,700,700italic|Ubuntu+Mono' rel='stylesheet' type='text/css' />
+	
+<script src="../bootstrap/js/jquery-2.1.0.min.js" type="text/javascript"></script>
+<script src="../bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script>
+$(document).ready(function() {
+	// Global Tool Tip Settings
+	$( '[title]' ).tooltip({
+		 animation: 'slide',
+		 delay: { show: 250, hide: 250 }
+	});
+});
+</script>
+	<!-- syntax highlighter -->
+	<link type="text/css" rel="stylesheet" href="../highlighter/styles/shCoreDefault.css">
+	<script src="../highlighter/scripts/shCore.js"></script>
+	<script src="../highlighter/scripts/shBrushColdFusion.js"></script>
+	<script src="../highlighter/scripts/shBrushXml.js"></script>
+	<script src="../highlighter/scripts/shBrushSql.js"></script>
+	<script src="../highlighter/scripts/shBrushJScript.js"></script>
+	<script src="../highlighter/scripts/shBrushJava.js"></script>
+	<script src="../highlighter/scripts/shBrushCss.js"></script>
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+
+<body class="withNavbar">
+
+
+
+
+
+
+<!-- ========= START OF NAVBAR ======= -->
+<a name="navbar_top"></a>
+<a href="#skip-navbar_top" title="skip navigation links"></a>	
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container-fluid">
+    
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#class-navigation">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#"><strong>FireBolt Docs</strong></a>
+		</div>
+
+	    <div class="collapse navbar-collapse" id="class-navigation">
+	    	<ul class="nav navbar-nav">
+				
+					
+					<li><a href="../overview-summary.html"><i class="glyphicon glyphicon-plane"></i> overview</a></li>
+					
+				
+
+				
+					<li><a href="package-summary.html"><i class="glyphicon glyphicon-folder-open"></i> &nbsp;package</a></li>
+				
+
+			  	
+					<li class="dropdown active">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-file"></i> class <b class="caret"></b></a>
+
+						<ul class="dropdown-menu">
+							<li><a href="#class">Class Definition</a></li>
+							<li><a href="#constructor_summary">Constructor Summary</a></li>
+							<li><a href="#constructor_detail">Constructor Detail</a></li>
+							<li><a href="#inherited_methods">Inherited Methods</a></li>
+							<li><a href="#method_summary">Method Summary</a></li>
+							<li><a href="#method_detail">Method Detail</a></li>
+							<li><a href="#property_summary">Property Summary</a></li>
+							<li><a href="#property_detail">Property Detail</a></li>
+							
+						</ul>
+					</li>
+				
+	      	</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="../index.html?FireBolt/controller.html" target="_top">
+					<i class="glyphicon glyphicon-fullscreen"></i> Frames
+					</a>
+				</li>
+			</ul>
+	    </div>
+
+	</div>
+</nav>	
+
+<a name="skip-navbar_top"></a>
+<!-- ========= END OF NAVBAR ========= -->
+
+<!-- ======== start of class data ======== -->
+<a name="class"><!-- --></a>
+
+<!-- Package -->
+<div class="pull-right">
+	<a href="package-summary.html" title="Package: FireBolt"><span class="label label-success">FireBolt</span></a>
+</div>
+
+<h2>
+
+
+Class
+
+ controller</h2>
+
+
+
+
+
+
+
+
+	
+		
+	
+	
+
+	
+		
+		
+			
+		
+	
+	
+
+
+<!-- Inheritance Tree-->
+<pre style="background:white">lucee.Component
+    <img src="../resources/inherit.gif" alt="extended by ">FireBolt.controller
+</pre>
+
+
+
+	
+	
+
+
+
+
+
+
+
+<div id="class-hint">
+	<p>Request controller base component. Routed controllers extend this to give all the FireBolt helper methods and the request context.</p>
+</div>
+
+
+<!-- Clas Attributes -->
+<div class="panel panel-info">
+	<div class="panel-heading"><strong>Class Attributes:</strong></div>
+		<div class="panel-body">
+		
+		
+			
+		
+			
+		
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				synchronized
+				
+				: false
+				
+			</li>
+			&nbsp;
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				accessors
+				
+				: false
+				
+			</li>
+			&nbsp;
+			
+		
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				transient
+				
+			</li>
+			&nbsp;
+			
+		
+			
+			
+			<li class="label label-danger label-annotations">
+				persistent
+				
+				: false
+				
+			</li>
+			&nbsp;
+			
+		
+			
+		
+			
+		
+		
+	</div>
+</div>
+
+
+
+
+
+
+	
+	
+	<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+
+	<a name="constructor_summary"><!-- --></a>
+	<table class="table table-bordered table-hover">
+		<tr class="info">
+			<th align="left" colspan="2">
+				<strong>Constructor Summary</strong>
+			</th>
+		</tr>
+		<tr>
+			
+			<td>
+				<strong><a href="controller.html#init()">init</A></strong>([<a href="../FireBolt/requestHandler.html" title="class in FireBolt">requestHandler</a> req], [<a href="../FireBolt/framework.html" title="class in FireBolt">framework</a> FireBolt])
+				<br>
+				
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; constructor.
+				
+			</td>
+		</tr>
+	</table>
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+
+<a name="method_summary"><!-- --></a>
+<table class="table table-bordered table-hover">
+	<tr class="info">
+		<th align="left" colspan="2">
+			<strong>Method Summary</strong>
+		</th>
+	</tr>
+
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#addModuleView()">addModuleView</A></strong>([string moduleRoot], [string viewFile], [any viewData='[runtime expression]'], [string contentRegion='default'], [string viewPath='views'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;render a view and add it by default to the default content region.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#addView()">addView</A></strong>([string viewFile], [any viewData='[runtime expression]'], [string contentRegion='default'], [string root='[runtime expression]'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;render a view and add it by default to the default content region.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#callFunction()">callFunction</A></strong>(string fnc, [any args='[runtime expression]'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;helper to call dynamic functions.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code><a href="../FireBolt/framework.html" title="class in FireBolt">framework</a></code>
+		</td>
+		<td>
+			<strong><a href="controller.html#FB()">FB</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;framework shortcut.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#getData()">getData</A></strong>([string key])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;get request data variable shortcut.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#layout()">layout</A></strong>([string templateName='default'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;render a given template.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#moduleView()">moduleView</A></strong>([string moduleRoot], [string viewFile], [any viewData='[runtime expression]'], [string contentRegion=''], [string viewPath='views'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;render a module view.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#rc()">rc</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;request context shortcut.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>struct</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#req()">req</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;request hander shortcut.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#respond()">respond</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;call our response for our request handler.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#respondWith()">respondWith</A></strong>([any body])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;helper for setting our request response body.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#response()">response</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;helper for our request response.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#setData()">setData</A></strong>([string key], [any data])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set request data variable shortcut.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>void</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#setTemplateProxyMethods()">setTemplateProxyMethods</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;creates proxy methods to our response output service methods.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#stringDump()">stringDump</A></strong>([any var])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write a var dump out as a string.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#templateInclude()">templateInclude</A></strong>(string templateName)
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;performs a template include.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#templatePath()">templatePath</A></strong>([string template='default'], [string root='[runtime expression]'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns a template path.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#templateProxyMethod()">templateProxyMethod</A></strong>()
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this gets called by our proxied response output service methods and makes the call back to itself.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#templateRoot()">templateRoot</A></strong>([string templateRootDir=''])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns a template path.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>any</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#view()">view</A></strong>([string viewFile], [any viewData='[runtime expression]'], [string contentRegion=''], [string root='[runtime expression]'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;render a view.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#viewPath()">viewPath</A></strong>([string viewFile='default'], [string root='[runtime expression]'])
+			<br>
+			
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;returns a view path.
+			
+		</td>
+	</tr>
+	
+	
+	
+	<tr>
+		<td align="right" valign="top" width="1%">
+			<code>string</code>
+		</td>
+		<td>
+			<strong><a href="controller.html#viewRoot()">viewRoot</A></strong>([string viewRootDir=''])
+			<br>
+			
+		</td>
+	</tr>
+	
+</table>
+
+
+
+<a name="inherited_methods"><!-- --></a>
+
+
+	
+
+	
+
+	&nbsp;
+	<a name="methods_inherited_from_class_lucee.Component"><!-- --></a>
+	<table class="table table-hover table-bordered">
+		<tr class="info">
+			<th align="left">
+				<strong>Methods inherited from class <kbd>lucee.Component</kbd></strong>
+			</th>
+		</tr>
+		<tr>
+			<td>
+				
+				
+				
+
+				
+					<span class="label label-warning"><em>None</em></span>
+				
+			</td>
+		</tr>
+	</table>
+
+
+<hr>
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+
+	<a name="constructor_detail"><!-- --></a>
+	<table class="table table-bordered">
+		<tr class="info">
+			<th colspan="1" align="left">
+				<strong>Constructor Detail</strong>
+			</th>
+		</tr>
+	</table>
+
+	<a name="init()"><!-- --></a><h3>
+	init</h3>
+	<kbd>public <strong>init</strong>([<a href="../FireBolt/requestHandler.html" title="class in FireBolt">requestHandler</a> req], [<a href="../FireBolt/framework.html" title="class in FireBolt">framework</a> FireBolt])</kbd>
+
+	<br><br>
+
+	
+	<p>constructor</p>
+	
+
+	
+	<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+			<dd><code>req</code></dd>
+		
+			<dd><code>FireBolt</code></dd>
+		
+	</dl>
+	
+	<hr>
+
+
+<!-- ============ PROPERTY DETAIL ========== -->
+
+
+
+
+
+
+
+
+
+<!-- ============ METHOD DETAIL ========== -->
+
+<a name="method_detail"><!-- --></a>
+<table class="table table-bordered">
+	<tr class="info">
+		<th colspan="1" align="left">
+			<strong>Method Detail</strong>
+		</th>
+	</tr>
+</table>
+
+
+	
+	<a name="addModuleView()"><!-- --></a>
+	<h3>
+		addModuleView
+		
+	</h3>
+
+	<kbd>public any <strong>addModuleView</strong>([string moduleRoot], [string viewFile], [any viewData='[runtime expression]'], [string contentRegion='default'], [string viewPath='views'])</kbd>
+
+	<br><br>
+
+	
+		<p>render a view and add it by default to the default content region</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>moduleRoot</code></dd>
+		
+		<dd><code>viewFile</code></dd>
+		
+		<dd><code>viewData</code></dd>
+		
+		<dd><code>contentRegion</code></dd>
+		
+		<dd><code>viewPath</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="addView()"><!-- --></a>
+	<h3>
+		addView
+		
+	</h3>
+
+	<kbd>public any <strong>addView</strong>([string viewFile], [any viewData='[runtime expression]'], [string contentRegion='default'], [string root='[runtime expression]'])</kbd>
+
+	<br><br>
+
+	
+		<p>render a view and add it by default to the default content region</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>viewFile</code></dd>
+		
+		<dd><code>viewData</code></dd>
+		
+		<dd><code>contentRegion</code></dd>
+		
+		<dd><code>root</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="callFunction()"><!-- --></a>
+	<h3>
+		callFunction
+		
+	</h3>
+
+	<kbd>public any <strong>callFunction</strong>(string fnc, [any args='[runtime expression]'])</kbd>
+
+	<br><br>
+
+	
+		<p>helper to call dynamic functions</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>fnc</code></dd>
+		
+		<dd><code>args</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="FB()"><!-- --></a>
+	<h3>
+		FB
+		
+	</h3>
+
+	<kbd>public <a href="../FireBolt/framework.html" title="class in FireBolt">framework</a> <strong>FB</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>framework shortcut</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="getData()"><!-- --></a>
+	<h3>
+		getData
+		
+	</h3>
+
+	<kbd>public any <strong>getData</strong>([string key])</kbd>
+
+	<br><br>
+
+	
+		<p>get request data variable shortcut</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>key</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="layout()"><!-- --></a>
+	<h3>
+		layout
+		
+	</h3>
+
+	<kbd>public any <strong>layout</strong>([string templateName='default'])</kbd>
+
+	<br><br>
+
+	
+		<p>render a given template</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>templateName</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="moduleView()"><!-- --></a>
+	<h3>
+		moduleView
+		
+	</h3>
+
+	<kbd>public any <strong>moduleView</strong>([string moduleRoot], [string viewFile], [any viewData='[runtime expression]'], [string contentRegion=''], [string viewPath='views'])</kbd>
+
+	<br><br>
+
+	
+		<p>render a module view</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>moduleRoot</code></dd>
+		
+		<dd><code>viewFile</code></dd>
+		
+		<dd><code>viewData</code></dd>
+		
+		<dd><code>contentRegion</code></dd>
+		
+		<dd><code>viewPath</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="rc()"><!-- --></a>
+	<h3>
+		rc
+		
+	</h3>
+
+	<kbd>public struct <strong>rc</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>request context shortcut</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="req()"><!-- --></a>
+	<h3>
+		req
+		
+	</h3>
+
+	<kbd>public struct <strong>req</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>request hander shortcut</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="respond()"><!-- --></a>
+	<h3>
+		respond
+		
+	</h3>
+
+	<kbd>public any <strong>respond</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>call our response for our request handler</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="respondWith()"><!-- --></a>
+	<h3>
+		respondWith
+		
+	</h3>
+
+	<kbd>public any <strong>respondWith</strong>([any body])</kbd>
+
+	<br><br>
+
+	
+		<p>helper for setting our request response body</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>body</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="response()"><!-- --></a>
+	<h3>
+		response
+		
+	</h3>
+
+	<kbd>public any <strong>response</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>helper for our request response</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="setData()"><!-- --></a>
+	<h3>
+		setData
+		
+	</h3>
+
+	<kbd>public void <strong>setData</strong>([string key], [any data])</kbd>
+
+	<br><br>
+
+	
+		<p>set request data variable shortcut</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>key</code></dd>
+		
+		<dd><code>data</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="setTemplateProxyMethods()"><!-- --></a>
+	<h3>
+		setTemplateProxyMethods
+		
+	</h3>
+
+	<kbd>public void <strong>setTemplateProxyMethods</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>creates proxy methods to our response output service methods</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="stringDump()"><!-- --></a>
+	<h3>
+		stringDump
+		
+	</h3>
+
+	<kbd>public string <strong>stringDump</strong>([any var])</kbd>
+
+	<br><br>
+
+	
+		<p>write a var dump out as a string</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>var</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="templateInclude()"><!-- --></a>
+	<h3>
+		templateInclude
+		
+	</h3>
+
+	<kbd>public string <strong>templateInclude</strong>(string templateName)</kbd>
+
+	<br><br>
+
+	
+		<p>performs a template include</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>templateName</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="templatePath()"><!-- --></a>
+	<h3>
+		templatePath
+		
+	</h3>
+
+	<kbd>public string <strong>templatePath</strong>([string template='default'], [string root='[runtime expression]'])</kbd>
+
+	<br><br>
+
+	
+		<p>returns a template path</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>template</code></dd>
+		
+		<dd><code>root</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="templateProxyMethod()"><!-- --></a>
+	<h3>
+		templateProxyMethod
+		
+	</h3>
+
+	<kbd>public any <strong>templateProxyMethod</strong>()</kbd>
+
+	<br><br>
+
+	
+		<p>this gets called by our proxied response output service methods and makes the call back to itself</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="templateRoot()"><!-- --></a>
+	<h3>
+		templateRoot
+		
+	</h3>
+
+	<kbd>public string <strong>templateRoot</strong>([string templateRootDir=''])</kbd>
+
+	<br><br>
+
+	
+		<p>returns a template path</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>templateRootDir</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="view()"><!-- --></a>
+	<h3>
+		view
+		
+	</h3>
+
+	<kbd>public any <strong>view</strong>([string viewFile], [any viewData='[runtime expression]'], [string contentRegion=''], [string root='[runtime expression]'])</kbd>
+
+	<br><br>
+
+	
+		<p>render a view</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>viewFile</code></dd>
+		
+		<dd><code>viewData</code></dd>
+		
+		<dd><code>contentRegion</code></dd>
+		
+		<dd><code>root</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="viewPath()"><!-- --></a>
+	<h3>
+		viewPath
+		
+	</h3>
+
+	<kbd>public string <strong>viewPath</strong>([string viewFile='default'], [string root='[runtime expression]'])</kbd>
+
+	<br><br>
+
+	
+		<p>returns a view path</p>
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>viewFile</code></dd>
+		
+		<dd><code>root</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+	
+	<a name="viewRoot()"><!-- --></a>
+	<h3>
+		viewRoot
+		
+	</h3>
+
+	<kbd>public string <strong>viewRoot</strong>([string viewRootDir=''])</kbd>
+
+	<br><br>
+
+	
+
+	
+
+	
+		
+		
+	
+
+	
+	
+
+	
+		<dl>
+		<dt><strong>Parameters:</strong></dt>
+		
+		<dd><code>viewRootDir</code></dd>
+		
+		</dl>
+	
+
+	
+
+	
+
+	</dl>
+	<hr>
+
+
+
+
+</body>
+</html>
+
