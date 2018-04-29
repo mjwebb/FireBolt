@@ -1,4 +1,7 @@
-component output="false" extends="FireBolt.controller" {
+component output="false" accessors="true" extends="FireBolt.controller" {
+
+
+	property name="UserService" inject="UserService";
 
 	/**	
 	*/
@@ -14,12 +17,13 @@ component output="false" extends="FireBolt.controller" {
 		//setResponseBody(writeDump(this));
 		//return;
 
-		local.user = FB().getObject("UserService").getUser();
+		//local.user = FB().getObject("UserService").getUser();
+		local.user = getUserService().getUser();
 		local.user.setForeName("Joe");
 		local.user.setSurName("Blogs");
 		setData("user", local.user);
 
-		local.user2 = FB().getObject("UserService").getUser();
+		local.user2 = getUserService().getUser();
 		local.user2.setForeName("John");
 		local.user2.setSurName("Smith");
 		setData("user2", local.user2);
