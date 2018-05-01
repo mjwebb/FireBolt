@@ -23,8 +23,8 @@ component{
 	/**
 	* @hint reads config settings
 	*/
-	public any function readConfig(string type="FireBolt"){
-		local.configPath = "app.config.#arguments.type#";
+	public any function readConfig(string type="FireBolt", string path="app.config"){
+		local.configPath = "#arguments.path#.#arguments.type#";
 		variables.configObject = new "#local.configPath#"();
 		if(! isSimpleValue(variables.FireBolt)){
 			variables.FireBolt.injectFramework(variables.configObject);

@@ -11,6 +11,7 @@
 	public function getFireBolt(boolean reload=false){
 		if(!structKeyExists(application, "FireBolt") OR arguments.reload){
 			application.FireBolt = new FireBolt.framework();
+			request.FireBoltLoaded = true;
 		}
 		return application.FireBolt;
 	}
@@ -19,7 +20,10 @@
 	* onApplicationStart event handler
 	*/
 	public boolean function onApplicationStart(){
-		getFireBolt().onApplicationStart();
+		local.fb = gtFireBolt();
+		if(!structKeyExists(request, "FireBoltLoaded")){
+			local.fb.onApplicationStart();	
+		}
 		return true;
 	}
 
