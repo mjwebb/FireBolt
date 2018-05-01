@@ -13,7 +13,6 @@ component accessors="true"{
 	*/
 	public eventService function init(framework FireBolt){
 		setFireBolt(arguments.FireBolt);
-		getFireBolt().registerMethods("processState,trigger,addListeners,addListener,listenFor,removeListener,listenerExists,getListeners", this);
 		variables.configService = new configService("eventListeners");
 		addConfigListeners();
 		return this;
@@ -29,6 +28,7 @@ component accessors="true"{
 
 	/**
 	* @hint adds listener from an array of configuration structs
+	* @FireBoltMethod
 	*/
 	public void function addListeners(array listeners){
 		for(local.item in arguments.listeners){
@@ -44,6 +44,7 @@ component accessors="true"{
 
 	/**
 	* @hint adds a listener
+	* @FireBoltMethod
 	*/
 	public any function addListener(
 		required string eventName, 
@@ -69,6 +70,7 @@ component accessors="true"{
 
 	/**
 	* @hint adds a listener via a declaration syntax
+	* @FireBoltMethod
 	*/
 	public struct function listenFor(string eventName){
 		var declaration = {
@@ -103,6 +105,7 @@ component accessors="true"{
 
 	/**
 	* @hint removes a listener or an entire event
+	* @FireBoltMethod
 	*/
 	public void function removeListener(
 		string eventName="", 
@@ -142,6 +145,7 @@ component accessors="true"{
 
 	/**
 	* @hint checks for the existence of a listener
+	* @FireBoltMethod
 	*/
 	public boolean function listenerExists(
 		required string eventName, 
@@ -159,6 +163,7 @@ component accessors="true"{
 
 	/**
 	* @hint returns our current listeners
+	* @FireBoltMethod
 	*/
 	public any function getListeners(string eventName=""){
 		if(!len(arguments.eventName)){
@@ -184,6 +189,7 @@ component accessors="true"{
 
 	/**
 	* @hint trigger an event
+	* @FireBoltMethod
 	*/
 	public any function trigger(
 		required string eventName, 

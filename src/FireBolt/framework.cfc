@@ -1,5 +1,5 @@
 /**
-* This is core framework file that handles the event scoming from the application.cfc and loads the framework services
+* This is core framework file that handles the events coming from the application.cfc and loads the framework services
 */
 component{
 
@@ -29,9 +29,13 @@ component{
 		variables.startup = now();
 		variables.flavour = new flavour.engine();
 		variables.configService = new configService("FireBolt", this);
+		registerFireBoltMethods(variables.configService);
 		variables.routeService = new routeService(this);
+		registerFireBoltMethods(variables.routeService);
 		variables.eventService = new eventService(this);
+		registerFireBoltMethods(variables.eventService);
 		variables.factoryService = new factoryService(this);
+		registerFireBoltMethods(variables.factoryService);
 		onApplicationStart();
 		getEventService().trigger("FireBolt.loaded");
 		variables.isLoaded = true;
@@ -48,6 +52,22 @@ component{
 			local.methodArray = listToArray(arguments.methods);
 			for(local.method in local.methodArray){
 				variables.registeredMethods[local.method] = arguments.object;	
+			}
+		}
+	}
+
+	/**
+	* @hint registers a FireBolt methods found within another object
+	*/
+	public void function registerFireBoltMethods(any object){
+		// we make sure that the object in question is part of our FireBolt namespace
+		local.meta = getMetaData(arguments.object);
+		if(listFirst(local.meta.name, ".") IS "FireBolt"){
+			// now we can register our methods
+			for(local.method in local.meta.functions){
+				if(structKeyExists(local.method, "FireBoltMethod")){
+					variables.registeredMethods[local.method.name] = arguments.object;
+				}
 			}
 		}
 	}

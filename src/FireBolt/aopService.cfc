@@ -123,6 +123,7 @@ component accessors="true"{
 	/**
 	* @hint adds a concern via a declaration syntax
 	* @param concern 	the path to the concern method
+	* @FireBoltMethod
 	*/
 	public struct function call(string concern){
 		var declaration = {

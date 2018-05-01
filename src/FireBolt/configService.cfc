@@ -13,9 +13,6 @@ component{
 	*/
 	public configService function init(string type, any FireBolt=""){
 		variables.FireBolt = arguments.FireBolt;
-		if(! isSimpleValue(variables.FireBolt)){
-			variables.FireBolt.registerMethods("getConfig,getSetting,setSetting,mergeSetting", this);
-		}
 		if(len(arguments.type)){
 			readConfig(arguments.type);
 		}
@@ -66,6 +63,7 @@ component{
 
 	/**
 	* @hint returns our config struct
+	* @FireBoltMethod
 	*/
 	public any function getConfig(){
 		return variables.config;
@@ -73,6 +71,7 @@ component{
 
 	/**
 	* @hint gets a config setting
+	* @FireBoltMethod
 	*/
 	public any function getSetting(string keyChain){
 		arguments.keyChain = listToArray(arguments.keyChain, ".");
@@ -90,6 +89,7 @@ component{
 
 	/**
 	* @hint sets a config key value
+	* @FireBoltMethod
 	*/
 	public void function setSetting(string key, any value){
 		evaluate("variables.config.#arguments.key# = arguments.value");
@@ -97,6 +97,7 @@ component{
 
 	/**
 	* @hint merges a setting key struct with a given struct
+	* @FireBoltMethod
 	*/
 	public void function mergeSetting(string key, struct value){
 		if(evaluate("structKeyExists(variables.config, '#arguments.key#') AND isStruct(variables.config.#arguments.key#)")){

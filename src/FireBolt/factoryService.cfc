@@ -22,7 +22,6 @@ component accessors="true"{
 	*/
 	public factoryService function init(framework FireBolt){
 		setFireBolt(arguments.FireBolt);
-		getFireBolt().registerMethods("getObject,getController,registerMapping,getMapping,register,before,after,removeBefore,removeAfter,getConcerns,getAllConcerns", this);
 		autoRegisterModules();
 		setAOPService(new aopService(this));
 		getFireBolt().registerMethods("call", getAOPService());
@@ -199,6 +198,7 @@ component accessors="true"{
 
 	/**
 	* @hint adds an alias for a module path
+	* @FireBoltMethod
 	*/
 	public void function registerMapping(string modulePath, string alias, array initArgs=[], array properties=[], boolean singleton=true){
 		variables.moduleMappings[arguments.alias] = {
@@ -211,6 +211,7 @@ component accessors="true"{
 
 	/**
 	* @hint searches our aliases for a given key
+	* @FireBoltMethod
 	*/
 	public struct function getMapping(string alias=""){
 		if(len(arguments.alias) AND structKeyExists(variables.moduleMappings, arguments.alias)){
@@ -242,6 +243,7 @@ component accessors="true"{
 
 	/**
 	* @hint syntax to register a component
+	* @FireBoltMethod
 	*/
 	public struct function register(string dotPath){
 		var mapping = {
@@ -330,6 +332,7 @@ component accessors="true"{
 
 	/**
 	* @hint get an controller
+	* @FireBoltMethod
 	*/
 	public any function getController(string controller="", requestHandler req=request.FireBoltReq, framework FireBolt){
 		if(!len(arguments.controller)){
@@ -354,6 +357,7 @@ component accessors="true"{
 
 	/**
 	* @hint get an object
+	* @FireBoltMethod
 	*/
 	public any function getObject(
 		required string name, 
@@ -554,6 +558,7 @@ component accessors="true"{
 	
 	/**
 	* @hint registers a'before' aspect concern
+	* @FireBoltMethod
 	*/
 	public void function before(required string target, required string targetMethod, required string concern, boolean async=false){
 		getAOPService().before(argumentCollection: arguments);
@@ -561,6 +566,7 @@ component accessors="true"{
 
 	/**
 	* @hint registers 'after' aspect concern
+	* @FireBoltMethod
 	*/
 	public void function after(required string target, required string targetMethod, required string concern, boolean async=false){
 		getAOPService().after(argumentCollection: arguments);
@@ -568,6 +574,7 @@ component accessors="true"{
 
 	/**
 	* @hint returns any registered concerns for a given object name and optional method
+	* @FireBoltMethod
 	*/
 	public struct function getConcerns(required string name, string method=""){
 		return getAOPService().getConcerns(argumentCollection: arguments);
@@ -575,6 +582,7 @@ component accessors="true"{
 
 	/**
 	* @hint returns all our registered concerns
+	* @FireBoltMethod
 	*/
 	public struct function getAllConcerns(){
 		return getAOPService().getAllConcerns();
