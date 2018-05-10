@@ -24,10 +24,14 @@ component accessors="true"{
 		setFireBolt(arguments.FireBolt);
 		autoRegisterModules();
 		setAOPService(new aopService(this));
-		getFireBolt().registerMethods("call", getAOPService());
+		//getFireBolt().registerMethods("call", getAOPService());
+		getFireBolt().registerFireBoltMethods(this);
+		getFireBolt().registerFireBoltMethods(getAOPService());
 		configureModules();
 		return this;
 	}
+
+	
 
 	/*
 	register modules

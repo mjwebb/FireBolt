@@ -20,7 +20,7 @@
 	* onApplicationStart event handler
 	*/
 	public boolean function onApplicationStart(){
-		local.fb = gtFireBolt();
+		local.fb = getFireBolt();
 		if(!structKeyExists(request, "FireBoltLoaded")){
 			local.fb.onApplicationStart();	
 		}
@@ -30,16 +30,22 @@
 	/**
 	* onApplicationEnd event handler
 	*/
-	/*public void function onApplicationEnd(struct appScope){
+	public void function onApplicationEnd(struct appScope){
 		getFireBolt().onApplicationEnd(arguments.appScope);
-	}*/
+	}
 
 	/**
 	* onRequestStart event handler
 	*/
 	public boolean function onRequestStart(string targetPage){
 		request.startTime = getTickCount();
-		getFireBolt(structKeyExists(url, "reload")).onRequestStart(arguments.targetPage);
+		if(structKeyExists(url, "reload")){
+			onApplicationEnd(application);
+			structClear(application);
+			onApplicationStart();
+		}
+		getFireBolt().onRequestStart(arguments.targetPage);
+		//getFireBolt(structKeyExists(url, "reload")).onRequestStart(arguments.targetPage);
 		return true;
 	}
 
@@ -65,7 +71,7 @@
 		try{
 			writeOutput(getFireBolt().onError(argumentCollection:arguments));
 		}catch(any e){
-			writeDump(var:arguments, label:"Error", format:"text");
+			writeDump(var:arguments, label:"Error XX", format:"text");
 			//rethrow;
 		}
 		

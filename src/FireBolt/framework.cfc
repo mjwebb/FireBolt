@@ -35,7 +35,8 @@ component{
 		variables.eventService = new eventService(this);
 		registerFireBoltMethods(variables.eventService);
 		variables.factoryService = new factoryService(this);
-		registerFireBoltMethods(variables.factoryService);
+		//registerFireBoltMethods(variables.factoryService);
+		//variables.factoryService.configureModules();
 		onApplicationStart();
 		getEventService().trigger("FireBolt.loaded");
 		variables.isLoaded = true;
