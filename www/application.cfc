@@ -6,7 +6,19 @@
 	this.applicationTimeout = createTimeSpan(0, 1, 0, 0);
 	this.clientManagement = false;
 	this.sessionManagement = false;
-	this.sessionTimeout = createTimeSpan(0, 0, 30, 0);
+	this.setClientCookies = false;
+	//this.sessioncookie.httponly = true;
+	//this.sessionTimeout = createTimeSpan(0, 0, 30, 0);
+
+	this.cache.connections["DefaultRamCache"] = {
+		class: "lucee.runtime.cache.ram.RamCache",
+		storage: false,
+		custom: {
+			"timeToIdleSeconds":"0",
+			"timeToLiveSeconds":"0"
+		},
+		default: "object"
+	};
 
 	// Whether to send CFID and CFTOKEN cookies to the client browser.
 	//this.setClientCookies = false;

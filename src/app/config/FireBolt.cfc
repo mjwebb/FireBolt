@@ -18,6 +18,11 @@ component{
 			models: "/app/models/"
 		},
 
+		session: {
+			sessionLength: createTimeSpan(0,0,2,0),
+			isLazy: true
+		},
+
 		env:{
 			test: "env:DB_TEST",
 			invalid: "env:DOESNOTEXIST"
@@ -70,8 +75,16 @@ component{
 			.withInitArg(name:"grammar", ref:"MSSQLGrammar@qb")
 			.asTransient();
 
+		FB().register("qb.models.Schema.SchemaBuilder")
+			.as("SchemaBuilder@qb")
+			.withInitArg(name:"grammar", ref:"MSSQLGrammar@qb")
+			.asTransient();
+
 		FB().listenFor("preQBExecute")
 			.with("testModule.sampleModule.qbIntercept");
+
+
+		
 		
 	}
 
