@@ -12,7 +12,7 @@ component accessors="true"{
 		any securityService,
 		numeric sessionLength=createTimespan(0,0,20,0),
 		boolean isLazy=true,
-		string cookieName="__ga_sc"){
+		string cookieName="___ga_sc"){
 		variables.sessionLength = arguments.sessionLength;
 		variables.isLazy = arguments.isLazy;
 		variables.cookieName =  arguments.cookieName;
@@ -38,9 +38,20 @@ component accessors="true"{
 	}
 
 	/**
+	* @hint returns our session token with a session_ prefix
+	*/
+	public string function getCacheToken(){
+		local.token = getSessionToken();
+		if(len(local.token)){
+			return "session_" & local.token;
+		}
+		return "";
+	}
+
+	/**
 	* @hint sets our session identifier cookie
 	*/
-	public void function setSessionToken(string sessionID){
+	public void function setSessionCookie(string sessionID){
 		cookie[variables.cookieName] = {
 			path: "/",
 			value: arguments.sessionID,
@@ -61,6 +72,7 @@ component accessors="true"{
 	public struct function getEmptySession(){
 		return {
 			data: {},
+			start: now(),
 			timestamp: now()
 		};
 	}
@@ -97,9 +109,9 @@ component accessors="true"{
 	* @hint gets a session struct
 	*/
 	public any function getSession(string token=""){
-		if(!len(arguments.token)) arguments.token = getSessionToken();
+		if(!len(arguments.token)) arguments.token = getCacheToken();
 		if(len(arguments.token)){
-			lock name="sess-#arguments.token#" timeout="10"{
+			lock name="#arguments.token#" timeout="10"{
 				return cacheGet(arguments.token);
 			}
 		}
@@ -108,16 +120,25 @@ component accessors="true"{
 	}
 
 	/**
+	* @hint returns true if an active session exists for a given token
+	*/
+	public boolean function hasSession(string token=""){
+		local.sess = getSession(arguments.token);
+		return !isNull(local.sess);
+	}
+
+	/**
 	* @hint save a session struct to cache
 	*/
 	public any function putSession(struct sess){
-		local.token = getSessionToken();
+		local.token = getCacheToken();
 		if(!len(local.token)){
-			local.token = generateSessionToken();
-			setSessionToken(local.token);
+			local.newToken = generateSessionToken();
+			setSessionCookie(local.newToken);
+			local.token = getCacheToken();
 		}
-		lock name="sess-#local.token#" timeout="10"{
-			cachePut(local.token, arguments.sess, variables.sessionLength, variables.sessionLength);
+		lock name="#local.token#" timeout="10"{
+			cachePut(local.token, arguments.sess, 0, variables.sessionLength);
 		}
 	}
 
@@ -125,9 +146,15 @@ component accessors="true"{
 	* @hint gets a session struct
 	*/
 	public any function keepAlive(){
-		local.token = getSessionToken();
-		if(len(local.token)){
+		local.token = getCacheToken();
+
+		if(len(local.token) OR !variables.isLazy){
 			local.sess = getSession();
+
+			if(isNull(local.sess) AND !variables.isLazy){
+				local.sess = getEmptySession();
+			}
+
 			if(!isNull(local.sess)){
 				local.sess.timestamp = now();
 				putSession(local.sess);
@@ -139,10 +166,35 @@ component accessors="true"{
 	* @hint clears values for a given session token, or the current session
 	*/
 	public void function clear(string token=""){
-		if(!len(arguments.token)) arguments.token = getSessionToken();
+		if(!len(arguments.token)) arguments.token = getCacheToken();
 		if(len(arguments.token)){
-			cacheRemove(arguments.token, false);	
+			cacheRemove(arguments.token, false);
 		}
+	}
+
+	/**
+	* @hint clears all 
+	*/
+	public void function clearAll(){
+		local.ids = cacheGetAllIDs();
+		for(local.id in local.ids){
+			if(left(local.id, 8) IS "session_"){
+				lock name="#local.id#" timeout="10"{
+					cacheRemove(local.id, false);
+				}
+			}
+		}
+	}
+
+	/**
+	* @hint returns the number of seconds that a session has been active for 
+	*/
+	public numeric function duration(){
+		local.sess = getSession();
+		if(!isNull(local.sess)){
+			return dateDiff("s", local.sess.start, now());
+		}
+		return 0;
 	}
 
 }

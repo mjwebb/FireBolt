@@ -20,7 +20,7 @@ component{
 
 		session: {
 			sessionLength: createTimeSpan(0,0,2,0),
-			isLazy: true
+			isLazy: false
 		},
 
 		env:{

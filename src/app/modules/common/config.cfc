@@ -28,7 +28,7 @@ component{
 			.withInitArg(name:"isLazy", value:initWith.isLazy);
 	
 		FB().listenFor("req.start")
-			.with("common.sessionService.keepAlive");		
+			.with("sessionService@common.keepAlive");		
 	}
 	
 }
