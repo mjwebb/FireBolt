@@ -14,10 +14,10 @@ component accessors="true"{
 	* @hint generate a new CSRF token and save it to our session state
 	*/
 	public string function generateCSRFToken(string key="CSRFToken", boolean forceNew=false){
-		local.token = getSessionService().get(arguments.key);
+		local.token = sessionService.get(arguments.key);
 		if(isNull(local.token) OR arguments.forceNew){
-			local.token = getSessionService().generateToken();
-			getSessionService().set(arguments.key, local.token);
+			local.token = sessionService.generateToken();
+			sessionService.set(arguments.key, local.token);
 		}
 		return local.token;
 	}
@@ -27,7 +27,7 @@ component accessors="true"{
 	* @hint verify a given CSRF token against the value held in session
 	*/
 	public boolean function verifyCSRFToken(string token, string key="CSRFToken"){
-		if(arguments.token IS getSessionService().get(arguments.key)){
+		if(arguments.token IS sessionService.get(arguments.key)){
 			return true;
 		}
 		return false;
