@@ -62,7 +62,7 @@ component accessors="true"{
 	/**
 	* @hint creates a token that is used to identify a session
 	*/
-	public string function generateSessionToken(){
+	public string function generateToken(){
 		return hash(createUUID(), "SHA-384", "UTF-8");
 	}
 
@@ -133,7 +133,7 @@ component accessors="true"{
 	public any function putSession(struct sess){
 		local.token = getCacheToken();
 		if(!len(local.token)){
-			local.newToken = generateSessionToken();
+			local.newToken = generateToken();
 			setSessionCookie(local.newToken);
 			local.token = getCacheToken();
 		}

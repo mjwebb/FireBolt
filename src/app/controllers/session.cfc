@@ -1,20 +1,24 @@
 component output="false" accessors="true" extends="FireBolt.controller" {
 
 
-	property name="sessionService" inject="sessionService@common";
+	property name="session" inject="sessionService@common";
 
 	/**	
 	*/
 	public function get(){
 		
 		var data = {
-			session: getSessionService()
+			session: getSession()
 		};
 
 		addView("session.test", data);
 
 
 		layout();
+	}
+
+	public function post(){
+		get();
 	}
 
 	

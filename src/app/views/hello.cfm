@@ -1,8 +1,13 @@
 <div style="border: 1px solid blue; padding: 20px; margin: 20px;">
 
-Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a>
+Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a> - <a href="/session/">Session</a>
 
 <!--- <cfdump var="#FB().getFactoryService().getCache()#"> --->
+<form action="/session/" method="post">
+	<input type="hidden" name="token" value="<cfoutput>#FB().getObject("securityService@common").generateCSRFToken()#</cfoutput>"/>
+	<input type="text" name="test" value="" />
+	<button type="submit">Go</button>
+</form>
 
 
 <cfoutput>#view("nested.view", data)#</cfoutput>
