@@ -20,6 +20,12 @@ component transient{
 		return this;
 	}
 
+	// can be overwritten by controllers
+	public void function before(struct routeData, requestHandler req){}
+
+	// can be overwritten by controllers
+	public void function after(struct routeData, requestHandler req){}
+
 	// ===================================
 	// SHORTCUTS & HELPERS
 	

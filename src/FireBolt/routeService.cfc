@@ -88,7 +88,10 @@ component accessors="true"{
 		
 		if(local.c.isValid){
 			arguments.req.setRoute(local.c);
-			return invoke(local.c.cfc, local.c.method, local.c.args);
+			invoke(local.c.cfc, "before", {routeData: local.c, req:arguments.req});
+			invoke(local.c.cfc, local.c.method, local.c.args);
+			invoke(local.c.cfc, "after", {routeData: local.c, req:arguments.req});
+			//return local.response;
 		}else{
 			/*savecontent variable="local.err"{
 				writeDump(local.c);

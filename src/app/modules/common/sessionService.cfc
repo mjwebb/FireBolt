@@ -2,14 +2,13 @@ component accessors="true"{
 
 	property name="sessionLength" default="#createTimeSpan(0,0,20,0)#";
 	property name="cookieName" default="___ga_sc";
-	property name="securityService" inject="securityService@common";
+
 	variables.isLazy = true;
 
 	/**
 	* @hint constructor
 	*/
 	public any function init(
-		any securityService,
 		numeric sessionLength=createTimespan(0,0,20,0),
 		boolean isLazy=true,
 		string cookieName="___ga_sc"){
