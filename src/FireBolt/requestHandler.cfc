@@ -11,6 +11,7 @@ component transient accessors="true"{ // transient request handler
 		path: "",
 		form: {},
 		url: {},
+		mixed: {},
 		contentType: cgi.content_type,
 		verb: ""
 	};
@@ -29,6 +30,8 @@ component transient accessors="true"{ // transient request handler
 		variables.context.path = arguments.path;
 		variables.context.form = arguments.formScope;
 		variables.context.url = arguments.urlScope;
+		variables.context.mixed = duplicate(arguments.urlScope);
+		structAppend(variables.context.mixed, arguments.formScope);
 		variables.context.verb = determinRequestMethod();
 		variables.context.args = arguments;
 		setFireBolt(arguments.FireBolt);

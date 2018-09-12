@@ -8,6 +8,5 @@
     },
     "app":{
         "cfengine":"lucee"
-    },
-    "engine":"lucee"
+    }
 }
