@@ -34,6 +34,7 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a> - <a hre
 <!--- <cfdump var="#FB().getFactoryService().getAliases()#"> --->
 
 <cfoutput><p>User name: #getData("user").getFullName()# - #getData("user2").getFullName()#</p></cfoutput>
+<cfoutput><p>#UserService.getDSN()#</cfoutput>
 
 <!--- <cfdump var="#FB().getObject("UserService")#"> --->
 
@@ -59,3 +60,14 @@ Environment variable: <cfoutput>[#FB().getSetting("env.test")#]</cfoutput>
 
 
 </div>
+
+
+<!--- 
+<cfdump var="#FB().getObject("UserService")#">
+<cfdump var="#FB().flattenMetaData(FB().getObject("UserService"))#">
+<cfset x = FB().flattenMetaData(FB().getObject("UserService"))>
+<cfscript>
+for(y in x.functions){
+	writeOutput(x.functions[y].name & "<br />");
+}
+</cfscript> --->

@@ -355,7 +355,7 @@ component accessors="true"{
 	public any function getBean(
 		required string name, 
 		struct args={}, 
-		boolean singleton=true){
+		boolean singleton=false){
 		return getObject(argumentCollection:arguments);
 	}
 
@@ -485,8 +485,12 @@ component accessors="true"{
 	public void function injectDependencies(required any object){
 		// get our object meta data
 		local.md = getMetadata(arguments.object);
+
+		local.data = flattenMetaData(arguments.object);
+
 		// check each function within it
-		for(local.f in local.md.functions){
+		for(local.fKey in local.data.functions){
+			local.f = local.data.functions[local.fKey];
 			// look for our dependency injection meta data flag and a single parameter when the method name starts with 'set'
 			if(structKeyExists(local.f, variables.metaKeys.INJECT)
 				AND arrayLen(local.f.parameters) EQ 1
@@ -512,21 +516,71 @@ component accessors="true"{
 				}
 			}*/
 		}
-		if(structKeyExists(local.md, "properties")){
-			for(local.p in local.md.properties){
-				if(structKeyExists(local.p, variables.metaKeys.INJECT)){
-					// our parameter type needs to be a FireBolt factory object
-					local.injectType = local.p[variables.metaKeys.INJECT];
-					// by default, we assume this is a singleton
-					local.singleton = true;
-					// adding a transient meta data flag to the function lets us use transient objects
-					if(structKeyExists(local.p, variables.metaKeys.TRANSIENT)){
-						local.singleton = false;
+		for(local.pKey in local.data.properties){
+			local.p = local.data.properties[local.pKey];
+			if(structKeyExists(local.p, variables.metaKeys.INJECT)){
+				// our parameter type needs to be a FireBolt factory object
+				local.injectType = local.p[variables.metaKeys.INJECT];
+				// by default, we assume this is a singleton
+				local.singleton = true;
+				// adding a transient meta data flag to the function lets us use transient objects
+				if(structKeyExists(local.p, variables.metaKeys.TRANSIENT)){
+					local.singleton = false;
+				}
+				doInject(arguments.object, "set" & local.p.name, local.injectType, local.singleton);
+			}
+		}
+	}
+
+	/**
+	* @hint walks down a component to get its methods and properties and those of any components that it extends
+	* @FireBoltMethod
+	*/
+	public struct function flattenMetaData(required any object){
+		local.md = getMetadata(arguments.object);
+
+		local.ret = {
+			functions: {},
+			properties: {}
+		}
+		
+		if(structKeyExists(local.md, "functions")){
+			for(local.f in local.md.functions){
+				local.ret.functions[local.f.name] = local.f;
+			}
+			// walk down any extended components
+			local.ext = local.md;
+			while(structKeyExists(local.ext, "extends")){
+				local.ext = local.ext.extends;
+				if(structKeyExists(local.ext, "functions")){
+					for(local.f in local.ext.functions){
+						if(!structKeyExists(local.ret.functions, local.f.name)){
+							local.ret.functions[local.f.name] = local.f;
+						}
 					}
-					doInject(arguments.object, "set" & local.p.name, local.injectType, local.singleton);
 				}
 			}
 		}
+
+		if(structKeyExists(local.md, "properties")){
+			for(local.p in local.md.properties){
+				local.ret.properties[local.p.name] = local.p;
+			}
+			// walk down any extended components
+			local.ext = local.md;
+			while(structKeyExists(local.ext, "extends")){
+				local.ext = local.ext.extends;
+				if(structKeyExists(local.ext, "properties")){
+					for(local.p in local.ext.properties){
+						if(!structKeyExists(local.ret.properties, local.p.name)){
+							local.ret.properties[local.p.name] = local.p;
+						}
+					}
+				}
+			}
+		}
+
+		return local.ret;
 	}
 
 	public void function doInject(required any object, required string functionName, required string dependencyName, required boolean singleton){

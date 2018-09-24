@@ -1,14 +1,6 @@
-component accessors="true"{
+component accessors="true" extends="db.dbService"{
 
-	property name="FB" inject="framework";
 	
-	/**
-	* @hint constructor
-	*/
-	public function init(){
-		return this;	
-	}
-
 	
 	public function getUser(){
 		return getFB().getObject("UserBean");

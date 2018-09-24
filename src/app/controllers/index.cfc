@@ -18,6 +18,7 @@ component output="false" accessors="true" extends="FireBolt.controller" {
 		//return;
 
 		//local.user = FB().getObject("UserService").getUser();
+		
 		local.user = UserService.getUser();
 		local.user.setForeName("Joe");
 		local.user.setSurName("Blogs");
@@ -27,7 +28,7 @@ component output="false" accessors="true" extends="FireBolt.controller" {
 		local.user2.setForeName("John");
 		local.user2.setSurName("Smith");
 		setData("user2", local.user2);
-
+		
 		
 		addBreadCrumb("home", "/");
 		setTitle("HELLO WORLD");
