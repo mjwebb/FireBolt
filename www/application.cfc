@@ -20,6 +20,16 @@
 		default: "object"
 	};
 
+	this.datasources["test"] = {
+		class: 'com.microsoft.sqlserver.jdbc.SQLServerDriver',
+		bundleName: 'mssqljdbc4',
+		bundleVersion: '4.0.2206.100',
+		connectionString: 'jdbc:sqlserver://localhost:1433;DATABASENAME=testData;sendStringParametersAsUnicode=true;SelectMethod=direct',
+		username: 'sa',
+		password: "encrypted:4e04fed16c8e26f86df0f4983007a0c85305ba537b039dd5f1f7d6ccd6135e02",
+		connectionLimit: 100 // default:-1
+	};
+
 	// Whether to send CFID and CFTOKEN cookies to the client browser.
 	//this.setClientCookies = false;
 

@@ -1,6 +1,6 @@
 <div style="border: 1px solid blue; padding: 20px; margin: 20px;">
 
-Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a> - <a href="/session/">Session</a>
+Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a> - <a href="/session/">Session</a> - <a href="/db/">DB</a>
 
 <!--- <cfdump var="#FB().getFactoryService().getCache()#"> --->
 <form action="/session/" method="post">
