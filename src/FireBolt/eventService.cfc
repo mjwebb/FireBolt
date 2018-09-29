@@ -48,7 +48,7 @@ component accessors="true"{
 	*/
 	public any function addListener(
 		required string eventName, 
-		required string listener, 
+		required any listener, 
 		boolean async=false,
 		boolean isFireAndForget=false){
 
@@ -83,7 +83,7 @@ component accessors="true"{
 		};
 
 		structAppend(declaration, {
-			with: function(string listener){
+			with: function(any listener){
 				declaration.definition.listener = arguments.listener;
 				declaration.definition = addListener(argumentCollection: declaration.definition);
 				return declaration;
@@ -149,12 +149,17 @@ component accessors="true"{
 	*/
 	public boolean function listenerExists(
 		required string eventName, 
-		required string listener){
+		required any listener){
+
+		local.isSimpleListener = isSimpleValue(arguments.listener);
 
 		if(structKeyExists(variables.eventListeners, arguments.eventName)){
 			for(local.l in variables.eventListeners[arguments.eventName]){
-				if(local.l.target IS arguments.listener){
-					return true;
+				if((isSimpleValue(local.l.target) AND local.isSimpleListener)
+					OR (!isSimpleValue(local.l.target) AND !local.isSimpleListener)){
+					if(local.l.target IS arguments.listener){
+						return true;
+					}
 				}
 			}
 		}
@@ -253,17 +258,20 @@ component accessors="true"{
 	*/
 	public any function despatch(
 		required string eventName, 
-		required string target, 
+		required any target, 
 		struct args={}){
 
+		if(isSimpleValue(arguments.target)){
+			local.method = listLast(arguments.target, ".");
+			local.objectName = left(arguments.target, len(arguments.target)-len(local.method)-1);
 
-		local.method = listLast(arguments.target, ".");
-		local.objectName = left(arguments.target, len(arguments.target)-len(local.method)-1);
+			local.object = getFireBolt().getObject(local.objectName);
 
-		local.object = getFireBolt().getObject(local.objectName);
-
-		//local.object[local.method](argumentCollection:arguments.args);
-		invoke(local.object, local.method, arguments.args);
+			//local.object[local.method](argumentCollection:arguments.args);
+			invoke(local.object, local.method, arguments.args);
+		}else if(isClosure(arguments.target)){
+			invoke(arguments, "target", arguments.args);
+		}
 
 	}
 

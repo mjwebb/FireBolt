@@ -68,12 +68,12 @@
 	* @output=true
 	*/
 	public void function onError(any exception, string eventName=""){
-		try{
+		//try{
 			writeOutput(getFireBolt().onError(argumentCollection:arguments));
-		}catch(any e){
-			writeDump(var:arguments, label:"Error XX", format:"text");
+		//}catch(any e){
+			//writeDump(var:arguments, label:"Error XX", format:"text");
 			//rethrow;
-		}
+		//}
 		
 		return;
 	}

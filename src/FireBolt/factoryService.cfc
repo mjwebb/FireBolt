@@ -82,9 +82,9 @@ component accessors="true"{
 	*/
 	public void function addCFMappings(array modulePaths=getModulePaths()){
 		for(local.modulePath in arguments.modulePaths){
-			getFireBolt().addCFMapping("/" & listLast(local.modulePath, "\"), local.modulePath);
+			getFireBolt().engine().addCFMapping("/" & listLast(local.modulePath, "\"), local.modulePath);
 		}
-		getFireBolt().addCFMapping("/models", expandPath(getModelsPath()));
+		getFireBolt().engine().addCFMapping("/models", expandPath(getModelsPath()));
 	}
 
 	/**

@@ -1,6 +1,6 @@
 component{
 
-
+	
 	/**
 	* @hint constructor
 	*/
@@ -13,7 +13,5 @@ component{
 		}
 
 	}
-
-
 	
 }

@@ -27,7 +27,7 @@ component{
 	public void function loadFramework(){
 		variables.startTime = getTickCount();
 		variables.startup = now();
-		variables.flavour = new flavour.engine();
+		variables.engine = new flavour.engine();
 		variables.configService = new configService("FireBolt", this);
 		registerFireBoltMethods(variables.configService);
 		variables.routeService = new routeService(this);
@@ -73,13 +73,13 @@ component{
 		}
 	}
 
-	
 	/**
-	* @hint adds a mapping to our application
+	* @hint returns our engine helper component
 	*/
-	public string function addCFMapping(required string name, required string path){
-		variables.flavour.addCFMapping(arguments.name, arguments.path);
+	public any function engine(){
+		return variables.engine;
 	}
+
 
 	/**
 	* @hint cleans a path 

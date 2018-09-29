@@ -34,7 +34,7 @@ Hello World - <a href="/test/">Test</a> - <a href="/secure/">Secure</a> - <a hre
 <!--- <cfdump var="#FB().getFactoryService().getAliases()#"> --->
 
 <cfoutput><p>User name: #getData("user").getFullName()# - #getData("user2").getFullName()#</p></cfoutput>
-<cfoutput><p>#UserService.getDSN()#</cfoutput>
+
 
 <!--- <cfdump var="#FB().getObject("UserService")#"> --->
 

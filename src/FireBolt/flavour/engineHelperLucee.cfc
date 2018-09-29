@@ -1,5 +1,7 @@
-component{
+component extends="engineShared"{
 
+
+	variables.inited = true;
 
 	/**
 	* @hint constructor
@@ -17,5 +19,14 @@ component{
 		application action="update" mappings="#local.appMD.mappings#";
 	}
 
+
+	/**
+	* @hint adds a datasource to our application
+	*/
+	public string function addCFDatasource(required string name, required struct config){
+		local.appMD = getApplicationMetadata();
+		local.appMD.datasources[arguments.name] = arguments.config;
+		application action="update" datasources="#local.appMD.datasources#";
+	}
 	
 }

@@ -1,9 +1,8 @@
-component accessors="true"{
+component extends="db.dbBean"{
 
-	property string emailAddress;
-	property string foreName;
-	property string surName;
-	
+	variables.instance = {
+		"test": ""
+	};
 		
 	public string function getFullName(){
 		return trim(getForeName() & " " & getSurname());
