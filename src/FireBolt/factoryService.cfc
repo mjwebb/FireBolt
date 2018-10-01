@@ -585,10 +585,14 @@ component accessors="true"{
 
 	public void function doInject(required any object, required string functionName, required string dependencyName, required boolean singleton){
 		if(len(arguments.dependencyName)){
-			local.dependency = getDepenency(arguments.dependencyName);
-			// call our setter method
-			//arguments.object[arguments.functionName](local.dependency);
-			invoke(arguments.object, arguments.functionName, [local.dependency]);
+			try{
+				local.dependency = getDepenency(arguments.dependencyName);
+				// call our setter method
+				//arguments.object[arguments.functionName](local.dependency);
+				invoke(arguments.object, arguments.functionName, [local.dependency]);
+			}catch(e){
+				// continue.?.?.?
+			}
 		}
 	}
 

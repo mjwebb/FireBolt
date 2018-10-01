@@ -1,25 +1,53 @@
 component accessors="true"{
 
+	property name="FB" inject="framework";
 	property name="dsn" inject="setting:modules.db.dsn";
 
 	/**
 	* @hint constructor
 	*/
 	public function init(string dsn){
-		variables.dsn = arguments.dsn
+		variables.dsn = arguments.dsn;
+		readConfig();
 		return this;
 	}
 
+	public function qb(){
+		return getFB().getObject("QueryBuilder@qb");
+	}
+
+	public void function readConfig(){
+		local.configName = "_" & replace(listLast(getMetaData(this).name, "."), "Gateway", "") & "Config";
+		variables.configObject = new "#local.configName#"();
+	}
+
+	public any function getConfig(){
+		return variables.configObject.definition;
+	}
+
+	public query function getAll(){
+		return qb()
+			.from(getConfig().table)
+			.get(options:{datasource:getDSN()});
+	}
+
+	public query function get(any pkValue){
+		return qb()
+			.from(getConfig().table)
+			.where(getConfig().pk, "=", arguments.pkValue)
+			.get(options:{datasource:getDSN()});
+	}
 
 	/**
 	* @hint query syntax DSL
 	*/
-	public struct function selectFrom(string tableName){
+	public struct function from(string tableName){
 		var declaration = {
 			q: {
 				tableName: arguments.tableName,
 				where: "",
 				params: [],
+				joins: [],
 				cols: "*",
 				orderBy: "",
 				dsn: variables.dsn,
@@ -28,13 +56,16 @@ component accessors="true"{
 		};
 
 		structAppend(declaration, {
-			cols: function(string cols){
+			select: function(string cols){
 				declaration.q.cols = arguments.cols;
 				return declaration;
 			},
 			where: function(string whereClause){
 				declaration.q.where = arguments.whereClause;
 				return declaration;
+			},
+			whereLike: function(string col, string term){
+
 			},
 			withParams: function(array params){
 				declaration.q.params = arguments.params;
@@ -51,6 +82,11 @@ component accessors="true"{
 			cacheFor: function(numeric cacheLength){
 				declaration.q.cacheFor = arguments.cacheLength;
 				return declaration;
+			},
+			get: function(string cols="", struct options={}){
+				if(len(arguments.cols)){
+					declaration.q.cols = arguments.cols;
+				}
 			}
 		});
 

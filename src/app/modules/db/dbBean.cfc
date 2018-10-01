@@ -21,7 +21,7 @@ component accessors="true"{
 	}
 
 	public void function readConfig(){
-		local.configName = "_" & listLast(getMetaData(this).name, ".") & "Config";
+		local.configName = "_" & replace(listLast(getMetaData(this).name, "."), "Bean", "") & "Config";
 		variables.configObject = new "#local.configName#"();
 	}
 

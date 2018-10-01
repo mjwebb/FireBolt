@@ -68,11 +68,12 @@ component{
 		// register QueryBuilder using DSL syntax
 		FB().register("qb.models.Grammars.MSSQLGrammar")
 			.as("MSSQLGrammar@qb")
-			.withProperty(name:"InterceptorService", ref:"framework");
+			//.withProperty(name:"InterceptorService", ref:"framework");
 
 		FB().register("qb.models.Query.QueryBuilder")
 			.as("QueryBuilder@qb")
 			.withInitArg(name:"grammar", ref:"MSSQLGrammar@qb")
+			.withInitArg(name:"returnFormat", value:"query")
 			.asTransient();
 
 		FB().register("qb.models.Schema.SchemaBuilder")
@@ -80,8 +81,8 @@ component{
 			.withInitArg(name:"grammar", ref:"MSSQLGrammar@qb")
 			.asTransient();
 
-		FB().listenFor("preQBExecute")
-			.with("testModule.sampleModule.qbIntercept");
+		//FB().listenFor("preQBExecute")
+		//	.with("testModule.sampleModule.qbIntercept");
 
 
 		
