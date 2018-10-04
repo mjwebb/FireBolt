@@ -59,6 +59,16 @@ component{
 			
 		FB().call("dep@testModule.anotherAspect")
 			.after(target:"sampleModule@testModule", method:"AOPTestTarget");
+
+		// AOP closure
+		FB().call(function(string objectName, string methodName, struct methodArgs, any methodResult, numeric methodTimer){
+			arguments.methodResult = arguments.methodResult & " HELLO FROM CLOSURE " & arguments.methodTimer;
+			writeLog(
+				text: "testAfterConcern() - called - #arguments.methodResult#",
+				type: "information",
+				file: "AOP");
+			return arguments.methodResult;
+		}).after(target:"sampleModule@testModule", method:"AOPTestTarget");
 			
 	}
 	

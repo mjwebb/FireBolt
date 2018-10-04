@@ -62,11 +62,11 @@ component accessors="true"{
 	* @hint registers a'before' aspect concern
 	* @param target 		the name of the component that we are targeting
 	* @param targetMethod	the name of the method that we are targeting. Multiple methods can be separated with a comma
-	* @param concern 		the path to the concern method 
+	* @param concern 		the path to the concern method or a closure
 	* @param async 			if true, the concern will be registered to run asynchronously
 	* @return array of added concern definitions
 	*/
-	public array function before(required string target, required string targetMethod, required string concern, boolean async=false){
+	public array function before(required string target, required string targetMethod, required any concern, boolean async=false){
 		local.aliasResult = getFactoryService().getMapping(arguments.target);
 		if(len(local.aliasResult.name)){
 			arguments.target = local.aliasResult.name;
@@ -93,11 +93,11 @@ component accessors="true"{
 	* @hint registers 'after' aspect concern
 	* @param target 		the name of the component that we are targeting
 	* @param targetMethod	the name of the method that we are targeting. Multiple methods can be separated with a comma
-	* @param concern 		the path to the concern method 
+	* @param concern 		the path to the concern method or a closure
 	* @param async 			if true, the concern will be registered to run asynchronously
 	* @return array of added concern definitions
 	*/
-	public array function after(required string target, required string targetMethod, required string concern, boolean async=false){
+	public array function after(required string target, required string targetMethod, required any concern, boolean async=false){
 		local.aliasResult = getFactoryService().getMapping(arguments.target);
 		if(len(local.aliasResult.name)){
 			arguments.target = local.aliasResult.name;
@@ -122,10 +122,10 @@ component accessors="true"{
 
 	/**
 	* @hint adds a concern via a declaration syntax
-	* @param concern 	the path to the concern method
+	* @param concern 	the path to the concern method or a closure
 	* @FireBoltMethod
 	*/
-	public struct function call(string concern){
+	public struct function call(any concern){
 		var declaration = {
 			type: "",
 			definition: {
@@ -260,16 +260,22 @@ component accessors="true"{
 	* @hint returns true if a specific concern is already defined for a given object name and method
 	* @param name 			the name of the object we want to check for a concern
 	* @param methodName 	the name of the method that we checking
-	* @param concern 		the name of the concern that we are checking for
+	* @param concern 		the name or the closure of the concern that we are checking for
 	* @param aspect 		defaults to 'after' - after | before
 	* @return true if the concern exists
 	*/
-	public boolean function hasConcern(required string name, required string method, required string concern, string aspect="after"){
+	public boolean function hasConcern(required string name, required string method, required any concern, string aspect="after"){
+
+		local.isSimpleConcern = isSimpleValue(arguments.concern);
+
 		local.concerns = getConcerns(arguments.name, arguments.method);
 		if(structKeyExists(local.concerns, arguments.aspect)){
 			for(local.registeredConcern in local.concerns[arguments.aspect]){
-				if(local.registeredConcern.concern IS arguments.concern){
-					return true;
+				if((isSimpleValue(local.registeredConcern.concern) AND local.isSimpleConcern)
+					OR (!isSimpleValue(local.registeredConcern.concern) AND !local.isSimpleConcern)){
+					if(local.registeredConcern.concern IS arguments.concern){
+						return true;
+					}
 				}
 			}
 		}
@@ -443,21 +449,14 @@ component accessors="true"{
 	* @hint responsible for actually calling the target concern method. This will be called from the beforeAdvice or afterAdvice methods
 	*/
 	public any function callConcern(
-		required struct concern,
+		required any concern,
 		required string objectName, 
 		required string methodName, 
 		required struct methodArgs,
 		any methodResult="",
 		numeric methodTimer=0){
 		
-		// get our method
-		local.concernMethod = listLast(arguments.concern.concern, ".");
-		// get our concern object name
-		local.concernName = left(arguments.concern.concern, len(arguments.concern.concern) - len(local.concernMethod) - 1);
-		// get our concer objet from our factory
-		local.concernObject = getFactoryService().getObject(local.concernName);
-
-		// call our concern
+		// define our concern method arguments
 		local.concernArgs = {
 			objectName: arguments.objectName,
 			methodName: arguments.methodName,
@@ -465,8 +464,22 @@ component accessors="true"{
 			methodResult: arguments.methodResult,
 			methodTimer: arguments.methodTimer
 		};		
-		//return local.concernObject[local.concernMethod](argumentCollection:local.concernArgs);
-		return invoke(local.concernObject, local.concernMethod, local.concernArgs);
+
+		if(isSimpleValue(arguments.concern.concern)){
+			// get our method
+			local.concernMethod = listLast(arguments.concern.concern, ".");
+			// get our concern object name
+			local.concernName = left(arguments.concern.concern, len(arguments.concern.concern) - len(local.concernMethod) - 1);
+			// get our concer objet from our factory
+			local.concernObject = getFactoryService().getObject(local.concernName);
+
+			// call our concern
+			//return local.concernObject[local.concernMethod](argumentCollection:local.concernArgs);
+			return invoke(local.concernObject, local.concernMethod, local.concernArgs);
+
+		}else if(isClosure(arguments.concern.concern)){
+			return invoke(arguments.concern, "concern", local.concernArgs);
+		}
 	}
 	
 }
