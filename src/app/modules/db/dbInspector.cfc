@@ -25,9 +25,7 @@ component accessors="true"{
 		};
 
 		for(local.col in local.qTable){
-			if(local.col.is_primaryKey){
-				local.schema.pk = local.col.column_name;
-			}
+			
 		
 			local.colData = {
 				"name": local.col.column_name,
@@ -38,6 +36,11 @@ component accessors="true"{
 				"cfDataType": getCFDataType(local.col.type_name),
 				"default": getDefaultForDataType(getCFDataType(local.col.type_name))
 			};
+
+			if(local.col.is_primaryKey){
+				local.schema.pk = local.col.column_name;
+				local.colData["pk"] = true;
+			}
 
 			arrayAppend(local.schema.cols, local.colData);
 		}

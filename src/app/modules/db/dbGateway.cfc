@@ -1,7 +1,8 @@
 component accessors="true"{
 
 	property name="FB" inject="framework";
-	property name="dsn" inject="setting:modules.db.dsn";
+	property name="dsn" inject="setting:modules.db.dsn.name";
+	property name="flavour" inject="setting:modules.db.dsn.flavour";
 
 	/**
 	* @hint constructor
@@ -19,8 +20,10 @@ component accessors="true"{
 		variables.configObject = new "#local.configName#"();
 		getConfig().colList = "";
 		getConfig().hasPK = false;
+		getConfig().colHash = {};
 		for(local.col in getConfig().cols){
 			getConfig().colList = listAppend(getConfig().colList, local.col.name);
+			getConfig().colHash[local.col.name] = local.col;
 			if(structKeyExists(local.col, "pk") AND local.col.pk){
 				getConfig().pk = local.col;
 				getConfig().hasPK = true;
@@ -32,7 +35,16 @@ component accessors="true"{
 		return variables.configObject.definition;
 	}
 
+	public struct function getColumn(string colName){
+		return getConfig().colHash[arguments.colName]
+	}
 
+	public boolean function isColumnDefined(string colName){
+		return structKeyExists(getConfig().colHash, arguments.colName);
+	}
+
+
+	/* =================================== */
 	public function qb(){
 		return getFB().getObject("QueryBuilder@qb");
 	}
@@ -55,21 +67,19 @@ component accessors="true"{
 		structAppend(local.options, arguments.options);
 		return arguments.qb.get(options:local.options);
 	}
+	/* =================================== */
 
 	public query function get(any pkValue){
 		return from()
 			.where(getConfig().pk.name & "= :pk")
 			.withParams({
-				pk: {
-					value: arguments.pkValue,
-					cfsqltype: getConfig().pk.cfsqlDataType
-				}
+				pk: arguments.pkValue
 			})
 			.get(options:{datasource:getDSN()});
 	}
 
 	public query function getAll(){
-		return from().get(options:{datasource:getDSN()});
+		return from().get();
 	}
 
 	/**
@@ -91,8 +101,9 @@ component accessors="true"{
 				joins: [],
 				cols: cols(),
 				orderBy: "",
-				dsn: variables.dsn,
-				cacheFor: 0
+				options: {
+					dsn: getDSN()
+				}
 			}
 		};
 
@@ -114,14 +125,15 @@ component accessors="true"{
 				return declaration;
 			},
 			using: function(string dsn){
-				declaration.q.dsn = arguments.dsn;
+				declaration.q.options.datasource = arguments.dsn;
 				return declaration;
 			},
 			cacheFor: function(numeric cacheLength){
-				declaration.q.cacheFor = arguments.cacheLength;
+				declaration.q.options.cachedWithin = arguments.cacheLength;
 				return declaration;
 			},
 			get: function(string cols="", struct options={}){
+				structAppend(declaration.q.options, arguments.options);
 				if(len(arguments.cols)){
 					declaration.q.cols = arguments.cols;
 				}
@@ -137,12 +149,53 @@ component accessors="true"{
 	*/
 	public any function execute(struct declaration){
 		local.sql = toSQL(arguments.declaration);
-		local.q = queryExecute(local.sql, arguments.declaration.q.params, {
-			datasource: variables.dsn
-		});
+		local.params = processParams(arguments.declaration.q.params);
+		local.q = runQuery(local.sql, arguments.declaration.q.params, arguments.declaration.q.options);
 		return local.q;
 	}
+
+	/**
+	* @hint executes an query from a DSL declaration
+	*/
+	public any function runQuery(string sql, any params, struct options={}){
+		if(!structKeyExists(arguments.options, "datasource")){
+			arguments.options.datasource = getDSN();
+		}
+		return queryExecute(arguments.sql, arguments.params, arguments.options);
+	}
 	
+	/**
+	* @hint checks parameters for sql types
+	*/
+	public any function processParams(any params){
+		if(isStruct(arguments.params)){
+			for(local.key in arguments.params){
+				local.value = arguments.params[local.key];
+				if((isStruct(local.value) AND NOT structKeyExists(local.value, "cfsqltype")) OR isSimpleValue(local.value)){
+					if(isColumnDefined(local.key)){
+						if(isStruct(local.value)){
+							arguments.params[local.key].cfsqltype = getColumn(local.key).cfSQLDataType;
+						}else{
+							arguments.params[local.key] = {
+								value: local.value,
+								cfsqltype: getColumn(local.key).cfSQLDataType
+							};
+						}
+					}else if(local.key IS "pk"){
+						if(isStruct(local.value)){
+							arguments.params[local.key].cfsqltype = getConfig().pk.cfSQLDataType;
+						}else{
+							arguments.params[local.key] = {
+								value: local.value,
+								cfsqltype: getConfig().pk.cfSQLDataType
+							};
+						}
+					}
+				}
+			}
+		}
+		return arguments.params;
+	}
 
 	/**
 	* @hint convet a DSL struct to an SQL string

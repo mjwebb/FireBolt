@@ -2,8 +2,14 @@ component{
 
 	
 	this.config = {
-		dsn: "test",
-		dsn2: "test2"
+		dsn: {
+			name: "test",
+			flavour: "MSSQL"
+		},
+		dsn2: {
+			name: "test2",
+			flavour: "MSSQL"
+		}
 	};
 
 	
