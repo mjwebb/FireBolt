@@ -9,40 +9,14 @@ component accessors="true"{
 	*/
 	public function init(string dsn){
 		variables.dsn = arguments.dsn;
-		readConfig();
+		variables.config = new db.dbConfigReader(getMetaData(this).name);
 		return this;
 	}
 
-	
-
-	public void function readConfig(){
-		local.configName = "_" & replace(listLast(getMetaData(this).name, "."), "Gateway", "") & "Config";
-		variables.configObject = new "#local.configName#"();
-		getConfig().colList = "";
-		getConfig().hasPK = false;
-		getConfig().colHash = {};
-		for(local.col in getConfig().cols){
-			getConfig().colList = listAppend(getConfig().colList, local.col.name);
-			getConfig().colHash[local.col.name] = local.col;
-			if(structKeyExists(local.col, "pk") AND local.col.pk){
-				getConfig().pk = local.col;
-				getConfig().hasPK = true;
-			}
-		}
-	}
-
 	public any function getConfig(){
-		return variables.configObject.definition;
+		return variables.config.getConfig();
 	}
-
-	public struct function getColumn(string colName){
-		return getConfig().colHash[arguments.colName]
-	}
-
-	public boolean function isColumnDefined(string colName){
-		return structKeyExists(getConfig().colHash, arguments.colName);
-	}
-
+	
 
 	/* =================================== */
 	public function qb(){
@@ -172,22 +146,22 @@ component accessors="true"{
 			for(local.key in arguments.params){
 				local.value = arguments.params[local.key];
 				if((isStruct(local.value) AND NOT structKeyExists(local.value, "cfsqltype")) OR isSimpleValue(local.value)){
-					if(isColumnDefined(local.key)){
+					if(variables.config.isColumnDefined(local.key)){
 						if(isStruct(local.value)){
-							arguments.params[local.key].cfsqltype = getColumn(local.key).cfSQLDataType;
+							arguments.params[local.key].cfsqltype = variables.config.getColumn(local.key).cfSQLDataType;
 						}else{
 							arguments.params[local.key] = {
 								value: local.value,
-								cfsqltype: getColumn(local.key).cfSQLDataType
+								cfsqltype: variables.config.getColumn(local.key).cfSQLDataType
 							};
 						}
 					}else if(local.key IS "pk"){
 						if(isStruct(local.value)){
-							arguments.params[local.key].cfsqltype = getConfig().pk.cfSQLDataType;
+							arguments.params[local.key].cfsqltype = variables.config.getConfig().pk.cfSQLDataType;
 						}else{
 							arguments.params[local.key] = {
 								value: local.value,
-								cfsqltype: getConfig().pk.cfSQLDataType
+								cfsqltype: variables.config.getConfig().pk.cfSQLDataType
 							};
 						}
 					}

@@ -15,7 +15,7 @@ component{
          pk:true
       },
       {  
-         default:"""""",
+         default:"",
          size:50,
          isNullable:1,
          name:"name",
@@ -33,7 +33,7 @@ component{
          cfSQLDataType:"cf_sql_bit"
       },
       {  
-         default:"now()",
+         default:now(),
          size:23,
          isNullable:1,
          name:"startDate",
@@ -42,7 +42,7 @@ component{
          cfSQLDataType:"cf_sql_timestamp"
       },
       {  
-         default:"""""",
+         default:"",
          size:2147483647,
          isNullable:1,
          name:"notes",

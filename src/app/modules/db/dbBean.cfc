@@ -4,31 +4,18 @@ component accessors="true"{
 	variables.instance = {};
 	variables.instancePrev = {};
 	variables.isDirty = false;
-	variables.definition = {
-		pk: "",
-		cols: ""
-	};
-	variables.configObject = "";
-
+	
 
 	/**
 	* @hint constructor
 	*/
 	public function init(){
-		//buildInstance();
-		readConfig();
+		variables.config = new db.dbConfigReader(getMetaData(this).name);
+		pop(variables.config.buildInstance());
 		return this;
 	}
 
-	public void function readConfig(){
-		local.configName = "_" & replace(listLast(getMetaData(this).name, "."), "Bean", "") & "Config";
-		variables.configObject = new "#local.configName#"();
-	}
-
-	public any function getConfig(){
-		return variables.configObject;
-	}
-
+	
 	/**
 	* @hint returns a duplicate of our instance data
 	*/
@@ -51,7 +38,7 @@ component accessors="true"{
 	* @hint returns our primary key column name
 	*/
 	public string function getPK(){
-		return variables.definition.pk;
+		return variables.config.getPK();
 	}
 
 	/**
@@ -112,7 +99,7 @@ component accessors="true"{
 	*/
 	public void function set(string key, any value){
 		
-		if(structKeyExists(variables.instance, arguments.key)){
+		if(variables.config.isColumnDefined(arguments.key)){
 			variables.instance[arguments.key] = arguments.value;
 			setDirty();
 		}else{
@@ -145,7 +132,7 @@ component accessors="true"{
 	/**
 	* @hint populate an instance from either a query or a struct
 	*/
-	public void function popInstance(any data, numeric row=1){
+	public void function pop(any data, numeric row=1){
 		if(isStruct(arguments.data)){
 			for(local.col in arguments.data){
 				set(local.col, arguments.data[local.col]);
