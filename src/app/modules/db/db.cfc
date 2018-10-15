@@ -31,7 +31,9 @@ component accessors="true"{
 	* @hint returns a bean object
 	*/
 	public any function bean(string model, any pkValue=0){
-		local.bean = getFB().getObject("#arguments.model#Bean");
+		local.bean = getFB().getObject("#arguments.model#Bean", {service: service(arguments.model)});
+		// set our service and gateway for our bean
+
 		if(arguments.pkValue NEQ 0){
 			local.qData = gateway(arguments.model).get(arguments.pkValue);
 			if(local.qData.recordCount){
@@ -40,5 +42,21 @@ component accessors="true"{
 		}
 		return local.bean;
 	}
+
+	/**
+	* @hint proxy for our service save method
+	*/
+	public any function save(any bean){
+
+	}
+
+	/**
+	* @hint proxy for our service delete method
+	*/
+	public any function delete(any bean){
+		
+	}
+
+	
 
 }

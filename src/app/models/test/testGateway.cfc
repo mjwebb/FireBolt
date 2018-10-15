@@ -1,8 +1,6 @@
-component accessors="true" extends="db.dbGateway"{
+component extends="db.dbGateway"{
 
-	
-	
-	
+		
 	
 	
 

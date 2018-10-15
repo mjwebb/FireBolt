@@ -1,10 +1,6 @@
-component accessors="true" extends="db.dbService"{
+component extends="db.dbService"{
 
 	
 	
-	public function getUser(){
-		return getFB().getObject("UserBean");
-	}
-
 
 }

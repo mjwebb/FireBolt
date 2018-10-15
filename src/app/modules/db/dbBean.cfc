@@ -4,15 +4,24 @@ component accessors="true"{
 	variables.instance = {};
 	variables.instancePrev = {};
 	variables.isDirty = false;
+	variables.service = "";
 	
 
 	/**
 	* @hint constructor
 	*/
-	public function init(){
+	public function init(any service){
+		variables.service = arguments.service;
 		variables.config = new db.dbConfigReader(getMetaData(this).name);
 		pop(variables.config.buildInstance());
 		return this;
+	}
+
+	/**
+	* @hint returns our config object
+	*/
+	public struct function getConfig(){
+		return variables.config;
 	}
 
 	

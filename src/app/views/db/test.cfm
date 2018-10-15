@@ -30,7 +30,17 @@
 <cfset local.testBean = local.db.bean("test", 1)>
 <cfoutput>BEAN ID: #local.testBean.getID()#<br /></cfoutput>
 <cfoutput>#getTickCount() - local.t#ms<br /></cfoutput>
-<!--- <cfdump var="#local.testBean.getSnapshot()#"> --->
+<cfset local.testBean.setName("Jimmy Wagga")>
+<cfdump var="#local.testBean.getSnapshot()#">
+<cfdump var="#local.testBean.getSnapshot(true)#">
+
+
+
+
+<cfset local.t = getTickCount()>
+<cfset local.testBean = local.db.bean("test")>
+<cfoutput>BEAN ID: #local.testBean.getID()#<br /></cfoutput>
+<cfoutput>#getTickCount() - local.t#ms<br /></cfoutput>
 
 
 <!---

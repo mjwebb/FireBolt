@@ -16,6 +16,17 @@ component accessors="true"{
 	public any function getConfig(){
 		return variables.config.getConfig();
 	}
+
+	public any function getSQLWriter(){
+		if(!structKeyExists(variables, "SQLWriter")){
+			local.type = "baseSQL";
+			if(len(getFlavour())){
+				local.type = getFlavour();
+			}
+			variables.SQLWriter = createObject("component", "flavour.#local.type#").init(variables.config);
+		}
+		return variables.SQLWriter;
+	}
 	
 
 	/* =================================== */
@@ -122,7 +133,7 @@ component accessors="true"{
 	* @hint executes an query from a DSL declaration
 	*/
 	public any function execute(struct declaration){
-		local.sql = toSQL(arguments.declaration);
+		local.sql = getSQLWriter().toSQL(arguments.declaration);
 		local.params = processParams(arguments.declaration.q.params);
 		local.q = runQuery(local.sql, arguments.declaration.q.params, arguments.declaration.q.options);
 		return local.q;
@@ -171,22 +182,6 @@ component accessors="true"{
 		return arguments.params;
 	}
 
-	/**
-	* @hint convet a DSL struct to an SQL string
-	*/
-	public string function toSQL(struct declaration){
-		local.declaration = arguments.declaration.q;
-		savecontent variable="local.sql"{
-			writeOutput("SELECT #local.declaration.cols# FROM #local.declaration.tableName#");
-			if(len(local.declaration.where)){
-				writeOutput(" WHERE #local.declaration.where#");
-			}
-			if(len(local.declaration.orderBy)){
-				writeOutput(" ORDER BY #local.declaration.orderBy#");
-			}
-		}
-
-		return local.sql;
-	}
+	
 
 }
