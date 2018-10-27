@@ -75,11 +75,12 @@ component accessors="true"{
 	}
 
 	/**
-	* @hint query syntax DSL
+	* @hint SELECT query syntax DSL
 	*/
 	public struct function from(string tableName=getConfig().table){
 		var declaration = {
 			q: {
+				type: "SELECT",
 				tableName: arguments.tableName,
 				where: "",
 				params: {},
@@ -124,6 +125,125 @@ component accessors="true"{
 				}
 				return execute(declaration);
 			}
+		});
+
+		return declaration;
+	}
+
+	/**
+	* @hint UPDATE query syntax DSL
+	*/
+	public struct function update(string tableName=getConfig().table){
+		var declaration = {
+			q: {
+				type: "UPDATE",
+				tableName: arguments.tableName,
+				where: "",
+				params: {},
+				cols: [],
+				options: {
+					dsn: getDSN()
+				}
+			}
+		};
+
+		structAppend(declaration, {
+			set: function(string col, any value, any param=""){
+				arrayAppend(declaration.q.cols, {
+					name: arguments.col,
+					value: arguments.value
+				});
+				
+				local.null = false;
+				if(!len(arguments.value) AND variables.config.isColumnDefined(arguments.col)){
+					if(variables.config.getColumn(arguments.col).isNullable){
+						local.null = true;
+					}
+				}
+
+				if(isStruct(arguments.param)){
+					arguments.param.value = arguments.value;
+					if(!structKeyExists(arguments.param, "null")){
+						arguments.param.null = local.null;
+					}
+					arguments.param.value = local.null;
+					declaration.q.params[arguments.col] = arguments.param;
+				}else{
+					declaration.q.params[arguments.col] = {
+						value: arguments.value,
+						null: local.null
+					}
+				}
+				return declaration;
+			},
+			where: function(string whereClause){
+				declaration.q.where = arguments.whereClause;
+				return declaration;
+			},
+			withParam: function(string paramName, any paramValue, struct paramOptions={}){
+				arguments.paramOptions.value = arguments.paramValue;
+				declaration.q.params[arguments.paramName] = arguments.paramOptions;
+				return declaration;
+			},
+			go: function(){
+				return execute(declaration);
+			}
+
+		});
+
+		return declaration;
+	}
+
+
+	/**
+	* @hint UPDATE query syntax DSL
+	*/
+	public struct function insert(string tableName=getConfig().table){
+		var declaration = {
+			q: {
+				type: "INSERT",
+				tableName: arguments.tableName,
+				params: {},
+				cols: [],
+				options: {
+					dsn: getDSN()
+				}
+			}
+		};
+
+		structAppend(declaration, {
+			set: function(string col, any value, any param=""){
+				arrayAppend(declaration.q.cols, {
+					name: arguments.col,
+					value: arguments.value
+				});
+				
+				local.null = false;
+				if(!len(arguments.value) AND variables.config.isColumnDefined(arguments.col)){
+					if(variables.config.getColumn(arguments.col).isNullable){
+						local.null = true;
+					}
+				}
+
+				if(isStruct(arguments.param)){
+					arguments.param.value = arguments.value;
+					if(!structKeyExists(arguments.param, "null")){
+						arguments.param.null = local.null;
+					}
+					arguments.param.value = local.null;
+					declaration.q.params[arguments.col] = arguments.param;
+				}else{
+					declaration.q.params[arguments.col] = {
+						value: arguments.value,
+						null: local.null
+					}
+				}
+				return declaration;
+			},
+			go: function(){
+				return execute(declaration);
+			}
+
 		});
 
 		return declaration;
@@ -180,6 +300,18 @@ component accessors="true"{
 			}
 		}
 		return arguments.params;
+	}
+
+
+	public any function getInsertID(query q){
+		local.testKeys = listToArray("IDENTITYCOL,ROWID,SYB_IDENTITY,SERIAL_COL,KEY_VALUE,GENERATED_KEY");
+		for(local.key in local.testKeys){
+			if(isDefined("arguments.q.#local.key#")){
+				return arguments.q[local.key];
+			}
+		}
+		local.qGetID = runQuery("SELECT @@identity AS insertID");
+		return local.qGetID.insertID;
 	}
 
 	

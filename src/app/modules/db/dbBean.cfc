@@ -156,4 +156,15 @@ component accessors="true"{
 		clearDirty();
 	}
 
+	/**
+	* @hint returns the root name of our bean
+	*/
+	public string function rootName(){
+		local.root = listLast(getMetaData(this).name, ".");
+		if(right(local.root, 4) IS "Bean"){
+			local.root = mid(local.root, 1, len(local.root) - 4);
+		}
+		return local.root;
+	}
+
 }

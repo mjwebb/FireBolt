@@ -29,18 +29,27 @@
 <cfset local.t = getTickCount()>
 <cfset local.testBean = local.db.bean("test", 1)>
 <cfoutput>BEAN ID: #local.testBean.getID()#<br /></cfoutput>
-<cfoutput>#getTickCount() - local.t#ms<br /></cfoutput>
-<cfset local.testBean.setName("Jimmy Wagga")>
-<cfdump var="#local.testBean.getSnapshot()#">
-<cfdump var="#local.testBean.getSnapshot(true)#">
+<cfoutput>GET: #getTickCount() - local.t#ms<br /></cfoutput>
+<cfset local.testBean.setName("Dave Wagga")>
+<cfset local.testBean.setStartDate(now())>
+<cfset local.testBean.setBool(!local.testBean.getBool())>
+<!--- <cfdump var="#local.testBean.getSnapshot(true)#" label="prev"> --->
+<!--- <cfdump var="#local.testBean.getSnapshot()#" label="updated"> --->
 
 
-
+<cfset local.t = getTickCount()>
+<cfset local.db.save(local.testBean)>
+<cfoutput>SAVE: #getTickCount() - local.t#ms<br /></cfoutput>
 
 <cfset local.t = getTickCount()>
 <cfset local.testBean = local.db.bean("test")>
 <cfoutput>BEAN ID: #local.testBean.getID()#<br /></cfoutput>
 <cfoutput>#getTickCount() - local.t#ms<br /></cfoutput>
+<cfset local.testBean.setName("Waggag")>
+<!--- <cfset local.db.save(local.testBean)> --->
+<cfoutput>INSERT ID: #local.testBean.getID()#<br /></cfoutput>
+
+
 
 
 <!---
@@ -59,13 +68,15 @@
 <cfoutput>GET ALL: #getTickCount() - local.t#ms<br /></cfoutput>
 <cfoutput>#local.q.recordCount#<br /></cfoutput>
 
+<cfdump var="#local.q#">
+
 <!--- <cfset local.t = getTickCount()>
 <cfset local.q = local.testGateway.get(2)>
 <cfoutput>#getTickCount() - local.t#<br /></cfoutput>
 <cfoutput>#local.q.recordCount#<br /></cfoutput> --->
 
 <cfset local.t = getTickCount()>
-<cfset local.q = local.testGateway.get(2)>
+<cfset local.q = local.testGateway.get(6)>
 <cfoutput>GET: #getTickCount() - local.t#ms<br /></cfoutput>
 <cfoutput>#local.q.recordCount#<br /></cfoutput>
 

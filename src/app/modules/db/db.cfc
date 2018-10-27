@@ -47,14 +47,14 @@ component accessors="true"{
 	* @hint proxy for our service save method
 	*/
 	public any function save(any bean){
-
+		return service(arguments.bean.rootName()).save(arguments.bean);
 	}
 
 	/**
 	* @hint proxy for our service delete method
 	*/
 	public any function delete(any bean){
-		
+		return service(arguments.bean.rootName()).delete(arguments.bean);	
 	}
 
 	
