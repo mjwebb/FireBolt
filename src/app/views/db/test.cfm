@@ -8,7 +8,13 @@
 
 <cfset local.insp = FB().getObject("dbInspector@db")>
 
-<!--- <cfdump var="#serializeJSON(insp.inspectTable("test", "tbl_test"))#"> --->
+<cfset local.schema = insp.inspectTable("test", "tbl_test")>
+<cfset local.def = insp.buildDefinition(local.schema)>
+<cfoutput><pre>#local.def#</pre></cfoutput>
+
+
+
+<!--- <cfdump var="#deserializeJSON(local.js)#"> --->
 
 <!--- <cfdump var="#getApplicationMetadata()#">  --->
 
@@ -76,7 +82,7 @@
 <cfoutput>#local.q.recordCount#<br /></cfoutput> --->
 
 <cfset local.t = getTickCount()>
-<cfset local.q = local.testGateway.get(6)>
+<cfset local.q = local.testGateway.get(4)>
 <cfoutput>GET: #getTickCount() - local.t#ms<br /></cfoutput>
 <cfoutput>#local.q.recordCount#<br /></cfoutput>
 

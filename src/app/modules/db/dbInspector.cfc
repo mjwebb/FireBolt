@@ -48,6 +48,49 @@ component accessors="true"{
 		return local.schema;
 	}
 
+	/**
+	* @hint constructs our definition code
+	*/
+	public string function buildDefinition(struct schema){
+		local.crlf = chr(13) & chr(10);
+		local.tab = chr(9);
+		local.lines = [];
+		arrayAppend(local.lines, "component{");
+		arrayAppend(local.lines, local.tab & "this.definition = {");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "table:""" & arguments.schema.table & """,");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "pk:""" & arguments.schema.pk & """,");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "cols:[");
+
+		local.cols = [];
+		for(local.col in arguments.schema.cols){
+			local.colLines = [];
+			local.colLineKeys = [];
+			arrayAppend(local.colLines, repeatString(local.tab, 3) & "{");
+			for(local.key in structKeyArray(local.col)){
+				local.valueString = local.col[local.key];
+				if((local.key NEQ "default") AND !isBoolean(local.valueString) AND !isNumeric(local.valueString)){
+					local.valueString = """" & local.valueString & """";
+				}
+				arrayAppend(local.colLineKeys, repeatString(local.tab, 4) & local.key & ":" & local.valueString);
+			}
+			arrayAppend(local.colLines, arrayToList(colLineKeys, "," & local.crlf));
+			arrayAppend(local.colLines, repeatString(local.tab, 3) & "}");
+			arrayAppend(local.cols, arrayToList(local.colLines, local.crlf));
+		}
+		arrayAppend(local.lines, arrayToList(local.cols, "," & local.crlf));
+
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "],");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "joins:[],");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "oneToMany:[],");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "manyTomany:[],");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "specialColumns:[]");
+		arrayAppend(local.lines, local.tab & "};");
+		arrayAppend(local.lines, "}");
+
+		return arrayToList(local.lines, local.crlf);
+	}
+
+
 
 	/**
 	* @hint returns the mapped CFSQLDatatype for a given column data type
