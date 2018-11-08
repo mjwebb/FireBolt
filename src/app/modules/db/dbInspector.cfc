@@ -55,7 +55,8 @@ component accessors="true"{
 		local.crlf = chr(13) & chr(10);
 		local.tab = chr(9);
 		local.lines = [];
-		arrayAppend(local.lines, "component{");
+		arrayAppend(local.lines, "[cfscript>");
+		arrayAppend(local.lines, local.tab & "// GENERATED FILE DO NOT EDIT");
 		arrayAppend(local.lines, local.tab & "this.definition = {");
 		arrayAppend(local.lines, repeatString(local.tab, 2) & "table:""" & arguments.schema.table & """,");
 		arrayAppend(local.lines, repeatString(local.tab, 2) & "pk:""" & arguments.schema.pk & """,");
@@ -79,15 +80,18 @@ component accessors="true"{
 		}
 		arrayAppend(local.lines, arrayToList(local.cols, "," & local.crlf));
 
-		arrayAppend(local.lines, repeatString(local.tab, 2) & "],");
-		arrayAppend(local.lines, repeatString(local.tab, 2) & "joins:[],");
-		arrayAppend(local.lines, repeatString(local.tab, 2) & "oneToMany:[],");
-		arrayAppend(local.lines, repeatString(local.tab, 2) & "manyTomany:[],");
-		arrayAppend(local.lines, repeatString(local.tab, 2) & "specialColumns:[]");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "]");
+		//arrayAppend(local.lines, repeatString(local.tab, 2) & "joins:[],");
+		//arrayAppend(local.lines, repeatString(local.tab, 2) & "oneToMany:[],");
+		//arrayAppend(local.lines, repeatString(local.tab, 2) & "manyTomany:[],");
+		//arrayAppend(local.lines, repeatString(local.tab, 2) & "specialColumns:[]");
 		arrayAppend(local.lines, local.tab & "};");
-		arrayAppend(local.lines, "}");
+		arrayAppend(local.lines, "[/cfscript>");
 
-		return arrayToList(local.lines, local.crlf);
+		//convert to a string
+		local.def = reReplaceNoCase(arrayToList(local.lines, local.crlf), "\[(\/?)cf", "<\1cf", "ALL");
+
+		return local.def;
 	}
 
 

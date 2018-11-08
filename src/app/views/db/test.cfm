@@ -10,7 +10,7 @@
 
 <cfset local.schema = insp.inspectTable("test", "tbl_test")>
 <cfset local.def = insp.buildDefinition(local.schema)>
-<cfoutput><pre>#local.def#</pre></cfoutput>
+<cfoutput><pre>#encodeForHTML(local.def)#</pre></cfoutput>
 
 
 
@@ -32,6 +32,15 @@
 <cfset local.testBean.setTest("wagga")>
 <cfoutput>#local.testBean.isDirty()#</cfoutput>
 --->
+<!--- <cfset local.testBean = local.db.bean("test")>
+<cfdump var="#local.testBean.getConfig().getConfig()#">
+<cfdump var="#local.testBean.getConfig().buildInstance()#">
+<cfdump var="#local.testBean.getSnapShot()#">
+
+<cfabort> --->
+
+
+
 <cfset local.t = getTickCount()>
 <cfset local.testBean = local.db.bean("test", 1)>
 <cfoutput>BEAN ID: #local.testBean.getID()#<br /></cfoutput>

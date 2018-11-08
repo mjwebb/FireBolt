@@ -71,13 +71,13 @@ component accessors="true"{
 	* @hint our default columns
 	*/	
 	public string function cols(){
-		return getConfig().colList;
+		return variables.config.columnList();;
 	}
 
 	/**
 	* @hint SELECT query syntax DSL
 	*/
-	public struct function from(string tableName=getConfig().table){
+	public struct function from(string tableName=getSQLWriter().tableSelect()){
 		var declaration = {
 			q: {
 				type: "SELECT",

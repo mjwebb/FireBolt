@@ -112,7 +112,7 @@ component accessors="true"{
 			variables.instance[arguments.key] = arguments.value;
 			setDirty();
 		}else{
-			throw(message="Key name '#arguments.key#' is not defined in this instance", type="DB Bean");
+			//throw(message="Key name '#arguments.key#' is not defined in this instance", type="DB Bean");
 		}
 	}
 	

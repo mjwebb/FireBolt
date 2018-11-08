@@ -34,12 +34,31 @@ component accessors="true"{
 				variables.config.hasPK = true;
 			}
 		}
+
+		// joins
+		variables.config.joinColList = "";
+		variables.config.joinCols = [];
+		if(structKeyExists(variables.config, "joins")){
+			for(local.join in variables.config.joins){
+				variables.config.joinColList = listAppend(variables.config.joinColList, local.join.cols);
+			}
+			local.tempJoinCols = listToArray(variables.config.joinColList);
+			for(local.joinCol in local.tempJoinCols){
+				local.joinCol = replaceNoCase(local.joinCol, " AS ", "~");
+				local.joinCol = trim(listLast(local.joinCol, "~"));
+				arrayAppend(variables.config.joinCols, local.joinCol);
+				variables.config.colHash[local.joinCol] = "JOIN";
+			}
+		}
 	}
 
 	public struct function buildInstance(){
 		local.inst = {};
 		for(local.col in variables.config.cols){
 			local.inst[local.col.name] = local.col.default;
+		}
+		for(local.joinCol in variables.config.joinCols){
+			local.inst[local.joinCol] = "";
 		}
 		return local.inst;
 	}
@@ -48,8 +67,23 @@ component accessors="true"{
 		return variables.config;
 	}
 
+	public any function columnList(){
+		return listAppend(variables.config.colList, variables.config.joinColList);
+	}
+
 	public any function columns(){
 		return variables.config.cols;
+	}
+
+	public any function joins(){
+		if(structKeyExists(variables.config, "joins")){
+			return variables.config.joins;
+		}
+		return [];
+	}
+
+	public any function table(){
+		return variables.config.table;
 	}
 
 	public struct function getColumn(string colName){
