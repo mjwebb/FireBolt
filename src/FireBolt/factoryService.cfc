@@ -50,7 +50,7 @@ component accessors="true"{
 			createMappings(local.modulePath);
 		}
 		// register our models
-		createMappings(expandPath(getModelsPath()), false);
+		createMappings(expandPath(getModelsPath()), false, "model");
 	}
 
 	/**
@@ -167,7 +167,7 @@ component accessors="true"{
 	/**
 	* @hint scans a given directrory for cfc's and generates aliases for each one
 	*/
-	public void function createMappings(string modulePath, boolean includeRootAlias=true){
+	public void function createMappings(string modulePath, boolean includeRootAlias=true, string namespace=""){
 		local.moduleRoot = listLast(arguments.modulePath, "\");
 
 		local.cfcs = listComponents(arguments.modulePath);
@@ -178,14 +178,22 @@ component accessors="true"{
 
 			// add our module root back into the path
 			local.cfcDotPath = local.moduleRoot & "." & local.cfcDotPath;
-			// form an alias based on the cfc name and the module root
+			
 
 			local.alias = listLast(local.cfcDotPath, ".");
+						
+			registerMapping(local.cfcDotPath, local.alias);
+
+			// form an alias based on the cfc name and the module root
 			if(arguments.includeRootAlias){
 				local.alias = local.alias & "@" & local.moduleRoot;
+				registerMapping(local.cfcDotPath, local.alias);
+			}else if(len(arguments.namespace)){
+				local.alias = local.alias & "@" & arguments.namespace;
+				registerMapping(local.cfcDotPath, local.alias);
 			}
 			
-			registerMapping(local.cfcDotPath, local.alias);
+			
 		}
 	}
 
