@@ -6,12 +6,13 @@
 
 <cfset local.db = FB().getObject("db@db")>
 
-<cfset local.insp = FB().getObject("dbInspector@db")>
+<!--- <cfset local.insp = FB().getObject("dbInspector@db")>
+<cfset local.schema = local.insp.inspectTable("test", "tbl_category")>
+<cfset local.def = local.insp.buildDefinition(local.schema)>
+<cfoutput><pre>#encodeForHTML(local.def)#</pre></cfoutput> --->
 
-<cfset local.schema = insp.inspectTable("test", "tbl_test")>
-<cfset local.def = insp.buildDefinition(local.schema)>
-<cfoutput><pre>#encodeForHTML(local.def)#</pre></cfoutput>
-
+<!--- build a new model --->
+<!--- <cfset local.insp.buildModel("test", "category", "tbl_category", FB().getSetting('paths.models'))> --->
 
 
 <!--- <cfdump var="#deserializeJSON(local.js)#"> --->
@@ -19,6 +20,7 @@
 <!--- <cfdump var="#getApplicationMetadata()#">  --->
 
 <cfset local.testGateway = FB().getObject("testGateway")>
+<cfset local.testService = FB().getObject("testService")>
 <!--- <cfdump var="#local.testGateway.getConfig()#"> --->
 <!--- <cfoutput>#FB().getSetting("modules.db.dsn")#</cfoutput> --->
 
@@ -52,9 +54,17 @@
 <!--- <cfdump var="#local.testBean.getSnapshot()#" label="updated"> --->
 
 
+<!--- <cfset local.testBean.setLinkedSaveData("categories", [1])> --->
+<!--- <cfset local.testService.setLinked(local.testBean, "categories", [2])> --->
+<!--- <cfset local.testBean.setLinkedSaveData("categories", [1,2,4])> --->
+
 <cfset local.t = getTickCount()>
 <cfset local.db.save(local.testBean)>
 <cfoutput>SAVE: #getTickCount() - local.t#ms<br /></cfoutput>
+<cfdump var="#local.testBean.getLinked("categories")#">
+
+
+
 
 <cfset local.t = getTickCount()>
 <cfset local.testBean = local.db.bean("test")>

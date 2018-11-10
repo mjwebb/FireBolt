@@ -5,6 +5,8 @@ component accessors="true"{
 	variables.instancePrev = {};
 	variables.isDirty = false;
 	variables.service = "";
+	variables.linkedData = {}; // used to hold additional data associated with the bean
+	variables.linkedSaveData = {}; // contains many-to-many updates to be saved
 	
 
 	/**
@@ -165,6 +167,72 @@ component accessors="true"{
 			local.root = mid(local.root, 1, len(local.root) - 4);
 		}
 		return local.root;
+	}
+
+	/**
+	* @hint returns the contents of a linked data key
+	*/
+	public any function getLinked(string manyToManyName, boolean forceRead=false, string condition="", struct params={}){
+		return variables.service.getLinked(this, arguments.manyToManyName, arguments.forceRead, arguments.condition, arguments.params);
+	}
+
+
+	/**
+	* @hint returns true if a linked data key exists
+	*/
+	public any function isLinkedDataDefined(string key=""){
+		return structKeyExists(variables.linkedData, arguments.key);
+	}
+
+	/**
+	* @hint returns the contents of a linked data key
+	*/
+	public any function getLinkedData(string key=""){
+		if(!len(arguments.key)){
+			return variables.linkedData;
+		}
+		if(isLinkedDataDefined(arguments.key)){
+			return variables.linkedData[arguments.key];
+		}
+		return false;
+	}
+
+	/**
+	* @hint sets a value for a linked data key
+	*/
+	public void function setLinkedData(string key, any value){
+		variables.linkedData[arguments.key] = arguments.value;
+	}
+
+	/**
+	* @hint returns the contents of a linked save data key
+	*/
+	public any function getLinkedSaveData(string key=""){
+		if(!len(arguments.key)){
+			return variables.linkedSaveData;
+		}
+		if(structKeyExists(variables.linkedSaveData, arguments.key)){
+			return variables.linkedSaveData[arguments.key];
+		}
+		return false;
+	}
+
+	/**
+	* @hint sets a value for a linked save data key
+	*/
+	public void function setLinkedSaveData(string key, any value){
+		variables.linkedSaveData[arguments.key] = arguments.value;
+	}
+
+	/**
+	* @hint clears linked save data for either a given key or completely
+	*/
+	public void function clearLinkedSaveData(string key=""){
+		if(!len(arguments.key)){
+			variables.linkedSaveData = {};
+		}else{
+			structDelete(variables.linkedSaveData, arguments.key);
+		}
 	}
 
 }

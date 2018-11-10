@@ -17,6 +17,10 @@ component accessors="true"{
 		return variables.config.getConfig();
 	}
 
+	public any function getConfigReader(){
+		return variables.config;
+	}
+
 	public any function getSQLWriter(){
 		if(!structKeyExists(variables, "SQLWriter")){
 			local.type = "baseSQL";
@@ -30,29 +34,6 @@ component accessors="true"{
 	
 
 	/* =================================== */
-	public function qb(){
-		return getFB().getObject("QueryBuilder@qb");
-	}
-
-	public query function getAllQB(){
-		return qb()
-			.from(getConfig().table)
-			.get(options:{datasource:getDSN()});
-	}
-
-	public query function getQB(any pkValue){
-		return qb()
-			.from(getConfig().table)
-			.where(getConfig().pk, "=", arguments.pkValue)
-			.get(options:{datasource:getDSN()});
-	}
-
-	public any function executeQB(any qb, struct options={}){
-		local.options = {datasource:getDSN()};
-		structAppend(local.options, arguments.options);
-		return arguments.qb.get(options:local.options);
-	}
-	/* =================================== */
 
 	public query function get(any pkValue){
 		return from()
@@ -60,7 +41,7 @@ component accessors="true"{
 			.withParams({
 				pk: arguments.pkValue
 			})
-			.get(options:{datasource:getDSN()});
+			.get();
 	}
 
 	public query function getAll(){
@@ -196,7 +177,7 @@ component accessors="true"{
 
 
 	/**
-	* @hint UPDATE query syntax DSL
+	* @hint INSERT query syntax DSL
 	*/
 	public struct function insert(string tableName=getConfig().table){
 		var declaration = {
@@ -254,19 +235,19 @@ component accessors="true"{
 	*/
 	public any function execute(struct declaration){
 		local.sql = getSQLWriter().toSQL(arguments.declaration);
-		local.params = processParams(arguments.declaration.q.params);
 		local.q = runQuery(local.sql, arguments.declaration.q.params, arguments.declaration.q.options);
 		return local.q;
 	}
 
 	/**
-	* @hint executes an query from a DSL declaration
+	* @hint executes an query
 	*/
 	public any function runQuery(string sql, any params, struct options={}){
+		local.params = processParams(arguments.params);
 		if(!structKeyExists(arguments.options, "datasource")){
 			arguments.options.datasource = getDSN();
 		}
-		return queryExecute(arguments.sql, arguments.params, arguments.options);
+		return queryExecute(arguments.sql, local.params, arguments.options);
 	}
 	
 	/**
@@ -302,7 +283,9 @@ component accessors="true"{
 		return arguments.params;
 	}
 
-
+	/**
+	* @hint attempts to determine an insert ID from a given query
+	*/
 	public any function getInsertID(query q){
 		local.testKeys = listToArray("IDENTITYCOL,ROWID,SYB_IDENTITY,SERIAL_COL,KEY_VALUE,GENERATED_KEY");
 		for(local.key in local.testKeys){

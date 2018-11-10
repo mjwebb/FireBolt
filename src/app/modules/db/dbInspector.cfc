@@ -26,7 +26,6 @@ component accessors="true"{
 
 		for(local.col in local.qTable){
 			
-		
 			local.colData = {
 				"name": local.col.column_name,
 				"type": listFirst(local.col.type_name, " "),
@@ -46,6 +45,74 @@ component accessors="true"{
 		}
 
 		return local.schema;
+	}
+
+	/**
+	* @hint builds a model
+	*/
+	public void function buildModel(string dsn, string modelName, string tableName, string modelPath){
+		
+		// make sure a directory exists for our model
+		local.fullModelPath = arguments.modelPath & arguments.modelName & "/";
+		if(!directoryExists(local.fullModelPath)){
+			directoryCreate(local.fullModelPath);
+		}
+
+		// always overwrite our schema
+		local.schema = inspectTable(arguments.dsn, arguments.tableName);
+		local.schemaFile = buildDefinition(local.schema);
+		fileWrite(local.fullModelPath & "_" & arguments.modelName & "Schema.cfm", local.schemaFile);
+
+		// config if not defined
+		if(!fileExists(local.fullModelPath & arguments.modelName & "Config.cfc")){
+			fileWrite(local.fullModelPath & arguments.modelName & "Config.cfc", buildCFC("config", arguments.modelName));
+		}
+		// bean if not defined
+		if(!fileExists(local.fullModelPath & arguments.modelName & "Bean.cfc")){
+			fileWrite(local.fullModelPath & arguments.modelName & "Bean.cfc", buildCFC("bean"));
+		}
+		// service if not defined
+		if(!fileExists(local.fullModelPath & arguments.modelName & "Service.cfc")){
+			fileWrite(local.fullModelPath & arguments.modelName & "Service.cfc", buildCFC("service"));
+		}
+		// gateway if not defined
+		if(!fileExists(local.fullModelPath & arguments.modelName & "Gateway.cfc")){
+			fileWrite(local.fullModelPath & arguments.modelName & "Gateway.cfc", buildCFC("gateway"));
+		}
+	}
+
+	/**
+	* @hint constructs our definition code
+	*/
+	public string function buildCFC(string type, string modelName=""){
+		local.crlf = chr(13) & chr(10);
+		local.tab = chr(9);
+		local.lines = [];
+
+		switch(arguments.type){
+			case "config":
+				arrayAppend(local.lines, "component{");
+				arrayAppend(local.lines, local.tab & "include ""_#arguments.modelName#Schema.cfm"";");
+				arrayAppend(local.lines, local.tab & "this.definition.joins = [];");
+				arrayAppend(local.lines, local.tab & "this.definition.manyTomany = [];");
+				arrayAppend(local.lines, local.tab & "this.definition.specialColumns = [];");
+				arrayAppend(local.lines, "}");
+				break;
+			case "bean":
+				arrayAppend(local.lines, "component extends=""db.dbBean""{");
+				arrayAppend(local.lines, "}");
+				break;
+			case "service":
+				arrayAppend(local.lines, "component extends=""db.dbService""{");
+				arrayAppend(local.lines, "}");
+				break;
+			case "gateway":
+				arrayAppend(local.lines, "component extends=""db.dbGateway""{");
+				arrayAppend(local.lines, "}");
+				break;
+		}
+
+		return arrayToList(local.lines, local.crlf);
 	}
 
 	/**

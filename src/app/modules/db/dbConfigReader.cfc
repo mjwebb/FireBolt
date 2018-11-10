@@ -68,7 +68,10 @@ component accessors="true"{
 	}
 
 	public any function columnList(){
-		return listAppend(variables.config.colList, variables.config.joinColList);
+		if(len(variables.config.joinColList)){
+			return listAppend(variables.config.colList, variables.config.joinColList);
+		}
+		return variables.config.colList;
 	}
 
 	public any function columns(){
@@ -80,6 +83,23 @@ component accessors="true"{
 			return variables.config.joins;
 		}
 		return [];
+	}
+
+	public any function manyToMany(){
+		if(structKeyExists(variables.config, "manyTomany")){
+			return variables.config.manyTomany;
+		}
+		return [];
+	}
+
+	public any function getManyToMany(string name){
+		local.def = manyToMany();
+		for(local.manyInfo in local.def){
+			if(local.manyInfo.name IS arguments.name){
+				return local.manyInfo;
+			}
+		}
+		return false;
 	}
 
 	public any function table(){
