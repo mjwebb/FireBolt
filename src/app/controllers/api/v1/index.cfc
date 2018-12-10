@@ -3,27 +3,30 @@ component output="false" extends="FireBolt.controller" {
 	/**
 	*/
 	public function get(){
-		respondWith({
+		return {
 			"api": "response"
-		});
+		};
+		/*respondWith({
+			"api": "response"
+		});*/
 	}
 
 	/**
 	*/
 	public function do404(){
-		respondWith({
+		return {
 			"error": "method not found"
-		});
+		};
 	}
 
 	/**
 	* @verbs GET
 	*/
 	public function test(){
-		respondWith({
+		return {
 			"api": "response",
 			"method": "test"
-		});
+		};
 	}
 	
 
@@ -32,9 +35,9 @@ component output="false" extends="FireBolt.controller" {
 	* @permissions adminUser
 	*/
 	public function secure(){
-		respondWith({
+		return {
 			"api": "response",
 			"method": "secure"
-		});
+		};
 	}
 }

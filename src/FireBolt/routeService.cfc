@@ -89,7 +89,10 @@ component accessors="true"{
 		if(local.c.isValid){
 			arguments.req.setRoute(local.c);
 			invoke(local.c.cfc, "before", {routeData: local.c, req:arguments.req});
-			invoke(local.c.cfc, local.c.method, local.c.args);
+			local.result = invoke(local.c.cfc, local.c.method, local.c.args);
+			if(isDefined("local.result")){
+				arguments.req.getResponse().setBody(local.result);
+			}
 			invoke(local.c.cfc, "after", {routeData: local.c, req:arguments.req});
 			//return local.response;
 		}else{
