@@ -6,11 +6,15 @@
 
 <cfset local.db = FB().getObject("db@db")>
 
-<!--- <cfset local.insp = FB().getObject("dbInspector@db")>
-<cfset local.schema = local.insp.inspectTable("test", "tbl_category")>
+<cfset local.insp = FB().getObject("dbInspector@db")>
+<!--- <cfset local.schema = local.insp.inspectTable("test", "tbl_category")>
 <cfset local.def = local.insp.buildDefinition(local.schema)>
 <cfoutput><pre>#encodeForHTML(local.def)#</pre></cfoutput> --->
-
+<!--- 
+<cfset local.dbConfig = local.insp.buildSchema("test")>
+<cfset fileWrite("/app/config/db-default.cfc", local.dbConfig)>
+<pre><cfoutput>#local.dbConfig#</cfoutput></pre>
+ --->
 <!--- build a new model --->
 <!--- <cfset local.insp.buildModel("test", "category", "tbl_category", FB().getSetting('paths.models'))> --->
 
@@ -19,10 +23,10 @@
 
 <!--- <cfdump var="#getApplicationMetadata()#">  --->
 
-<cfset local.testGateway = FB().getObject("testGateway")>
-<cfset local.testService = FB().getObject("testService")>
+<cfset local.testGateway = local.db.gateway("test")>
+<cfset local.testService = local.db.service("test")>
 <!--- <cfdump var="#local.testGateway.getConfig()#"> --->
-<!--- <cfoutput>#FB().getSetting("modules.db.dsn")#</cfoutput> --->
+
 
 <!---
 <cfset local.q = local.testGateway.from("tbl_test")
@@ -34,12 +38,11 @@
 <cfset local.testBean.setTest("wagga")>
 <cfoutput>#local.testBean.isDirty()#</cfoutput>
 --->
-<!--- <cfset local.testBean = local.db.bean("test")>
-<cfdump var="#local.testBean.getConfig().getConfig()#">
+<cfset local.testBean = local.db.bean("test")>
+<!--- <cfdump var="#local.testBean.getConfig().getConfig()#">
 <cfdump var="#local.testBean.getConfig().buildInstance()#">
-<cfdump var="#local.testBean.getSnapShot()#">
-
-<cfabort> --->
+ --->
+ <cfdump var="#local.testBean.getSnapShot()#">
 
 
 
@@ -108,3 +111,4 @@
 
 <!--- <cfdump var="#local.q#"> --->
 
+<!--- <cfdump var="#local.db.getSchema()#"> --->

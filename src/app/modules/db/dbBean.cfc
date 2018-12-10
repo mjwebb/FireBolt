@@ -1,6 +1,5 @@
 component accessors="true"{
 
-
 	variables.instance = {};
 	variables.instancePrev = {};
 	variables.isDirty = false;
@@ -14,7 +13,7 @@ component accessors="true"{
 	*/
 	public function init(any service){
 		variables.service = arguments.service;
-		variables.config = new db.dbConfigReader(getMetaData(this).name);
+		variables.config = variables.service.getGateway().getConfigReader();
 		pop(variables.config.buildInstance());
 		return this;
 	}

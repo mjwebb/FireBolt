@@ -1,5 +1,5 @@
 component{
-	include "_testSchema.cfm";
+	this.definition.table = "tbl_test";
 	this.definition.joins = [{
 		table: "tbl_relation",
 		on: "relation_id",

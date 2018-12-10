@@ -1,15 +1,19 @@
 component accessors="true"{
 
-	property name="FB" inject="framework";
-	property name="dsn" inject="setting:modules.db.dsn.name";
-	property name="flavour" inject="setting:modules.db.dsn.flavour";
+	//property name="FB" inject="framework";
+	// property name="dsn" inject="setting:modules.db.dsn.name";
+	// property name="flavour" inject="setting:modules.db.dsn.flavour";
+
+	property name="db";
+	//
+
 
 	/**
 	* @hint constructor
 	*/
-	public function init(string dsn){
-		variables.dsn = arguments.dsn;
-		variables.config = new db.dbConfigReader(getMetaData(this).name);
+	public function init(any db){
+		variables.db = arguments.db;
+		variables.config = new db.dbConfigReader(getMetaData(this).name, variables.db);
 		return this;
 	}
 
@@ -19,6 +23,14 @@ component accessors="true"{
 
 	public any function getConfigReader(){
 		return variables.config;
+	}
+
+	public string function getDSN(){
+		return getConfig().dsn;
+	}
+
+	public string function getFlavour(){
+		return getConfig().flavour;
 	}
 
 	public any function getSQLWriter(){

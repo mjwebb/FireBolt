@@ -1,10 +1,11 @@
-component accessors="true"{
+component{
 
 
 	/**
 	* @hint constructor
 	*/
-	public function init(string parentName){
+	public function init(string parentName, any db){
+		variables.db = arguments.db;
 		readConfig(arguments.parentName);
 		return this;
 	}
@@ -23,6 +24,25 @@ component accessors="true"{
 		local.configName = local.root & "Config";
 		variables.configObject = new "#local.configName#"();
 		variables.config = variables.configObject.definition;
+
+		// set our default schema if one is not defined
+		if(!structKeyExists(variables.config, "schema")){
+			variables.config.schema = "default";	
+		}
+
+		// set our default table if one is not defined
+		if(!structKeyExists(variables.config, "table")){
+			variables.config.table = "tbl_#local.root#";
+		}
+		
+		// find our table columns and flavour and dsn from our schema definition
+		local.table = db.getTableSchema(variables.config.table, variables.config.schema);
+		local.schema = db.getSchema(variables.config.schema);
+		
+		structAppend(variables.config, local.table);
+		variables.config.dsn = local.schema.dsn;
+		variables.config.flavour = local.schema.flavour;
+
 		variables.config.colList = "";
 		variables.config.hasPK = false;
 		variables.config.colHash = {};
@@ -56,6 +76,10 @@ component accessors="true"{
 		local.inst = {};
 		for(local.col in variables.config.cols){
 			local.inst[local.col.name] = local.col.default;
+			// check for default date value
+			if(isDate(local.col.default) AND local.col.cfDataType IS "date"){
+				local.inst[local.col.name] = now();
+			}
 		}
 		for(local.joinCol in variables.config.joinCols){
 			local.inst[local.joinCol] = "";

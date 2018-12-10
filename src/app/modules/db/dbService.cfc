@@ -5,7 +5,8 @@ component accessors="true"{
 	/**
 	* @hint constructor
 	*/
-	public function init(){
+	public function init(any db){
+		variables.db = arguments.db;
 		return this;
 	}
 
@@ -14,7 +15,7 @@ component accessors="true"{
 	*/
 	public any function getGateway(){
 		if(!structKeyExists(variables, "Gateway")){
-			variables.Gateway = getFB().getObject(rootName() & "Gateway");
+			variables.Gateway =  db.gateway(rootName()); //getFB().getObject(rootName() & "Gateway");
 		}
 		return variables.Gateway;
 	}
@@ -90,7 +91,7 @@ component accessors="true"{
 			if(isStruct(local.linkedConfig)){
 				local.linkedData = local.linkedDataToSave[local.linkedKey];
 
-				local.relatedGateway = getFB().getObject(local.linkedConfig.model & "Gateway");
+				local.relatedGateway = db.gateway(local.linkedConfig.model); //getFB().getObject(local.linkedConfig.model & "Gateway");
 				local.relatedPK = local.relatedGateway.getConfigReader().getPK();
 				
 				if(!structKeyExists(local.linkedConfig, "FK1")){
@@ -146,7 +147,7 @@ component accessors="true"{
 			return arguments.bean.getLinkedData(arguments.manyToManyName);
 		}
 
-		local.relatedGateway = getFB().getObject(local.linkedConfig.model & "Gateway");
+		local.relatedGateway = db.gateway(local.linkedConfig.model); //getFB().getObject(local.linkedConfig.model & "Gateway");
 		local.relatedPK = local.relatedGateway.getConfigReader().getPK();
 
 		// query parameters

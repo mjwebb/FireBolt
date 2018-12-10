@@ -16,6 +16,25 @@ component output="false" accessors="true" extends="FireBolt.controller" {
 	}
 
 	
+
+	/**
+	* @verbs GET
+	*/
+	public function builder(string models=""){
+
+		if(len(arguments.models)){
+			// build models
+
+		}else{
+			// list models
+
+			addContent("DB Builder");
+			addContent(dump(cgi));
+
+		}
+
+		layout();
+	}
 	
 
 

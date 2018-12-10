@@ -1,6 +1,6 @@
 component{
 
-	
+	/*
 	this.config = {
 		dsn: {
 			name: "test",
@@ -11,10 +11,10 @@ component{
 			flavour: "MSSQL"
 		}
 	};
-
+*/
 	
 	function configure(){
-
+		/*
 		FB().listenFor("req.start")
 			.with(function(){
 				FB().engine().addCFDatasource("test", {
@@ -27,7 +27,7 @@ component{
 					connectionLimit: 100 // default:-1
 				});
 			});
-
+		*/
 	}
 	
 }

@@ -29,7 +29,14 @@ component{
 		},
 
 		siteName: "FireBolt",
-		modules: {}, // 
+
+		modules: {
+			db: {
+				schemas: {
+					default: "test"
+				}
+			}
+		}, 
 
 		test: "this is a test setting",
 		struct: {
@@ -101,7 +108,7 @@ component{
 	*/ 
 	public void function onRequestStart(){
 		
-		/*FB().engine().addCFDatasource("test", {
+		FB().engine().addCFDatasource("test", {
 			class: 'com.microsoft.sqlserver.jdbc.SQLServerDriver',
 			bundleName: 'mssqljdbc4',
 			bundleVersion: '4.0.2206.100',
@@ -109,7 +116,7 @@ component{
 			username: 'sa',
 			password: "4Adg6x12",
 			connectionLimit: 100 // default:-1
-		});*/
+		});
 
 	}
 

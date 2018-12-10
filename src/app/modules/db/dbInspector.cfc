@@ -1,10 +1,55 @@
-component accessors="true"{
+component{
 
 	/**
 	* @hint constructor
 	*/
 	public function init(){
 		return this;
+	}
+
+	/**
+	* @hint returns our dtabase flavour from our product name
+	*/
+	public string function getFlavour(string productName){
+		if(arguments.productName CONTAINS "Microsoft SQL Server"){
+			return "MSSQL";
+		}
+		if(arguments.productName CONTAINS "MYSQL"){
+			return "MYSQL";
+		}
+		return "";
+	}
+
+	/**
+	* @hint inspects a database and returns table information
+	*/
+	public any function inspectDatabase(string dsn, string schemaName="default"){
+		cfdbinfo(
+			datasource=arguments.dsn,
+			type="tables",
+			name="local.dbInfo");
+
+		cfdbinfo(
+			datasource=arguments.dsn,
+			type="version",
+			name="local.dbVersion");
+		//return local.dbInfo;
+
+		local.db = {
+			"schemaName": arguments.schemaName,
+			"dsn": arguments.dsn,
+			"version": local.dbVersion.database_productName,
+			"flavour": getFlavour(local.dbVersion.database_productName),
+			"tables":{}
+		};
+
+		for(local.table in local.dbInfo){
+			if(local.table.table_type IS "TABLE" AND local.table.table_schem IS NOT "sys"){
+				local.db.tables[local.table.table_name] = inspectTable(arguments.dsn, local.table.table_name);
+			}
+		}
+
+		return local.db;
 	}
 
 	/**
@@ -84,15 +129,23 @@ component accessors="true"{
 	/**
 	* @hint constructs our definition code
 	*/
-	public string function buildCFC(string type, string modelName=""){
+	public string function buildCFC(string type, string modelName="", string tableName="", string schemaName="default"){
 		local.crlf = chr(13) & chr(10);
 		local.tab = chr(9);
 		local.lines = [];
 
 		switch(arguments.type){
 			case "config":
+				local.table = "tbl_#arguments.modelName#"; 
+				if(len(arguments.tableName)){
+					local.table = arguments.tableName;
+				}
 				arrayAppend(local.lines, "component{");
-				arrayAppend(local.lines, local.tab & "include ""_#arguments.modelName#Schema.cfm"";");
+				//arrayAppend(local.lines, local.tab & "include ""_#arguments.modelName#Schema.cfm"";");
+				if(len(arguments.schemaName)){
+					arrayAppend(local.lines, local.tab & "this.definition.schema = ""#arguments.schemaName#"";");	
+				}
+				arrayAppend(local.lines, local.tab & "this.definition.table = ""#local.table#"";");
 				arrayAppend(local.lines, local.tab & "this.definition.joins = [];");
 				arrayAppend(local.lines, local.tab & "this.definition.manyTomany = [];");
 				arrayAppend(local.lines, local.tab & "this.definition.specialColumns = [];");
@@ -141,7 +194,7 @@ component accessors="true"{
 				}
 				arrayAppend(local.colLineKeys, repeatString(local.tab, 4) & local.key & ":" & local.valueString);
 			}
-			arrayAppend(local.colLines, arrayToList(colLineKeys, "," & local.crlf));
+			arrayAppend(local.colLines, arrayToList(local.colLineKeys, "," & local.crlf));
 			arrayAppend(local.colLines, repeatString(local.tab, 3) & "}");
 			arrayAppend(local.cols, arrayToList(local.colLines, local.crlf));
 		}
@@ -159,6 +212,71 @@ component accessors="true"{
 		local.def = reReplaceNoCase(arrayToList(local.lines, local.crlf), "\[(\/?)cf", "<\1cf", "ALL");
 
 		return local.def;
+	}
+
+	/**
+	* @hint constructs our definition code
+	*/
+	public string function buildSchema(string dsn, string schemaName="default"){
+		local.crlf = chr(13) & chr(10);
+		local.tab = chr(9);
+		local.lines = [];
+
+		local.schema = inspectDatabase(arguments.dsn, arguments.schemaName);
+		
+		arrayAppend(local.lines, "// GENERATED FILE DO NOT EDIT");
+		arrayAppend(local.lines, "component{");
+		arrayAppend(local.lines, local.tab & "this.config = {");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "dsn:""" & local.schema.dsn & """,");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "flavour:""" & local.schema.flavour & """,");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "schemaName:""" & local.schema.schemaName & """,");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "version:""" & local.schema.version & """,");
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "tables: {");
+		
+		
+		local.tables = [];
+		for(local.table in structKeyArray(local.schema.tables)){
+			local.tableLines = [];
+
+			arrayAppend(local.tableLines, repeatString(local.tab, 3) & local.table & ": {");
+			
+			local.tableSchema = local.schema.tables[local.table];
+
+			arrayAppend(local.tableLines, repeatString(local.tab, 4) & "table:""" & local.tableSchema.table & """,");
+			arrayAppend(local.tableLines, repeatString(local.tab, 4) & "pk:""" & local.tableSchema.pk & """,");
+			arrayAppend(local.tableLines, repeatString(local.tab, 4) & "cols:[");
+
+			local.cols = [];
+			for(local.col in local.tableSchema.cols){
+				local.colLines = [];
+				local.colLineKeys = [];
+				arrayAppend(local.colLines, repeatString(local.tab, 5) & "{");
+				for(local.key in structKeyArray(local.col)){
+					local.valueString = local.col[local.key];
+					if((local.key NEQ "default") AND !isBoolean(local.valueString) AND !isNumeric(local.valueString)){
+						local.valueString = """" & local.valueString & """";
+					}
+					arrayAppend(local.colLineKeys, repeatString(local.tab, 6) & local.key & ":" & local.valueString);
+				}
+				arrayAppend(local.colLines, arrayToList(local.colLineKeys, "," & local.crlf));
+				arrayAppend(local.colLines, repeatString(local.tab, 5) & "}");
+				arrayAppend(local.cols, arrayToList(local.colLines, local.crlf));
+			}
+			arrayAppend(local.tableLines, arrayToList(local.cols, "," & local.crlf));
+
+			arrayAppend(local.tableLines, repeatString(local.tab, 4) & "]");
+			arrayAppend(local.tableLines, repeatString(local.tab, 3) & "}");
+
+			arrayAppend(local.tables, arrayToList(local.tableLines, local.crlf));
+		}
+		arrayAppend(local.lines, arrayToList(local.tables, "," & local.crlf));
+		
+
+		arrayAppend(local.lines, repeatString(local.tab, 2) & "}");
+		arrayAppend(local.lines, local.tab & "};");
+		arrayAppend(local.lines, "}");
+
+		return arrayToList(local.lines, local.crlf);
 	}
 
 
