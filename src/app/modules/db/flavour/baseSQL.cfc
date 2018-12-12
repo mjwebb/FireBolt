@@ -89,6 +89,14 @@ component{
 					writeOutput(arrayToList(local.setter, ", ") & ") VALUES (" & arrayToList(local.values, ", ") & ")");
 				}
 				break;
+			case "DELETE":
+				savecontent variable="local.sql"{
+					writeOutput("DELETE FROM #local.declaration.tableName#");
+					if(len(local.declaration.where)){
+						writeOutput(" WHERE #local.declaration.where#");
+					}
+				}
+				break;
 		}
 		
 

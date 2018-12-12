@@ -105,7 +105,6 @@ component accessors="true"{
 					FK1: {
 						value: arguments.bean.getID(),
 						cfsqltype: arguments.bean.getConfig().getConfig().pk.cfSQLDataType
-
 					}
 				}
 
@@ -131,7 +130,11 @@ component accessors="true"{
 	* @hint delete our given bean
 	*/
 	public any function delete(any bean){
-		
+		getGateway()
+			.delete()
+			.where(getGateway().getConfigReader().getPK() & "= :pk")
+			.withParam("pk", arguments.bean.getID())
+			.go();
 	}
 
 	/**

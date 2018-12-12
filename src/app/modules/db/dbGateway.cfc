@@ -242,6 +242,51 @@ component accessors="true"{
 		return declaration;
 	}
 
+
+	/**
+	* @hint DELETE query syntax DSL
+	*/
+	public struct function delete(string tableName=getConfig().table){
+		var declaration = {
+			q: {
+				type: "DELETE",
+				tableName: arguments.tableName,
+				where: "",
+				params: {},
+				options: {
+					dsn: getDSN()
+				}
+			}
+		};
+
+		structAppend(declaration, {
+			where: function(string whereClause){
+				declaration.q.where = arguments.whereClause;
+				return declaration;
+			},
+			withParams: function(any params){
+				declaration.q.params = arguments.params;
+				return declaration;
+			},
+			withParam: function(string paramName, any paramValue, struct paramOptions={}){
+				arguments.paramOptions.value = arguments.paramValue;
+				declaration.q.params[arguments.paramName] = arguments.paramOptions;
+				return declaration;
+			},
+			using: function(string dsn){
+				declaration.q.options.datasource = arguments.dsn;
+				return declaration;
+			},
+			go: function(struct options={}){
+				structAppend(declaration.q.options, arguments.options);
+				return execute(declaration);
+			}
+		});
+
+		return declaration;
+	}
+
+
 	/**
 	* @hint executes an query from a DSL declaration
 	*/
@@ -254,7 +299,7 @@ component accessors="true"{
 	/**
 	* @hint executes an query
 	*/
-	public any function runQuery(string sql, any params, struct options={}){
+	public any function runQuery(string sql, any params={}, struct options={}){
 		local.params = processParams(arguments.params);
 		if(!structKeyExists(arguments.options, "datasource")){
 			arguments.options.datasource = getDSN();

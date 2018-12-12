@@ -6,8 +6,8 @@
 
 <cfset local.db = FB().getObject("db@db")>
 
-<cfset local.insp = FB().getObject("dbInspector@db")>
-<!--- <cfset local.schema = local.insp.inspectTable("test", "tbl_category")>
+<!--- <cfset local.insp = FB().getObject("dbInspector@db")>
+<cfset local.schema = local.insp.inspectTable("test", "tbl_category")>
 <cfset local.def = local.insp.buildDefinition(local.schema)>
 <cfoutput><pre>#encodeForHTML(local.def)#</pre></cfoutput> --->
 <!--- 
@@ -42,10 +42,12 @@
 <!--- <cfdump var="#local.testBean.getConfig().getConfig()#">
 <cfdump var="#local.testBean.getConfig().buildInstance()#">
  --->
- <cfdump var="#local.testBean.getSnapShot()#">
+<cfdump var="#local.testBean.getSnapShot()#">
 
 
 
+<!--- ============================== --->
+<!--- GET BEAN --->
 <cfset local.t = getTickCount()>
 <cfset local.testBean = local.db.bean("test", 1)>
 <cfoutput>BEAN ID: #local.testBean.getID()#<br /></cfoutput>
@@ -61,6 +63,9 @@
 <!--- <cfset local.testService.setLinked(local.testBean, "categories", [2])> --->
 <!--- <cfset local.testBean.setLinkedSaveData("categories", [1,2,4])> --->
 
+
+<!--- ============================== --->
+<!--- SAVE --->
 <cfset local.t = getTickCount()>
 <cfset local.db.save(local.testBean)>
 <cfoutput>SAVE: #getTickCount() - local.t#ms<br /></cfoutput>
@@ -69,6 +74,8 @@
 
 
 
+<!--- ============================== --->
+<!--- SAVE NEW --->
 <cfset local.t = getTickCount()>
 <cfset local.testBean = local.db.bean("test")>
 <cfoutput>BEAN ID: #local.testBean.getID()#<br /></cfoutput>
@@ -91,6 +98,9 @@
 --->
 <br />
 
+
+<!--- ============================== --->
+<!--- GET ALL --->
 <cfset local.t = getTickCount()>
 <cfset local.q = local.testGateway.getAll()>
 <cfoutput>GET ALL: #getTickCount() - local.t#ms<br /></cfoutput>
@@ -103,6 +113,9 @@
 <cfoutput>#getTickCount() - local.t#<br /></cfoutput>
 <cfoutput>#local.q.recordCount#<br /></cfoutput> --->
 
+
+<!--- ============================== --->
+<!--- GET --->
 <cfset local.t = getTickCount()>
 <cfset local.q = local.testGateway.get(4)>
 <cfoutput>GET: #getTickCount() - local.t#ms<br /></cfoutput>
@@ -112,3 +125,7 @@
 <!--- <cfdump var="#local.q#"> --->
 
 <!--- <cfdump var="#local.db.getSchema()#"> --->
+
+<!--- ============================== --->
+<!--- DELETE --->
+<!--- <cfset local.db.delete(local.testBean)> --->
