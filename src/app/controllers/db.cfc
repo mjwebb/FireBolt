@@ -1,5 +1,6 @@
 component output="false" accessors="true" extends="FireBolt.controller" {
 
+	property name="db" inject="db@db";
 
 	/**	
 	*/
@@ -28,8 +29,8 @@ component output="false" accessors="true" extends="FireBolt.controller" {
 		}else{
 			// list models
 
-			addContent("DB Builder");
-			addContent(dump(cgi));
+			addContent("DB Builder<br />");
+			addContent("DSNs: " & arrayToList(db.datasourceManager().getDSNNames()));
 
 		}
 

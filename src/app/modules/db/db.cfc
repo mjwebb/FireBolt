@@ -14,6 +14,13 @@ component accessors="true"{
 	}
 
 	/**
+	* @hint returns our datasource manager
+	*/
+	public any function datasourceManager(){
+		return variables.datasourceManager;
+	}
+
+	/**
 	* @hint returns a schema definition if it exists
 	*/
 	public any function getSchema(string schemaName="default"){
