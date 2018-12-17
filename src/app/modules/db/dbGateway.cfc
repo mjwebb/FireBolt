@@ -80,6 +80,9 @@ component accessors="true"{
 				joins: [],
 				cols: cols(),
 				orderBy: "",
+				limit: 0,
+				offset: 0,
+				withTotal: false,
 				options: {
 					dsn: getDSN()
 				}
@@ -99,8 +102,19 @@ component accessors="true"{
 				declaration.q.params = arguments.params;
 				return declaration;
 			},
+			withParam: function(string paramName, any paramValue, struct paramOptions={}){
+				arguments.paramOptions.value = arguments.paramValue;
+				declaration.q.params[arguments.paramName] = arguments.paramOptions;
+				return declaration;
+			},
 			orderBy: function(string orderBy){
 				declaration.q.orderBy = arguments.orderBy;
+				return declaration;
+			},
+			limit: function(numeric limitRows, numeric offset=0, boolean withTotal=false){
+				declaration.q.limit = arguments.limitRows;
+				declaration.q.offset = arguments.offset;
+				declaration.q.withTotal = arguments.withTotal;
 				return declaration;
 			},
 			using: function(string dsn){

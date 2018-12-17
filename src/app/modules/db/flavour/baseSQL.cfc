@@ -43,6 +43,21 @@ component{
 
 		return local.tableString;
 	}
+
+
+	public string function SQLOffset(numeric offset){
+		return " OFFSET #arguments.offset#";
+	}
+
+	public string function SQLLimit(numeric limit){
+		return " FETCH NEXT #arguments.limit#";
+	}
+
+	public string function SQLTotal(struct declaration){
+		if(arguments.declaration.withTotal){
+			arguments.declaration.cols = arguments.declaration.cols & ", COUNT(*) AS _totalRows";
+		}
+	}
 	
 
 
@@ -53,6 +68,7 @@ component{
 		local.declaration = arguments.declaration.q;
 		switch(local.declaration.type){
 			case "SELECT":
+				SQLTotal(local.declaration);
 				savecontent variable="local.sql"{
 					writeOutput("SELECT #local.declaration.cols# FROM #local.declaration.tableName#");
 					if(len(local.declaration.where)){
@@ -60,6 +76,12 @@ component{
 					}
 					if(len(local.declaration.orderBy)){
 						writeOutput(" ORDER BY #local.declaration.orderBy#");
+					}
+					if(local.declaration.offset GT 0){
+						writeOutput(SQLOffset(local.declaration.offset));
+					}
+					if(local.declaration.limit GT 0){
+						writeOutput(SQLLimit(local.declaration.limit));
 					}
 				}
 				break;

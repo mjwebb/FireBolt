@@ -122,6 +122,32 @@
 <cfoutput>#local.q.recordCount#<br /></cfoutput>
 
 
+
+<!--- ============================== --->
+<!--- GET WITH LIMIT--->
+<cfset local.t = getTickCount()>
+<cfset local.q = local.testGateway.from()
+	.select("test_id, name, startDate")
+	.where("name =:name")
+	.withParam("name", "Waggag")
+	.orderBy("startDate ASC")
+	.limit(5, 3, true)
+	.get()>
+<cfoutput>GET: #getTickCount() - local.t#ms<br /></cfoutput>
+<cfoutput>#local.q.recordCount#<br /></cfoutput>
+<cfdump var="#local.q#">
+
+<!--- ============================== --->
+<!--- GET WITH COUNT--->
+<cfset local.t = getTickCount()>
+<cfset local.q = local.testGateway.from()
+	.select("COUNT(*) AS totalRows")
+	.where("name =:name")
+	.withParam("name", "Waggag")
+	.get()>
+<cfoutput>GET: #getTickCount() - local.t#ms<br /></cfoutput>
+<cfoutput>#local.q.recordCount#<br /></cfoutput>
+<cfdump var="#local.q#">
 <!--- <cfdump var="#local.q#"> --->
 
 <!--- <cfdump var="#local.db.getSchema()#"> --->
