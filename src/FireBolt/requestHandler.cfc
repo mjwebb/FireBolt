@@ -186,24 +186,27 @@ component transient accessors="true"{ // transient request handler
 	* @hint set response header
 	*/
 	public void function setResponseHeader(string name, string value){
-		local.pc = getpagecontext().getresponse();
-		local.pc.setHeader(arguments.name, arguments.value);
+		//local.pc = getpagecontext().getresponse();
+		//local.pc.setHeader(arguments.name, arguments.value);
+		cfheader(name=arguments.name, value=arguments.value);
 	}
 
 	/**
 	* @hint set response status
 	*/
 	public void function setResponseStatus(string statusCode, string statusText=""){
-		local.pc = getpagecontext().getresponse();
-		local.pc.getresponse().setstatus(arguments.statusCode, arguments.statusText);
+		//local.pc = getpagecontext().getresponse();
+		//local.pc.getresponse().setstatus(arguments.statusCode, arguments.statusText);
+		cfheader(statuscode=arguments.statusCode, statustext=arguments.statusText);
 	}
 
 	/**
 	* @hint set response content type
 	*/
 	public void function setResponseContentType(string type){
-		local.pc = getpagecontext().getresponse();
-		local.pc.getresponse().setcontenttype(arguments.type);
+		//local.pc = getpagecontext().getresponse();
+		//local.pc.getresponse().setcontenttype(arguments.type);
+		cfcontent(type=arguments.type);
 	}
 
 

@@ -82,7 +82,9 @@ component accessors="true"{
 	*/
 	public void function addCFMappings(array modulePaths=getModulePaths()){
 		for(local.modulePath in arguments.modulePaths){
-			getFireBolt().engine().addCFMapping("/" & listLast(local.modulePath, "\"), local.modulePath);
+			local.modulePathString = replace(local.modulePath, "\", "/", "ALL");
+			local.mappingName = listLast(local.modulePathString, "/");
+			getFireBolt().engine().addCFMapping("/" & local.mappingName, local.modulePath);
 		}
 		getFireBolt().engine().addCFMapping("/models", expandPath(getModelsPath()));
 	}
@@ -168,7 +170,7 @@ component accessors="true"{
 	* @hint scans a given directrory for cfc's and generates aliases for each one
 	*/
 	public void function createMappings(string modulePath, boolean includeRootAlias=true, string namespace=""){
-		local.moduleRoot = listLast(arguments.modulePath, "\");
+		local.moduleRoot = listLast(replace(arguments.modulePath, "/", "\", "ALL"), "\");
 
 		local.cfcs = listComponents(arguments.modulePath);
 

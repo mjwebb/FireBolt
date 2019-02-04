@@ -259,7 +259,7 @@ component{
 		variables.configService.getConfigObject().onRequestStart();
 		getEventService().trigger("req.start", arguments);
 		request.FireBoltReq = FireBoltRequest();
-		if(arguments.targetPage IS "/index.cfm"){
+		if(!fileExists(expandPath(arguments.targetPage)) OR arguments.targetPage IS "/index.cfm"){
 			writeOutput(request.FireBoltReq.process());
 		}
 	}
