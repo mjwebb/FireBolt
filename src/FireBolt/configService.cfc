@@ -109,9 +109,14 @@ component{
 
 	/**
 	* @hint reads a JVM environment variable / system property
+	* @FireBoltMethod
 	*/
-	public string function getSystemProperty(string key, string defaultValue){
+	public any function getSystemProperty(string key, string defaultValue){
 		local.system = CreateObject("java", "java.lang.System");
-		return system.getProperty(arguments.key, arguments.defaultValue);
+		local.value = system.getenv(arguments.key);
+		if(isNUll(local.value)){
+			local.value = system.getProperty(arguments.key, arguments.defaultValue);	
+		}
+		return local.value;
 	}
 }

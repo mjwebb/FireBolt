@@ -14,7 +14,8 @@ component accessors="true"{
 		TRANSIENT: "transient",
 		SINGLETON: "singleton",
 		INJECT: "inject",
-		SETTING: "setting:"
+		SETTING: "setting:",
+		ENV: "env:"
 	};
 
 	/**
@@ -607,9 +608,12 @@ component accessors="true"{
 	}
 
 	public any function getDepenency(required string dependencyName){
-		if(left(arguments.dependencyName, 8) IS variables.metaKeys.SETTING){
-			local.settingName = replace(arguments.dependencyName, variables.metaKeys.SETTING, "");
+		if(left(arguments.dependencyName, len(variables.metaKeys.SETTING)) IS variables.metaKeys.SETTING){
+			local.settingName = mid(arguments.dependencyName, len(variables.metaKeys.SETTING)+1, len(arguments.dependencyName));
 			return getFireBolt().getSetting(local.settingName);
+		}else if(left(arguments.dependencyName, len(variables.metaKeys.ENV)) IS variables.metaKeys.ENV){
+			local.settingName = mid(arguments.dependencyName, len(variables.metaKeys.ENV)+1, len(arguments.dependencyName));
+			return getFireBolt().getSystemProperty(local.settingName);
 		}else{
 			// get our dependency object
 			if(arguments.dependencyName IS "FireBolt.framework"
@@ -665,7 +669,7 @@ component accessors="true"{
 	================================ */
 
 	/**
-	* @hint converts a dot notation to underscore for use as a cache key
+	* @hint returns our cache
 	*/
 	public struct function getCache(){
 		return variables.cache;

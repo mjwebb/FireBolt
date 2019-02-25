@@ -2,6 +2,8 @@ component output="false" accessors="true" extends="FireBolt.controller" {
 
 
 	property name="UserService" inject="UserService";
+	property name="testSetting1" inject="setting:env.test";
+	property name="testSetting2" inject="env:DB_TEST";
 
 	/**	
 	*/
